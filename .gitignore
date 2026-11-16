@@ -49,3 +49,7 @@ tools/make_*.py
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Router Secrets
+router/accounts.json
+accounts.json

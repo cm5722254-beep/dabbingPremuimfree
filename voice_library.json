@@ -1,0 +1,108 @@
+{
+  "voices": [
+    {
+      "id": "vid10",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e1\u17e0 (Heroic Voice 10)",
+      "filename": "custom_voice_vid10.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid10.mp3",
+      "gender": "male",
+      "role": "\u178f\u17bd\u17af\u1780\u1794\u17d2\u179a\u17bb\u179f / Heroic",
+      "tags": [
+        "Real Audio",
+        "VoxCPM2 Ready"
+      ],
+      "sampleText": "\u1781\u17d2\u1789\u17bb\u17c6\u178f\u17d2\u179a\u17c0\u1798\u1781\u17d2\u179b\u17bd\u1793\u179a\u17bd\u1785\u179a\u17b6\u179b\u17cb\u17a0\u17be\u1799 \u1785\u17bc\u179b\u1798\u1780!"
+    },
+    {
+      "id": "vid12",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e1\u17e2 (Warrior Voice 12)",
+      "filename": "custom_voice_vid12.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid12.mp3",
+      "gender": "male",
+      "role": "\u1798\u17c1\u1791\u17d0\u1796 / General Commander",
+      "tags": [
+        "Real Audio",
+        "VoxCPM2 Ready"
+      ],
+      "sampleText": "\u1780\u1784\u1791\u17d0\u1796\u1791\u17b6\u17c6\u1784\u17a2\u179f\u17cb \u1794\u17c4\u17c7\u1791\u17d0\u1796\u1791\u17c5\u1798\u17bb\u1781!"
+    },
+    {
+      "id": "vid14",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e1\u17e4 (Gentle Female Voice 14)",
+      "filename": "custom_voice_vid14.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid14.mp3",
+      "gender": "female",
+      "role": "\u178f\u17bd\u179f\u17d2\u179a\u17b8\u179f\u17d2\u179a\u1791\u1793\u17cb / Gentle Heroine",
+      "tags": [
+        "Real Audio",
+        "Sweet Tone"
+      ],
+      "sampleText": "\u1794\u1784\u1780\u17bb\u17c6\u1794\u17b6\u179a\u1798\u17d2\u1797\u17a2\u17b8 \u17a2\u17d2\u179c\u17b8\u17d7\u1793\u17b9\u1784\u179b\u17d2\u17a2\u1794\u17d2\u179a\u179f\u17be\u179a\u17a1\u17be\u1784\u179c\u17b7\u1789\u17d4"
+    },
+    {
+      "id": "vid15",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e1\u17e5 (Elder Master Voice 15)",
+      "filename": "custom_voice_vid15.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid15.mp3",
+      "gender": "male",
+      "role": "\u178f\u17b6\u1785\u17b6\u179f\u17cb / \u1796\u17d2\u179a\u17b9\u1791\u17d2\u1792\u17b6\u1785\u17b6\u179a\u17d2\u1799 / Sage",
+      "tags": [
+        "Real Audio",
+        "Deep Elder"
+      ],
+      "sampleText": "\u1780\u17d2\u1794\u17b6\u1785\u17cb\u1782\u17bb\u1793\u1798\u17bd\u1799\u1793\u17c1\u17c7 \u178f\u17d2\u179a\u17bc\u179c\u1780\u17b6\u179a\u179f\u1798\u17b6\u1792\u17b7\u1781\u17d2\u1796\u179f\u17cb\u178e\u17b6\u179f\u17cb\u1780\u17bc\u1793\u179f\u17b7\u179f\u17d2\u179f\u17d4"
+    },
+    {
+      "id": "vid19",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e1\u17e9 (Noble Youth Voice 19)",
+      "filename": "custom_voice_vid19.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid19.mp3",
+      "gender": "male",
+      "role": "\u178f\u17bd\u1794\u17d2\u179a\u17bb\u179f\u179f\u17d2\u179c\u17b6\u17a0\u17b6\u1794\u17cb / Noble Youth",
+      "tags": [
+        "Real Audio",
+        "Youth"
+      ],
+      "sampleText": "\u1799\u17be\u1784\u1793\u17b9\u1784\u1798\u17b7\u1793\u1785\u17bb\u17c7\u1785\u17b6\u1789\u17cb\u1787\u17b6\u178a\u17b6\u1785\u17cb\u1781\u17b6\u178f!"
+    },
+    {
+      "id": "vid20",
+      "name": "\u178f\u17bd\u17a2\u1784\u17d2\u1782 \u17e2\u17e0 (Special Character Voice 20)",
+      "filename": "custom_voice_vid20.mp3",
+      "audioUrl": "/voice-library-files/custom_voice_vid20.mp3",
+      "gender": "male",
+      "role": "\u178f\u17bd\u17a2\u1784\u17d2\u1782\u1796\u17b7\u179f\u17c1\u179f / Core Actor",
+      "tags": [
+        "Real Audio",
+        "Core"
+      ],
+      "sampleText": "\u179a\u17bf\u1784\u179a\u17c9\u17b6\u179c\u1791\u17b6\u17c6\u1784\u17a2\u179f\u17cb \u178f\u17d2\u179a\u17bc\u179c\u178f\u17c2\u178a\u17c4\u17c7\u179f\u17d2\u179a\u17b6\u1799\u1793\u17c5\u1790\u17d2\u1784\u17c3\u1793\u17c1\u17c7\u17d4"
+    },
+    {
+      "id": "char20_female",
+      "name": "\u178f\u17bd\u179f\u17d2\u179a\u17b8 \u17e2\u17e0 (Female Princess 20)",
+      "filename": "vp_character_20_female.mp3",
+      "audioUrl": "/voice-library-files/vp_character_20_female.mp3",
+      "gender": "female",
+      "role": "\u178f\u17bd\u17af\u1780\u179f\u17d2\u179a\u17b8 / \u1798\u17d2\u1785\u17b6\u179f\u17cb\u1780\u17d2\u179f\u178f\u17d2\u179a\u17b8 / Princess",
+      "tags": [
+        "Master Cut",
+        "Real Audio"
+      ],
+      "sampleText": "\u179f\u17bc\u1798\u1791\u17d2\u179a\u1784\u17cb\u1796\u17d2\u179a\u17c7\u1798\u17c1\u178f\u17d2\u178f\u17b6\u1794\u17d2\u179a\u17c4\u179f\u1794\u17d2\u179a\u178e\u17b8\u1795\u1784\u1798\u17d2\u1785\u17b6\u179f\u17cb\u1794\u1784\u17d4"
+    },
+    {
+      "id": "char20_male",
+      "name": "\u178f\u17bd\u1794\u17d2\u179a\u17bb\u179f \u17e2\u17e0 (Male King 20)",
+      "filename": "vp_character_20_male.mp3",
+      "audioUrl": "/voice-library-files/vp_character_20_male.mp3",
+      "gender": "male",
+      "role": "\u178f\u17bd\u17af\u1780\u1794\u17d2\u179a\u17bb\u179f / \u179f\u17d2\u178f\u17c1\u1785 / King Leader",
+      "tags": [
+        "Master Cut",
+        "Real Audio"
+      ],
+      "sampleText": "\u1793\u1782\u179a\u1793\u17c1\u17c7 \u178f\u17d2\u179a\u17bc\u179c\u178f\u17c2\u1798\u17b6\u1793\u179f\u1793\u17d2\u178f\u17b7\u1797\u17b6\u1796\u17a1\u17be\u1784\u179c\u17b7\u1789!"
+    }
+  ]
+}
