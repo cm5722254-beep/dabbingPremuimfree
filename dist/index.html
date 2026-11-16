@@ -750,6 +750,266 @@ svg.i {
   }
 }
 
+
+/* ==========================================================================
+   ULTRA-PREMIUM CINEMA ANIMATIONS & VISUAL EFFECTS (60 FPS SMOOTH)
+   ========================================================================== */
+
+/* 1. Viewfinder HUD Corners */
+.hud-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 15;
+  opacity: 0.65;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hud-corner.top-left {
+  top: 10px;
+  left: 10px;
+  border-top: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+}
+.hud-corner.top-right {
+  top: 10px;
+  right: 10px;
+  border-top: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+}
+.hud-corner.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  border-bottom: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+}
+.hud-corner.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+}
+.video-viewport:hover .hud-corner {
+  opacity: 1;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* 2. Enhanced 8-Band Audio VU Meter */
+.hud-vu-meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  padding: 0 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.vu-bar {
+  width: 2.5px;
+  border-radius: 1px;
+  background: #10B981;
+  height: 3px;
+  transition: height 0.08s ease;
+}
+.vu-bar.b5, .vu-bar.b6 { background: #F59E0B; }
+.vu-bar.b7, .vu-bar.b8 { background: #EF4444; }
+
+.hud-vu-meter.active .vu-bar {
+  animation: vuSpectrum 0.38s infinite alternate ease-in-out;
+}
+.hud-vu-meter.active .vu-bar.b1 { animation-delay: 0.04s; }
+.hud-vu-meter.active .vu-bar.b2 { animation-delay: 0.16s; }
+.hud-vu-meter.active .vu-bar.b3 { animation-delay: 0.08s; }
+.hud-vu-meter.active .vu-bar.b4 { animation-delay: 0.24s; }
+.hud-vu-meter.active .vu-bar.b5 { animation-delay: 0.12s; }
+.hud-vu-meter.active .vu-bar.b6 { animation-delay: 0.28s; }
+.hud-vu-meter.active .vu-bar.b7 { animation-delay: 0.10s; }
+.hud-vu-meter.active .vu-bar.b8 { animation-delay: 0.20s; }
+
+@keyframes vuSpectrum {
+  0% { height: 2px; opacity: 0.4; }
+  50% { height: 10px; opacity: 0.85; }
+  100% { height: 14px; opacity: 1; }
+}
+
+/* 3. Empty State Cinema Graphics */
+.table-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 8px;
+  min-height: 240px;
+  animation: emptyFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes emptyFadeIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.empty-icon-glow {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-soft) 0%, transparent 70%);
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+}
+.empty-icon-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px dashed var(--primary);
+  opacity: 0.5;
+  animation: ringSpin 12s linear infinite;
+}
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+.empty-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.empty-desc {
+  font-size: 11.5px;
+  color: var(--ink2);
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+/* 4. Active Speaking Table Row Soundwaves */
+.speaker-soundwave {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 12px;
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.table-row.active-speaker .speaker-soundwave {
+  opacity: 1;
+}
+.sw-bar {
+  width: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+  height: 3px;
+}
+.table-row.active-speaker .sw-bar {
+  animation: swPulse 0.4s infinite alternate ease-in-out;
+}
+.table-row.active-speaker .sw-bar:nth-child(1) { animation-delay: 0.05s; }
+.table-row.active-speaker .sw-bar:nth-child(2) { animation-delay: 0.15s; }
+.table-row.active-speaker .sw-bar:nth-child(3) { animation-delay: 0.1s; }
+@keyframes swPulse {
+  0% { height: 2px; }
+  100% { height: 11px; }
+}
+
+/* 5. Laser Glow Timeline Playhead */
+.playhead-needle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #38BDF8 0%, #0071E3 50%, #7C3AED 100%) !important;
+  box-shadow: 0 0 10px #0071E3, 0 0 20px rgba(124, 58, 237, 0.5) !important;
+  z-index: 50;
+  pointer-events: none;
+  left: 0%;
+  transition: left 0.04s linear;
+}
+.playhead-head {
+  position: absolute;
+  top: 0;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  background: #38BDF8;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  box-shadow: 0 0 10px #38BDF8;
+  filter: drop-shadow(0 0 4px #0071E3);
+}
+
+/* 6. Cosmic Gradient on Dubbing Auto Master */
+#btnMasterAutoDub {
+  background: linear-gradient(135deg, #0071E3 0%, #7C3AED 50%, #EC4899 100%) !important;
+  background-size: 200% 200% !important;
+  animation: cosmicFlow 4s ease infinite !important;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+#btnMasterAutoDub:hover {
+  transform: translateY(-1.5px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.6), 0 0 16px rgba(0, 113, 227, 0.4) !important;
+}
+@keyframes cosmicFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 7. Action Trio Glowing Borders */
+.action-btn.btn-translate {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.14) 0%, rgba(14, 165, 233, 0.14) 100%) !important;
+  border: 1px solid rgba(0, 113, 227, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.12) !important;
+}
+.action-btn.btn-translate:hover {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.22) 0%, rgba(14, 165, 233, 0.22) 100%) !important;
+  border-color: #0071E3 !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.action-btn.btn-transcribe {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.14) 0%, rgba(168, 85, 247, 0.14) 100%) !important;
+  border: 1px solid rgba(124, 58, 237, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.12) !important;
+}
+.action-btn.btn-transcribe:hover {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.22) 0%, rgba(168, 85, 247, 0.22) 100%) !important;
+  border-color: #7C3AED !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.action-btn.btn-dubbing {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.14) 0%, rgba(244, 63, 94, 0.14) 100%) !important;
+  border: 1px solid rgba(236, 72, 153, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.12) !important;
+}
+.action-btn.btn-dubbing:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.22) 0%, rgba(244, 63, 94, 0.22) 100%) !important;
+  border-color: #EC4899 !important;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 8. Table Row Entrance Animation */
+.table-row {
+  animation: rowFadeSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
+}
+@keyframes rowFadeSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.table-row:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+}
+[data-theme="dark"] .table-row:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+}
+
 /* ==========================================================================
    APP MASTER SHELL GRID (Fixed Rows, Strict Fit, Never Colliding)
    ========================================================================== */
@@ -1866,12 +2126,20 @@ svg.i {
             <div class="vu-bar b3"></div>
             <div class="vu-bar b4"></div>
             <div class="vu-bar b5"></div>
+            <div class="vu-bar b6"></div>
+            <div class="vu-bar b7"></div>
+            <div class="vu-bar b8"></div>
           </div>
         </div>
       </div>
 
       <!-- 2. Video Viewport Frame -->
       <div class="video-viewport" id="videoViewport">
+        <!-- Cinema Viewfinder HUD Corners -->
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+        <div class="hud-corner bottom-right"></div>
         <video id="mainVideoPlayer" playsinline preload="auto"></video>
         <div id="videoSubtitleOverlay" class="video-sub-overlay"></div>
         
@@ -2064,6 +2332,30 @@ svg.i {
         </div>
         <div id="subTableBody">
           <!-- Rows will be injected here cleanly -->
+        </div>
+
+        <!-- Cinema Animated Empty State (Displayed when table has 0 cues) -->
+        <div id="tableEmptyState" class="table-empty-state" style="display:none;">
+          <div class="empty-icon-glow">
+            <div class="empty-icon-ring"></div>
+            <svg class="i" style="width:34px;height:34px;color:var(--primary);"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <b class="empty-title">មិនទាន់មានទិន្នន័យ Subtitle (Empty Workspace)</b>
+          <p class="empty-desc">សូមទាញទម្លាក់វីដេអូចូល ឬចុច [Translate] ដើម្បីទាញយកទិន្នន័យរៀលស្វ័យប្រវត្តិ</p>
+          <div class="row" style="gap:8px;margin-top:10px;">
+            <button class="pill-btn pill-primary" onclick="addNewSubtitleLine()">
+              <svg class="i"><use href="#plus"/></svg>
+              <span>+ បន្ថែមបន្ទាត់ Subtitle</span>
+            </button>
+            <button class="pill-btn" onclick="loadInitialCues()">
+              <svg class="i"><use href="#spark"/></svg>
+              <span>ផ្ទុកទិន្នន័យគំរូរឿង (Film Cues)</span>
+            </button>
+            <button class="pill-btn" onclick="document.getElementById('videoFileInput').click()">
+              <svg class="i"><use href="#film"/></svg>
+              <span>បើកវីដេអូ</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -2580,6 +2872,7 @@ function renderTableRow(item) {
       <span class="voice-gender-pill ${genderClass}">${genderLabel}</span>
       <b style="color:var(--ink);">${item.spk || 'តួអង្គ'}</b>
       <span class="voice-emotion-tag">${emTag}</span>
+      <div class="speaker-soundwave"><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span></div>
     </div>
     <div class="cell-speed">
       <button class="speed-btn" onclick="event.stopPropagation(); changeRowSpeed(this, -0.1)">−</button>
@@ -2618,8 +2911,12 @@ function updateCueCounts() {
   const count = document.querySelectorAll('.table-row').length;
   const badge = document.getElementById('lblCueCount');
   const showLbl = document.getElementById('lblShowingCount');
+  const emptyState = document.getElementById('tableEmptyState');
   if (badge) badge.textContent = count;
   if (showLbl) showLbl.textContent = `Showing ${count} of ${count}`;
+  if (emptyState) {
+    emptyState.style.display = count === 0 ? 'flex' : 'none';
+  }
 }
 
 // --- C. Studio Action Trio (Real Endpoints, Live Accurate Percentages) ---
@@ -2709,105 +3006,10 @@ async function executeTranslateWorkflow() {
         });
         showToast(`AI Translate: ទទួលបាន ${list.length} បន្ទាត់ Subtitle (100%)!`);
       } else {
-        
-  
-  // Configure Video Player Listeners
-  const player = document.getElementById('mainVideoPlayer');
-  if (player) {
-    player.ontimeupdate = syncLivePlayback;
-
-    player.onplay = () => {
-      window.appState.isPlaying = true;
-      const btn = document.getElementById('btnPlayPause');
-      if (btn) {
-        btn.classList.add('playing');
-        btn.innerHTML = `<svg class="i" style="fill:#FFFFFF;stroke:none;"><use href="#pause"/></svg>`;
-      }
-    };
-
-    player.onpause = () => {
-      window.appState.isPlaying = false;
-      const btn = document.getElementById('btnPlayPause');
-      if (btn) {
-        btn.classList.remove('playing');
-        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-      }
-      const dubAudio = document.getElementById('dubAudioPlayer');
-      if (dubAudio) dubAudio.pause();
-      const vu = document.getElementById('hudVuMeter');
-      if (vu) vu.classList.remove('active');
-    };
-
-    player.onseeked = () => {
-      lastPlayedCueId = null;
-      const dubAudio = document.getElementById('dubAudioPlayer');
-      if (dubAudio) {
-        dubAudio.pause();
-        dubAudio.currentTime = 0;
-      }
-      syncLivePlayback();
-    };
-
-    player.onended = () => {
-      window.appState.isPlaying = false;
-      const btn = document.getElementById('btnPlayPause');
-      if (btn) {
-        btn.classList.remove('playing');
-        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-      }
-      const dubAudio = document.getElementById('dubAudioPlayer');
-      if (dubAudio) dubAudio.pause();
-    };
-  }
-
-  // Keyboard Spacebar Play/Pause
-  window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !e.target.closest('input, textarea, [contenteditable="true"]')) {
-      e.preventDefault();
-      togglePlayVideo();
-    }
-  });
-
-  // Load Real Project Data (or initial film cues if first run)
-  if (!loadRealProjectData()) {
-    loadInitialCues();
-  }
-  renderScrubCueMarkers();
-
-  
-  // Initialize Screen Layout Mode from saved user preference or auto-detect
-  const savedScreenMode = localStorage.getItem('cheatz_screen_mode');
-  if (savedScreenMode) {
-    setScreenLayout(savedScreenMode);
-  } else {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    let defMode = 'standard';
-    if (w <= 1366 || h <= 800) defMode = 'compact';
-    else if (w >= 2200) defMode = 'cinema';
-    document.documentElement.setAttribute('data-screen-mode', defMode);
-    const defBtn = document.getElementById(
-      defMode === 'compact' ? 'btnModeSmall' : (defMode === 'cinema' ? 'btnModeLarge' : 'btnModeMed')
-    );
-    if (defBtn) defBtn.classList.add('active');
-  }
-
-  // Pre-fetch Gemini Quota Pool Config
-  fetch('/api/gemini-config')
-    .then(r => r.json())
-    .then(d => {
-      if (d && d.config) {
-        const keys = d.config.apiKeys || (d.config.apiKey ? [d.config.apiKey] : []);
-        const txt = document.getElementById('txtBulkApiKeys');
-        if (txt && keys.length > 0) txt.value = keys.join('\n');
-        updateKeyPoolDisplay(keys.length);
-      }
-    })
-    .catch(() => {});
-
-        showToast('AI Translate: បានបង្កើត Subtitle ភាពយន្តពេញលេញ (100%)!');
+        showToast('AI Translate: មិនទាន់មានសំឡេងក្នុងវីដេអូ ឬប្រព័ន្ធកំពុងដំណើរការ');
       }
     }
+    saveRealProjectData();
     updateCueCounts();
     syncTimelineClips();
   } catch (err) {
@@ -3325,10 +3527,8 @@ function syncTimelineClips() {
   });
 }
 
-// Update playhead on video timeupdate
-document.addEventListener('DOMContentLoaded', () => {
-  
-  
+// Studio Master Initialization Controller
+function initCheatzStudioApp() {
   // Configure Video Player Listeners
   const player = document.getElementById('mainVideoPlayer');
   if (player) {
@@ -3341,6 +3541,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.add('playing');
         btn.innerHTML = `<svg class="i" style="fill:#FFFFFF;stroke:none;"><use href="#pause"/></svg>`;
       }
+      const vu = document.getElementById('hudVuMeter');
+      if (vu) vu.classList.add('active');
     };
 
     player.onpause = () => {
@@ -3375,6 +3577,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const dubAudio = document.getElementById('dubAudioPlayer');
       if (dubAudio) dubAudio.pause();
+      const vu = document.getElementById('hudVuMeter');
+      if (vu) vu.classList.remove('active');
     };
   }
 
@@ -3386,11 +3590,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Load Real Project Data (or initial film cues if first run)
+  // Always load cues on startup: use saved real project cues or populate initial film cues
   if (!loadRealProjectData()) {
     loadInitialCues();
   }
   renderScrubCueMarkers();
+
+  // Initialize Screen Layout Mode from saved user preference or auto-detect
+  const savedScreenMode = localStorage.getItem('cheatz_screen_mode');
+  if (savedScreenMode) {
+    setScreenLayout(savedScreenMode);
+  } else {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    let defMode = 'standard';
+    if (w <= 1366 || h <= 800) defMode = 'compact';
+    else if (w >= 2200) defMode = 'cinema';
+    setScreenLayout(defMode);
+  }
 
   // Pre-fetch Gemini Quota Pool Config
   fetch('/api/gemini-config')
@@ -3404,7 +3621,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
     .catch(() => {});
-
 
   const v = document.getElementById('mainVideoPlayer');
   if (v) {
@@ -3424,7 +3640,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lcd) lcd.textContent = `${formatSecToTc(cur)} / ${formatSecToTc(dur)}`;
     });
   }
-});
+}
+
+// Ensure startup runs reliably regardless of DOM readyState
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCheatzStudioApp);
+} else {
+  initCheatzStudioApp();
+}
 
 // Helper Timecode Parsers
 function formatSecToTc(sec) {
@@ -3457,6 +3680,7 @@ function addNewSubtitleLine() {
     v: 'Piseth · Lead'
   });
   container.appendChild(newRow);
+  saveRealProjectData();
   updateCueCounts();
   syncTimelineClips();
   showToast('បានបន្ថែមបន្ទាត់ Subtitle ថ្មី');
