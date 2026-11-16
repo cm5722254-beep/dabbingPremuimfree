@@ -431,6 +431,325 @@ svg.i {
   100% { left: 140%; }
 }
 
+
+/* ==========================================================================
+   MULTI-SCREEN LAYOUT SYSTEM (Compact / Standard / Cinema / Auto-fit)
+   Zero Overlap, Smooth Transition, Fits Laptops & 4K Displays
+   ========================================================================== */
+.screen-mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--sunk);
+  padding: 2px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  height: 32px;
+}
+.screen-btn {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ink2);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.screen-btn:hover {
+  color: var(--ink);
+  background: var(--panel);
+}
+.screen-btn.active {
+  background: var(--panel);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--line);
+}
+[data-theme="dark"] .screen-btn.active {
+  background: var(--panel-alt);
+  color: #38BDF8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* 1. COMPACT MODE (Screen តូច - 13/14-inch Laptops, 1366x768, 1280x720) */
+[data-screen-mode="compact"] .app-shell {
+  grid-template-rows: 44px 1fr 135px 22px !important;
+  gap: 6px !important;
+  padding: 6px !important;
+}
+[data-screen-mode="compact"] .header-bar {
+  padding: 0 8px !important;
+}
+[data-screen-mode="compact"] .brand img {
+  width: 26px !important;
+  height: 26px !important;
+}
+[data-screen-mode="compact"] .brand-title {
+  font-size: 12px !important;
+}
+[data-screen-mode="compact"] .tab-btn {
+  height: 26px !important;
+  padding: 0 6px !important;
+  font-size: 11px !important;
+  gap: 3px !important;
+}
+[data-screen-mode="compact"] .pill-btn {
+  height: 28px !important;
+  padding: 0 8px !important;
+  font-size: 11px !important;
+  gap: 4px !important;
+}
+[data-screen-mode="compact"] .screen-mode-selector {
+  height: 28px !important;
+}
+[data-screen-mode="compact"] .screen-btn {
+  height: 22px !important;
+  padding: 0 6px !important;
+  font-size: 10px !important;
+}
+[data-screen-mode="compact"] .workspace-grid {
+  grid-template-columns: clamp(260px, 22vw, 320px) 1fr !important;
+  gap: 6px !important;
+}
+[data-screen-mode="compact"] .card-preview {
+  padding: 6px !important;
+  gap: 5px !important;
+}
+[data-screen-mode="compact"] .monitor-hud-bar {
+  padding: 2px 6px !important;
+  font-size: 9.5px !important;
+}
+[data-screen-mode="compact"] .ctl-btn {
+  height: 24px !important;
+  min-width: 24px !important;
+  padding: 0 4px !important;
+  font-size: 10px !important;
+}
+[data-screen-mode="compact"] .play-btn {
+  width: 30px !important;
+  height: 30px !important;
+}
+[data-screen-mode="compact"] .lcd-frame-box {
+  font-size: 9.5px !important;
+  padding: 2px 5px !important;
+}
+[data-screen-mode="compact"] .video-sub-overlay {
+  font-size: 13.5px !important;
+  bottom: 16px !important;
+  padding: 4px 10px !important;
+}
+[data-screen-mode="compact"] .editor-head {
+  padding: 6px 8px !important;
+  gap: 6px !important;
+}
+[data-screen-mode="compact"] .editor-toolbar {
+  padding: 4px 8px !important;
+  gap: 6px !important;
+}
+[data-screen-mode="compact"] .action-btn {
+  height: 28px !important;
+  padding: 0 8px !important;
+  font-size: 11px !important;
+}
+[data-screen-mode="compact"] .btn-tool {
+  height: 24px !important;
+  padding: 0 5px !important;
+  font-size: 10.5px !important;
+}
+[data-screen-mode="compact"] .editor-filter-bar {
+  padding: 4px 8px !important;
+  gap: 6px !important;
+}
+[data-screen-mode="compact"] .table-head {
+  height: 28px !important;
+  font-size: 10px !important;
+  grid-template-columns: 24px 28px 56px 56px 1fr 115px 65px 38px !important;
+}
+[data-screen-mode="compact"] .table-row {
+  height: 29px !important;
+  font-size: 11.5px !important;
+  grid-template-columns: 24px 28px 56px 56px 1fr 115px 65px 38px !important;
+}
+[data-screen-mode="compact"] .cell-tc {
+  font-size: 10px !important;
+}
+[data-screen-mode="compact"] .timeline-card {
+  min-height: 135px !important;
+}
+[data-screen-mode="compact"] .timeline-header {
+  height: 26px !important;
+}
+[data-screen-mode="compact"] .tl-btn {
+  height: 20px !important;
+  padding: 0 5px !important;
+  font-size: 10px !important;
+}
+[data-screen-mode="compact"] .lcd-timecode {
+  font-size: 10px !important;
+  padding: 1px 6px !important;
+}
+[data-screen-mode="compact"] .track-label {
+  height: 26px !important;
+  font-size: 9.5px !important;
+}
+[data-screen-mode="compact"] .lane-row {
+  height: 26px !important;
+}
+[data-screen-mode="compact"] .lane-clip {
+  height: 22px !important;
+  font-size: 10px !important;
+}
+
+/* 2. STANDARD MODE (Screen កណ្តាល - Default 1080p Desktop 1920x1080 / 1600x900) */
+[data-screen-mode="standard"] .app-shell {
+  grid-template-rows: 50px 1fr 175px 26px !important;
+  gap: 8px !important;
+  padding: 8px !important;
+}
+[data-screen-mode="standard"] .workspace-grid {
+  grid-template-columns: clamp(330px, 25vw, 420px) 1fr !important;
+  gap: 8px !important;
+}
+[data-screen-mode="standard"] .table-head,
+[data-screen-mode="standard"] .table-row {
+  grid-template-columns: 28px 34px 62px 62px 1fr 140px 75px 44px !important;
+}
+[data-screen-mode="standard"] .table-row {
+  height: 35px !important;
+  font-size: 13px !important;
+}
+[data-screen-mode="standard"] .lane-row {
+  height: 34px !important;
+}
+
+/* 3. CINEMA MODE (Screen ធំ - 2K / 4K / Ultra-wide 21:9 Displays) */
+[data-screen-mode="cinema"] .app-shell {
+  grid-template-rows: 56px 1fr 220px 30px !important;
+  gap: 10px !important;
+  padding: 10px !important;
+}
+[data-screen-mode="cinema"] .brand img {
+  width: 36px !important;
+  height: 36px !important;
+}
+[data-screen-mode="cinema"] .brand-title {
+  font-size: 15px !important;
+}
+[data-screen-mode="cinema"] .tab-btn {
+  height: 34px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+}
+[data-screen-mode="cinema"] .pill-btn {
+  height: 36px !important;
+  padding: 0 14px !important;
+  font-size: 13px !important;
+}
+[data-screen-mode="cinema"] .workspace-grid {
+  grid-template-columns: clamp(520px, 34vw, 720px) 1fr !important;
+  gap: 10px !important;
+}
+[data-screen-mode="cinema"] .card-preview {
+  padding: 12px !important;
+  gap: 10px !important;
+}
+[data-screen-mode="cinema"] .monitor-hud-bar {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+}
+[data-screen-mode="cinema"] .ctl-btn {
+  height: 32px !important;
+  min-width: 32px !important;
+  font-size: 12px !important;
+}
+[data-screen-mode="cinema"] .play-btn {
+  width: 42px !important;
+  height: 42px !important;
+}
+[data-screen-mode="cinema"] .video-sub-overlay {
+  font-size: 19px !important;
+  bottom: 34px !important;
+  padding: 8px 20px !important;
+}
+[data-screen-mode="cinema"] .action-btn {
+  height: 36px !important;
+  font-size: 13px !important;
+  padding: 0 14px !important;
+}
+[data-screen-mode="cinema"] .table-head {
+  height: 38px !important;
+  font-size: 12px !important;
+  grid-template-columns: 34px 42px 75px 75px 1fr 170px 90px 50px !important;
+}
+[data-screen-mode="cinema"] .table-row {
+  height: 42px !important;
+  font-size: 14.5px !important;
+  grid-template-columns: 34px 42px 75px 75px 1fr 170px 90px 50px !important;
+}
+[data-screen-mode="cinema"] .cell-tc {
+  font-size: 13px !important;
+}
+[data-screen-mode="cinema"] .timeline-card {
+  min-height: 220px !important;
+}
+[data-screen-mode="cinema"] .track-label {
+  height: 44px !important;
+  font-size: 12px !important;
+}
+[data-screen-mode="cinema"] .lane-row {
+  height: 44px !important;
+}
+[data-screen-mode="cinema"] .lane-clip {
+  height: 36px !important;
+  font-size: 12.5px !important;
+}
+
+/* 4. AUTO-FIT MEDIA QUERIES (Applies automatically if user has not clicked to lock mode) */
+@media (max-width: 1366px), (max-height: 800px) {
+  body:not([data-screen-locked="true"]) .app-shell {
+    grid-template-rows: 44px 1fr 135px 22px;
+    gap: 6px;
+    padding: 6px;
+  }
+  body:not([data-screen-locked="true"]) .workspace-grid {
+    grid-template-columns: clamp(250px, 22vw, 320px) 1fr;
+    gap: 6px;
+  }
+  body:not([data-screen-locked="true"]) .table-row {
+    height: 29px;
+    font-size: 11.5px;
+  }
+  body:not([data-screen-locked="true"]) .lane-row {
+    height: 26px;
+  }
+}
+
+@media (min-width: 2200px) {
+  body:not([data-screen-locked="true"]) .app-shell {
+    grid-template-rows: 56px 1fr 220px 30px;
+    gap: 10px;
+    padding: 10px;
+  }
+  body:not([data-screen-locked="true"]) .workspace-grid {
+    grid-template-columns: clamp(520px, 34vw, 720px) 1fr;
+    gap: 10px;
+  }
+  body:not([data-screen-locked="true"]) .table-row {
+    height: 42px;
+    font-size: 14.5px;
+  }
+  body:not([data-screen-locked="true"]) .lane-row {
+    height: 44px;
+  }
+}
+
 /* ==========================================================================
    APP MASTER SHELL GRID (Fixed Rows, Strict Fit, Never Colliding)
    ========================================================================== */
@@ -1483,6 +1802,22 @@ svg.i {
         <span id="engineStatusText">Gemini Ready</span>
       </div>
 
+            <!-- Multi-Screen Layout Switcher (Small / Medium / Big Screen Option) -->
+      <div class="screen-mode-selector" title="ប្តូរទម្រង់អេក្រង់ (Small Laptop / Desktop / Big Cinema)">
+        <button class="screen-btn" id="btnModeSmall" onclick="setScreenLayout('compact', this)" title="Screen តូច (Compact / 13-14' Laptop / 720p)">
+          <svg class="i" style="width:12px;height:12px;"><rect x="4" y="5" width="16" height="11" rx="1.5"/><line x1="2" y1="18" x2="22" y2="18"/></svg>
+          <span>តូច</span>
+        </button>
+        <button class="screen-btn active" id="btnModeMed" onclick="setScreenLayout('standard', this)" title="Screen កណ្តាល (Standard 1080p Desktop)">
+          <svg class="i" style="width:12px;height:12px;"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>កណ្តាល</span>
+        </button>
+        <button class="screen-btn" id="btnModeLarge" onclick="setScreenLayout('cinema', this)" title="Screen ធំ (Cinema / 2K / 4K / Ultra-wide)">
+          <svg class="i" style="width:12px;height:12px;"><rect x="1" y="4" width="22" height="12" rx="2"/><polygon points="12 18 8 21 16 21 12 18"/></svg>
+          <span>ធំ</span>
+        </button>
+      </div>
+
       <button class="pill-btn" id="btnSfxToggle" onclick="window.soundEngine.toggle()" title="សំឡេងប៊ូតុង Apple Haptic Sound (ON / OFF)">
         <svg class="i"><use href="#sound"/></svg>
         <span id="lblSfxStatus">SFX: ON</span>
@@ -2438,6 +2773,24 @@ async function executeTranslateWorkflow() {
     loadInitialCues();
   }
   renderScrubCueMarkers();
+
+  
+  // Initialize Screen Layout Mode from saved user preference or auto-detect
+  const savedScreenMode = localStorage.getItem('cheatz_screen_mode');
+  if (savedScreenMode) {
+    setScreenLayout(savedScreenMode);
+  } else {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    let defMode = 'standard';
+    if (w <= 1366 || h <= 800) defMode = 'compact';
+    else if (w >= 2200) defMode = 'cinema';
+    document.documentElement.setAttribute('data-screen-mode', defMode);
+    const defBtn = document.getElementById(
+      defMode === 'compact' ? 'btnModeSmall' : (defMode === 'cinema' ? 'btnModeLarge' : 'btnModeMed')
+    );
+    if (defBtn) defBtn.classList.add('active');
+  }
 
   // Pre-fetch Gemini Quota Pool Config
   fetch('/api/gemini-config')
@@ -4068,6 +4421,37 @@ function loadRealProjectData() {
     } catch (e) {}
   }
   return false;
+}
+
+
+// --- Screen Layout Mode Controller (Small Laptop / Medium Desktop / Big Cinema) ---
+function setScreenLayout(mode, btn) {
+  window.soundEngine.playClick();
+  document.documentElement.setAttribute('data-screen-mode', mode);
+  document.body.setAttribute('data-screen-locked', 'true');
+  localStorage.setItem('cheatz_screen_mode', mode);
+
+  document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const targetBtn = document.getElementById(
+      mode === 'compact' ? 'btnModeSmall' : (mode === 'cinema' ? 'btnModeLarge' : 'btnModeMed')
+    );
+    if (targetBtn) targetBtn.classList.add('active');
+  }
+
+  const modeLabels = {
+    compact: 'Screen តូច (Compact Laptop / 720p)',
+    standard: 'Screen កណ្តាល (Standard 1080p Desktop)',
+    cinema: 'Screen ធំ (Cinema / 2K / 4K Ultra-wide)'
+  };
+  showToast('បានប្តូរទម្រង់: ' + (modeLabels[mode] || mode));
+
+  setTimeout(() => {
+    syncTimelineClips();
+    renderScrubCueMarkers();
+  }, 100);
 }
 
 </script>
