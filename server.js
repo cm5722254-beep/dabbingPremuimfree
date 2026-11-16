@@ -6683,6 +6683,174 @@ try {
   console.log('[Enhanced Features API] Could not load audio enhancement:', e.message);
 }
 
+// =========================================================================
+// MULTI-EPISODE VIDEO MERGER API (Episodes 01 -> 100+ Concat Engine)
+// =========================================================================
+
+// Upload Multiple Video Episodes
+app.post('/api/upload-episode-files', (req, res) => {
+  upload.any()(req, res, (err) => {
+    if (err) {
+      log(`[Episode Upload Error] ${err.message}`, 'WARN');
+      return res.status(400).json({ success: false, error: err.message });
+    }
+    const files = req.files || [];
+    if (files.length === 0 && req.file) {
+      files.push(req.file);
+    }
+    if (files.length === 0) {
+      return res.status(400).json({ success: false, error: 'No video files received' });
+    }
+
+    const episodeData = files.map(file => {
+      const name = file.originalname;
+      const numMatch = name.match(/(?:ep|episode|part|ភាគ|)(\d+)\b/i) || name.match(/(\d+)/);
+      const epNum = numMatch ? parseInt(numMatch[1], 10) : 9999;
+      return {
+        fileName: file.filename,
+        originalName: file.originalname,
+        path: file.path,
+        url: `/uploads/${file.filename}`,
+        size: file.size,
+        episodeNumber: epNum
+      };
+    });
+
+    log(`[Episode Upload] Received ${episodeData.length} episode files`);
+    res.json({
+      success: true,
+      files: episodeData
+    });
+  });
+});
+
+// Real FFMPEG Concat Merge for Multi-Episode Videos (1 to 100+ episodes)
+app.post('/api/merge-episodes', async (req, res) => {
+  try {
+    const { episodes, outputName, mode = 'fast', autoSort = true } = req.body;
+    if (!Array.isArray(episodes) || episodes.length < 2) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'ត្រូវការវីដេអូយ៉ាងតិច ២ ភាគ ដើម្បីធ្វើការ Merge ចូលគ្នា' 
+      });
+    }
+
+    log(`[Episode Merger] Starting merge of ${episodes.length} episodes (Mode: ${mode})`);
+
+    // 1. Natural Sort Episodes by Episode Number / Filename if autoSort is true
+    let sortedEpisodes = [...episodes];
+    if (autoSort) {
+      sortedEpisodes.sort((a, b) => {
+        const numA = (typeof a === 'object' && a.episodeNumber !== undefined) 
+          ? a.episodeNumber 
+          : (parseInt((String(a.originalName || a.fileName || a).match(/\d+/) || [9999])[0], 10));
+        const numB = (typeof b === 'object' && b.episodeNumber !== undefined) 
+          ? b.episodeNumber 
+          : (parseInt((String(b.originalName || b.fileName || b).match(/\d+/) || [9999])[0], 10));
+        if (numA !== numB) return numA - numB;
+        const nameA = String(a.originalName || a.fileName || a);
+        const nameB = String(b.originalName || b.fileName || b);
+        return nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' });
+      });
+    }
+
+    // 2. Resolve absolute file paths on disk
+    const resolvedFiles = [];
+    for (const ep of sortedEpisodes) {
+      const fileName = typeof ep === 'object' ? (ep.fileName || ep.path || '') : ep;
+      const baseName = path.basename(fileName);
+      let targetPath = path.join(DIRS.uploads, baseName);
+      if (!fs.existsSync(targetPath)) {
+        targetPath = path.join(DIRS.videos, baseName);
+      }
+      if (!fs.existsSync(targetPath)) {
+        targetPath = fileName;
+      }
+      if (!fs.existsSync(targetPath)) {
+        return res.status(404).json({
+          success: false,
+          error: `រកមិនឃើញ File វីដេអូភាគ: ${baseName}`
+        });
+      }
+      resolvedFiles.push(targetPath);
+    }
+
+    // 3. Build FFMPEG Concat Demuxer Text File
+    const timestamp = Date.now();
+    const concatListPath = path.join(DIRS.uploads, `concat_list_${timestamp}.txt`);
+    const concatContent = resolvedFiles.map(f => {
+      const normalized = f.replace(/\\/g, '/').replace(/'/g, "'\\''");
+      return `file '${normalized}'`;
+    }).join('\n');
+
+    fs.writeFileSync(concatListPath, concatContent, 'utf8');
+
+    // 4. Output Filename
+    const sanitizedOutputName = (outputName && outputName.trim()) 
+      ? outputName.trim().replace(/[^a-zA-Z0-9_\u1780-\u17FF.-]/g, '_')
+      : `Merged_Full_Movie_${timestamp}.mp4`;
+    const finalOutputName = sanitizedOutputName.endsWith('.mp4') ? sanitizedOutputName : `${sanitizedOutputName}.mp4`;
+    const outputPath = path.join(DIRS.uploads, finalOutputName);
+
+    const ffmpegExe = fs.existsSync(DIRS.ffmpeg) ? DIRS.ffmpeg : 'ffmpeg';
+
+    // 5. Execute FFMPEG Concat
+    const runFfmpeg = (args) => {
+      return new Promise((resolve, reject) => {
+        const proc = spawn(ffmpegExe, args);
+        let stderr = '';
+        proc.stderr.on('data', d => stderr += d.toString());
+        proc.on('close', code => {
+          if (code === 0) resolve(true);
+          else reject(new Error(stderr.slice(-600) || `FFMPEG failed with exit code ${code}`));
+        });
+        proc.on('error', err => reject(err));
+      });
+    };
+
+    let usedMode = mode;
+    try {
+      if (mode === 'fast') {
+        log(`[Episode Merger] Running Stream Copy Concat: ${finalOutputName}`);
+        await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', concatListPath, '-c', 'copy', outputPath]);
+      } else {
+        log(`[Episode Merger] Running Re-encode Concat: ${finalOutputName}`);
+        await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', concatListPath, '-c:v', 'libx264', '-preset', 'veryfast', '-c:a', 'aac', '-b:a', '192k', outputPath]);
+      }
+    } catch (concatErr) {
+      log(`[Episode Merger] Fast concat failed, attempting smart re-encode fallback: ${concatErr.message}`, 'WARN');
+      usedMode = 'reencode-fallback';
+      await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', concatListPath, '-c:v', 'libx264', '-preset', 'veryfast', '-c:a', 'aac', '-b:a', '192k', outputPath]);
+    } finally {
+      try { if (fs.existsSync(concatListPath)) fs.unlinkSync(concatListPath); } catch (e) {}
+    }
+
+    if (!fs.existsSync(outputPath)) {
+      throw new Error('FFMPEG did not generate output file');
+    }
+
+    const stats = fs.statSync(outputPath);
+    log(`[Episode Merger] Successfully merged ${resolvedFiles.length} episodes into ${finalOutputName} (${Math.round(stats.size / 1024 / 1024)}MB)`);
+
+    res.json({
+      success: true,
+      fileName: finalOutputName,
+      filePath: outputPath,
+      url: `/uploads/${finalOutputName}`,
+      size: stats.size,
+      totalEpisodes: resolvedFiles.length,
+      mode: usedMode
+    });
+
+  } catch (error) {
+    log(`[Episode Merger Error] ${error.message}`, 'ERROR');
+    res.status(500).json({
+      success: false,
+      error: 'ការផ្គុំវីដេអូភាគរឿងបរាជ័យ: ' + (error.message || 'Unknown error')
+    });
+  }
+});
+
 // SPA fallback: any unknown route serves dist/index.html
 app.use((req, res) => {
   const indexHtml = path.join(DIRS.dist, 'index.html');
@@ -6952,3 +7120,5 @@ app.post('/api/voxcpm/extract-voice-sample', upload.fields([
 });
 
 console.log('[Auto Voice Clone API] /api/voxcpm/extract-voice-sample endpoint registered');
+
+

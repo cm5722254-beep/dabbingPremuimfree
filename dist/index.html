@@ -1963,6 +1963,150 @@ svg.i {
   pointer-events: none;
 }
 .toast-box.show { transform: translateY(0); opacity: 1; }
+
+/* ==========================================================================
+   HIGH CONTRAST & RAZOR-SHARP VISUAL CLARITY (NO BLUR IN LIGHT / DARK MODES)
+   ========================================================================== */
+
+* {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Action Trio Base & Typography */
+.action-btn {
+  font-family: 'Kantumruy Pro', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* LIGHT MODE: High-Contrast, Deep 3D Colors (No pale or blurry text) */
+.action-btn.btn-translate {
+  background: linear-gradient(135deg, #0071E3 0%, #0284C7 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(0, 80, 180, 0.5) !important;
+  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+.action-btn.btn-translate svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+.action-btn.btn-translate:hover {
+  background: linear-gradient(135deg, #005BB5 0%, #0270A8 100%) !important;
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.45) !important;
+  transform: translateY(-1.5px) !important;
+}
+
+.action-btn.btn-transcribe {
+  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(100, 30, 200, 0.5) !important;
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+.action-btn.btn-transcribe svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+.action-btn.btn-transcribe:hover {
+  background: linear-gradient(135deg, #6D28D9 0%, #7E22CE 100%) !important;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.45) !important;
+  transform: translateY(-1.5px) !important;
+}
+
+.action-btn.btn-dubbing {
+  background: linear-gradient(135deg, #DB2777 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(190, 24, 93, 0.5) !important;
+  box-shadow: 0 3px 10px rgba(219, 39, 119, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+.action-btn.btn-dubbing svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+.action-btn.btn-dubbing:hover {
+  background: linear-gradient(135deg, #BE185D 0%, #BE123C 100%) !important;
+  box-shadow: 0 6px 18px rgba(219, 39, 119, 0.45) !important;
+  transform: translateY(-1.5px) !important;
+}
+
+/* DARK MODE: Electric Neon Glow on Deep Obsidian */
+[data-theme="dark"] .action-btn.btn-translate {
+  background: linear-gradient(135deg, #0A2540 0%, #064E3B 0%, #0C4A6E 100%) !important;
+  color: #38BDF8 !important;
+  border: 1.5px solid #0284C7 !important;
+  box-shadow: 0 0 16px rgba(2, 132, 199, 0.45), inset 0 0 8px rgba(56, 189, 248, 0.15) !important;
+}
+[data-theme="dark"] .action-btn.btn-translate svg { fill: #38BDF8 !important; stroke: #38BDF8 !important; }
+[data-theme="dark"] .action-btn.btn-translate:hover {
+  background: linear-gradient(135deg, #0284C7 0%, #0071E3 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.75) !important;
+  border-color: #38BDF8 !important;
+  transform: translateY(-1.5px) !important;
+}
+[data-theme="dark"] .action-btn.btn-translate:hover svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+
+[data-theme="dark"] .action-btn.btn-transcribe {
+  background: linear-gradient(135deg, #2E1065 0%, #3B0764 100%) !important;
+  color: #C084FC !important;
+  border: 1.5px solid #7C3AED !important;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.45), inset 0 0 8px rgba(192, 132, 252, 0.15) !important;
+}
+[data-theme="dark"] .action-btn.btn-transcribe svg { fill: #C084FC !important; stroke: #C084FC !important; }
+[data-theme="dark"] .action-btn.btn-transcribe:hover {
+  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 24px rgba(192, 132, 252, 0.75) !important;
+  border-color: #C084FC !important;
+  transform: translateY(-1.5px) !important;
+}
+[data-theme="dark"] .action-btn.btn-transcribe:hover svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+
+[data-theme="dark"] .action-btn.btn-dubbing {
+  background: linear-gradient(135deg, #4C0519 0%, #500724 100%) !important;
+  color: #F472B6 !important;
+  border: 1.5px solid #DB2777 !important;
+  box-shadow: 0 0 16px rgba(219, 39, 119, 0.45), inset 0 0 8px rgba(244, 114, 182, 0.15) !important;
+}
+[data-theme="dark"] .action-btn.btn-dubbing svg { fill: #F472B6 !important; stroke: #F472B6 !important; }
+[data-theme="dark"] .action-btn.btn-dubbing:hover {
+  background: linear-gradient(135deg, #DB2777 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 24px rgba(244, 114, 182, 0.75) !important;
+  border-color: #F472B6 !important;
+  transform: translateY(-1.5px) !important;
+}
+[data-theme="dark"] .action-btn.btn-dubbing:hover svg { fill: #FFFFFF !important; stroke: #FFFFFF !important; }
+
+/* Empty State Typography & Dropzone */
+.empty-title {
+  font-family: 'Kantumruy Pro', -apple-system, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+  line-height: 1.5 !important;
+}
+.empty-desc {
+  font-family: 'Kantumruy Pro', -apple-system, sans-serif !important;
+  font-size: 12px !important;
+  color: var(--ink2) !important;
+  max-width: 440px !important;
+  line-height: 1.6 !important;
+}
+.episode-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 26px 16px;
+  text-align: center;
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel) 0%, var(--primary-soft) 100%);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.episode-dropzone:hover {
+  border-color: #0071E3;
+  transform: scale(1.01);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.2);
+}
+
 </style>
 </head>
 <body>
@@ -2041,6 +2185,10 @@ svg.i {
       <button class="tab-btn" onclick="openStudioModal('modalLowSpec')">
         <svg class="i"><use href="#spark"/></svg>
         <span>Low-Spec PC</span>
+      </button>
+      <button class="tab-btn" onclick="openEpisodeMergerModal()" title="ផ្គុំវីដេអូច្រើនភាគ (Ep 01 -> Ep 100+) ចូលគ្នាជារឿងពេញ">
+        <svg class="i" style="width:14px;height:14px;"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        <span>Merge ភាគរឿង</span>
       </button>
       <button class="tab-btn" onclick="openStudioModal('modalSettings')">
         <svg class="i"><use href="#gear"/></svg>
@@ -2342,18 +2490,22 @@ svg.i {
           </div>
           <b class="empty-title">មិនទាន់មានទិន្នន័យ Subtitle (Empty Workspace)</b>
           <p class="empty-desc">សូមទាញទម្លាក់វីដេអូចូល ឬចុច [Translate] ដើម្បីទាញយកទិន្នន័យរៀលស្វ័យប្រវត្តិ</p>
-          <div class="row" style="gap:8px;margin-top:10px;">
-            <button class="pill-btn pill-primary" onclick="addNewSubtitleLine()">
-              <svg class="i"><use href="#plus"/></svg>
+          <div class="row" style="gap:10px;margin-top:14px;flex-wrap:wrap;justify-content:center;">
+            <button class="pill-btn pill-primary" onclick="addNewSubtitleLine()" title="បង្កើតបន្ទាត់ Subtitle ដោយដៃផ្ទាល់">
+              <svg class="i" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>+ បន្ថែមបន្ទាត់ Subtitle</span>
             </button>
-            <button class="pill-btn" onclick="loadInitialCues()">
-              <svg class="i"><use href="#spark"/></svg>
-              <span>ផ្ទុកទិន្នន័យគំរូរឿង (Film Cues)</span>
+            <button class="pill-btn" onclick="document.getElementById('videoFileInput').click()" title="បើកវីដេអូដើម្បីទាញយកសំឡេងពិតប្រាកដ">
+              <svg class="i" style="width:14px;height:14px;"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/></svg>
+              <span>បើកវីដេអូរឿង</span>
             </button>
-            <button class="pill-btn" onclick="document.getElementById('videoFileInput').click()">
-              <svg class="i"><use href="#film"/></svg>
-              <span>បើកវីដេអូ</span>
+            <button class="pill-btn" onclick="document.getElementById('srtFileInput').click()" title="នាំចូលឯកសារ Subtitle SRT ពិត">
+              <svg class="i" style="width:14px;height:14px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>នាំចូល SRT</span>
+            </button>
+            <button class="pill-btn" onclick="openEpisodeMergerModal()" title="ផ្គុំវីដេអូភាគរឿង (Ep 01 ដល់ 100+) ចូលគ្នាជារឿងពេញ">
+              <svg class="i" style="width:14px;height:14px;"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+              <span>Merge ភាគរឿង (Episodes)</span>
             </button>
           </div>
         </div>
@@ -3590,10 +3742,8 @@ function initCheatzStudioApp() {
     }
   });
 
-  // Always load cues on startup: use saved real project cues or populate initial film cues
-  if (!loadRealProjectData()) {
-    loadInitialCues();
-  }
+  // Always load cues on startup: ONLY use real saved project data! Zero fake demo data!
+  loadRealProjectData();
   renderScrubCueMarkers();
 
   // Initialize Screen Layout Mode from saved user preference or auto-detect
@@ -4676,6 +4826,303 @@ function setScreenLayout(mode, btn) {
     syncTimelineClips();
     renderScrubCueMarkers();
   }, 100);
+}
+
+
+// =========================================================================
+// MULTI-EPISODE VIDEO MERGER CONTROLLER
+// =========================================================================
+
+window.episodeQueue = [];
+window.latestMergedVideo = null;
+
+function openEpisodeMergerModal() {
+  window.soundEngine.playAction();
+  openStudioModal('modalEpisodeMerger');
+  renderEpisodeQueueUI();
+}
+
+function handleEpisodeFilesSelected(e) {
+  const files = Array.from(e.target.files || []);
+  if (files.length === 0) return;
+
+  const overlay = document.getElementById('mergeProgressBox');
+  const statusLbl = document.getElementById('lblMergeProgressStatus');
+  const bar = document.getElementById('barMergeProgress');
+  const detail = document.getElementById('lblMergeProgressDetail');
+  const pct = document.getElementById('lblMergeProgressPct');
+
+  if (overlay) overlay.style.display = 'block';
+  if (statusLbl) statusLbl.textContent = `កំពុង Upload ${files.length} Files វីដេអូភាគចូលប្រព័ន្ធ...`;
+  if (bar) bar.style.width = '20%';
+  if (pct) pct.textContent = '20%';
+
+  const fd = new FormData();
+  files.forEach(f => fd.append('episodes', f));
+
+  fetch('/api/upload-episode-files', {
+    method: 'POST',
+    body: fd
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (bar) bar.style.width = '100%';
+    if (pct) pct.textContent = '100%';
+    setTimeout(() => { if (overlay) overlay.style.display = 'none'; }, 600);
+
+    if (data && data.success && Array.isArray(data.files)) {
+      data.files.forEach(f => {
+        window.episodeQueue.push(f);
+      });
+      autoSortEpisodeQueue();
+      showToast(`បានបញ្ចូល ${data.files.length} ភាគរឿងទៅក្នុងបញ្ជីជោគជ័យ!`);
+    } else {
+      showToast('បរាជ័យក្នុងការ Upload វីដេអូភាគ: ' + (data.error || 'Unknown error'));
+    }
+  })
+  .catch(err => {
+    if (overlay) overlay.style.display = 'none';
+    showToast('Upload វីដេអូភាគបរាជ័យ: ' + err.message);
+  });
+}
+
+function autoSortEpisodeQueue() {
+  window.episodeQueue.sort((a, b) => {
+    const numA = a.episodeNumber !== undefined ? a.episodeNumber : 9999;
+    const numB = b.episodeNumber !== undefined ? b.episodeNumber : 9999;
+    if (numA !== numB) return numA - numB;
+    const nameA = a.originalName || a.fileName || '';
+    const nameB = b.originalName || b.fileName || '';
+    return nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' });
+  });
+  renderEpisodeQueueUI();
+}
+
+function clearEpisodeQueue() {
+  window.episodeQueue = [];
+  renderEpisodeQueueUI();
+  showToast('បានសម្អាតបញ្ជីភាគរឿង');
+}
+
+function moveEpisodeItem(index, dir) {
+  const target = index + dir;
+  if (target < 0 || target >= window.episodeQueue.length) return;
+  const temp = window.episodeQueue[index];
+  window.episodeQueue[index] = window.episodeQueue[target];
+  window.episodeQueue[target] = temp;
+  renderEpisodeQueueUI();
+}
+
+function removeEpisodeItem(index) {
+  window.episodeQueue.splice(index, 1);
+  renderEpisodeQueueUI();
+}
+
+function renderEpisodeQueueUI() {
+  const container = document.getElementById('episodeQueueItems');
+  const countBadge = document.getElementById('lblEpisodeQueueCount');
+  const sizeBadge = document.getElementById('lblEpisodeQueueSize');
+
+  if (!container) return;
+
+  const count = window.episodeQueue.length;
+  if (countBadge) countBadge.textContent = `${count} ភាគ`;
+
+  let totalBytes = window.episodeQueue.reduce((acc, f) => acc + (f.size || 0), 0);
+  const totalMb = (totalBytes / (1024 * 1024)).toFixed(1);
+  if (sizeBadge) sizeBadge.textContent = `(${totalMb} MB)`;
+
+  if (count === 0) {
+    container.innerHTML = `
+      <div id="episodeEmptyPrompt" style="text-align:center; padding:30px 10px; color:var(--ink3); font-size:12px;">
+        មិនទាន់មាន Files វីដេអូភាគក្នុងបញ្ជីនៅឡើយទេ · សូមជ្រើសរើស Files ខាងលើ
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+  window.episodeQueue.forEach((ep, idx) => {
+    const epNum = ep.episodeNumber !== 9999 ? ep.episodeNumber : (idx + 1);
+    const sizeMb = ((ep.size || 0) / (1024 * 1024)).toFixed(1);
+    const item = document.createElement('div');
+    item.className = 'episode-card-item';
+    item.style.cssText = `
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 12px;
+    `;
+    item.innerHTML = `
+      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+        <span style="font-weight:700; color:var(--primary); background:var(--primary-soft); padding:2px 8px; border-radius:4px; font-size:11px; font-family:var(--mono);">#${idx + 1} ភាគ ${epNum}</span>
+        <span style="color:var(--ink); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${ep.originalName || ep.fileName}">${ep.originalName || ep.fileName}</span>
+        <span style="color:var(--ink3); font-size:11px;">(${sizeMb} MB)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:4px;">
+        <button class="ctrl-square-btn" style="width:24px;height:24px;" onclick="moveEpisodeItem(${idx}, -1)" title="រំកិលឡើងលើ" ${idx === 0 ? 'disabled' : ''}>
+          <svg class="i" style="width:12px;height:12px;"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <button class="ctrl-square-btn" style="width:24px;height:24px;" onclick="moveEpisodeItem(${idx}, 1)" title="រំកិលចុះក្រោម" ${idx === count - 1 ? 'disabled' : ''}>
+          <svg class="i" style="width:12px;height:12px;"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="ctrl-square-btn" style="width:24px;height:24px; color:#EF4444;" onclick="removeEpisodeItem(${idx})" title="លុបចេញពីបញ្ជី">
+          <svg class="i" style="width:12px;height:12px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function loadEpisodesFromLibrary() {
+  fetch('/api/library/videos')
+    .then(r => r.json())
+    .then(data => {
+      const vids = data.videos || data.files || [];
+      if (vids.length === 0) {
+        showToast('មិនមានវីដេអូនៅក្នុង Library ឡើយ');
+        return;
+      }
+      vids.forEach(v => {
+        const numMatch = v.fileName.match(/(?:ep|episode|part|ភាគ|)(\d+)\b/i) || v.fileName.match(/(\d+)/);
+        const epNum = numMatch ? parseInt(numMatch[1], 10) : 9999;
+        window.episodeQueue.push({
+          fileName: v.fileName,
+          originalName: v.fileName,
+          size: v.size || 0,
+          episodeNumber: epNum
+        });
+      });
+      autoSortEpisodeQueue();
+      showToast(`បានទាញយក ${vids.length} វីដេអូពី Library ចូលបញ្ជី!`);
+    })
+    .catch(err => {
+      showToast('ទាញយក Video Library បរាជ័យ: ' + err.message);
+    });
+}
+
+async function executeEpisodeMerge() {
+  if (window.episodeQueue.length < 2) {
+    showToast('សូមជ្រើសរើសវីដេអូយ៉ាងតិច ២ ភាគ ដើម្បីធ្វើការ Merge');
+    return;
+  }
+
+  window.soundEngine.playAction();
+
+  const progressBox = document.getElementById('mergeProgressBox');
+  const successBox = document.getElementById('mergeSuccessBox');
+  const statusLbl = document.getElementById('lblMergeProgressStatus');
+  const bar = document.getElementById('barMergeProgress');
+  const detail = document.getElementById('lblMergeProgressDetail');
+  const pct = document.getElementById('lblMergeProgressPct');
+  const btn = document.getElementById('btnStartEpisodeMerge');
+  const outputName = document.getElementById('txtMergeOutputName')?.value || 'Merged_Full_Movie.mp4';
+  const mode = document.getElementById('selMergeMode')?.value || 'fast';
+
+  if (btn) btn.disabled = true;
+  if (successBox) successBox.style.display = 'none';
+  if (progressBox) progressBox.style.display = 'block';
+
+  let currentPct = 10;
+  if (bar) bar.style.width = '10%';
+  if (pct) pct.textContent = '10%';
+  if (statusLbl) statusLbl.textContent = `កំពុងរៀបចំផ្គុំ ${window.episodeQueue.length} ភាគរឿង...`;
+  if (detail) detail.textContent = 'កំពុងបង្កើតបញ្ជី FFMPEG Concat Demuxer...';
+
+  const progressInterval = setInterval(() => {
+    if (currentPct < 90) {
+      currentPct += 5;
+      if (bar) bar.style.width = `${currentPct}%`;
+      if (pct) pct.textContent = `${currentPct}%`;
+      if (detail) detail.textContent = `កំពុងដំណើរការ FFMPEG Merge ភាគរឿង ${currentPct}%...`;
+    }
+  }, 500);
+
+  try {
+    const res = await fetch('/api/merge-episodes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        episodes: window.episodeQueue,
+        outputName: outputName,
+        mode: mode,
+        autoSort: false
+      })
+    });
+
+    clearInterval(progressInterval);
+    const data = await res.json();
+
+    if (data && data.success) {
+      if (bar) bar.style.width = '100%';
+      if (pct) pct.textContent = '100%';
+      if (progressBox) progressBox.style.display = 'none';
+
+      window.soundEngine.playSuccess();
+
+      if (successBox) {
+        successBox.style.display = 'block';
+        const lblDetails = document.getElementById('lblMergeSuccessDetails');
+        if (lblDetails) {
+          const mb = ((data.size || 0) / (1024 * 1024)).toFixed(1);
+          lblDetails.textContent = `បានផ្គុំ ${data.totalEpisodes} ភាគ ទៅជា File: ${data.fileName} (${mb} MB) ជោគជ័យពេញលេញ!`;
+        }
+        const dlBtn = document.getElementById('btnDownloadMerged');
+        if (dlBtn) {
+          dlBtn.href = data.url;
+          dlBtn.download = data.fileName;
+        }
+      }
+
+      window.latestMergedVideo = {
+        fileName: data.fileName,
+        url: data.url
+      };
+
+      showToast(`Merge ជោគជ័យ! បង្កើតបានវីដេអូពេញ ១ បទ (${data.fileName})`);
+    } else {
+      if (progressBox) progressBox.style.display = 'none';
+      window.soundEngine.playError();
+      showToast('ការផ្គុំវីដេអូភាគបរាជ័យ: ' + (data.error || 'Unknown error'));
+    }
+  } catch (err) {
+    clearInterval(progressInterval);
+    if (progressBox) progressBox.style.display = 'none';
+    window.soundEngine.playError();
+    showToast('ការផ្គុំវីដេអូភាគបរាជ័យ: ' + err.message);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function loadMergedVideoIntoStudio() {
+  if (!window.latestMergedVideo) return;
+  const v = window.latestMergedVideo;
+
+  const player = document.getElementById('mainVideoPlayer');
+  const placeholder = document.getElementById('videoDropPlaceholder');
+  const closeBtn = document.getElementById('btnCloseVideo');
+
+  window.appState.activeVideoUrl = v.url;
+  window.appState.activeVideoName = v.fileName;
+  localStorage.setItem('genz_active_video_name', v.fileName);
+
+  if (player) {
+    player.src = v.url;
+    player.style.display = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+    if (closeBtn) closeBtn.style.display = 'inline-flex';
+    player.load();
+    player.play().catch(() => {});
+  }
+
+  closeStudioModal('modalEpisodeMerger');
+  showToast('បានផ្ទុកវីដេអូពេញចូលក្នុង Studio Monitor រួចរាល់សម្រាប់ Dubbing!');
 }
 
 </script>
