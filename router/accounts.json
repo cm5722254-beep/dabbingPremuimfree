@@ -1,0 +1,8 @@
+{
+  "strategy": "round-robin",
+  "totalServed": 269,
+  "totalFailed": 57,
+  "lastResponseSnippet": "ag/gemini-2.0-flash answered in 0.6 s (\"OK\").",
+  "updatedAt": 1793964235177,
+  "accounts": []
+}

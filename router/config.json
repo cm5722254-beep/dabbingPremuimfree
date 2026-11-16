@@ -1,0 +1,41 @@
+{
+  "routerEndpoint": "http://127.0.0.1:20128/v1",
+  "routingStrategy": "priority-failover",
+  "maxAccountsLimit": 10,
+  "accounts": [],
+  "providers": [
+    {
+      "id": "9router-pool",
+      "name": "9Router Pool (Gmail Multi-Account Free 100%)",
+      "type": "gmail-pool",
+      "baseUrl": "http://127.0.0.1:20128/v1",
+      "apiKey": "dummy-key-managed-by-9router",
+      "model": "gemini-1.5-flash",
+      "enabled": true,
+      "priority": 1,
+      "maxRetries": 3
+    },
+    {
+      "id": "ollama-local",
+      "name": "Local Ollama GPU (Fallback)",
+      "type": "ollama",
+      "baseUrl": "http://localhost:11434",
+      "apiKey": "",
+      "model": "llama3.1:8b",
+      "enabled": true,
+      "priority": 999,
+      "maxRetries": 1
+    }
+  ],
+  "reliability": {
+    "chunkSize": 40,
+    "maxRetries": 5,
+    "retryBackoffMs": 2000,
+    "cacheEnabled": true,
+    "verifyAllLines": true
+  },
+  "privacy": {
+    "maskEmails": true,
+    "neverLogFullKeys": true
+  }
+}

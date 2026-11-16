@@ -1,0 +1,22 @@
+{
+  "name": "godmode-pool-pro",
+  "version": "2.0.0",
+  "description": "Production-Ready Local AI Request Router & Account Pool Proxy (GodMode Pool PRO)",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "build": "echo 'Ready to run with Node 26 native engine'"
+  },
+  "keywords": [
+    "godmode-pool",
+    "load-balancer",
+    "gemini",
+    "openai-proxy",
+    "account-pool"
+  ],
+  "author": "Principal Full-Stack Engineer",
+  "license": "MIT"
+}
+
