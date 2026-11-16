@@ -1,0 +1,70 @@
+{
+  "name": "dabbing-premium",
+  "version": "5.3.0",
+  "description": "Dabbing Premium — AI Video Dubber with VoxCPM2 Dual Mode, Voice Consistency, & Professional Audio Enhancement",
+  "main": "electron-main.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis",
+    "build:all": "electron-builder --win --x64",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build:electron": "npx @electron/packager . \"Dabbing Premium\" --platform=win32 --arch=x64 --icon=ch_dabbing_icon.ico --out=release-builds --overwrite --ignore=uploads --ignore=videos --ignore=dist_installer --ignore=release-builds --ignore=logs --ignore=test_batch --ignore=tools",
+    "build:exe": "npx @yao-pkg/pkg server.js --targets node18-win-x64 --output Dabbing-Premium.exe",
+    "test:quick": "node --version && npm --version && echo All dependencies OK"
+  },
+  "build": {
+    "appId": "com.cheatzdabber.dabbingpremium",
+    "productName": "Dabbing Premium Studio",
+    "directories": {
+      "output": "release-builds"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "ch_dabbing_icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "files": [
+      "dist/**/*",
+      "server.js",
+      "electron-main.js",
+      "package.json",
+      "node_modules/**/*",
+      "tools/**/*",
+      "router/**/*",
+      "*.js",
+      "*.json",
+      "*.ico"
+    ]
+  },
+  "pkg": {
+    "assets": [
+      "dist/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "multer": "^2.4.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^45.1.0",
+    "electron-builder": "^24.13.3"
+  }
+}
