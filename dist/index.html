@@ -2107,6 +2107,313 @@ svg.i {
   box-shadow: 0 8px 24px rgba(0, 113, 227, 0.2);
 }
 
+
+/* ==========================================================================
+   RADIANT CINEMA VFX, ENGINE CHIP GLOWS & DUB HUD
+   ========================================================================== */
+
+/* Engine Chip Styles */
+.chip-btn {
+  height: 25px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink2);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.chip-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary);
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+.chip-btn.active .chip-dot {
+  opacity: 1;
+  box-shadow: 0 0 6px currentColor;
+  animation: ledBlink 1.2s infinite;
+}
+
+.chip-btn.active#chip_pool {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(5, 150, 105, 0.24)) !important;
+  color: #10B981 !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35) !important;
+  font-weight: 700 !important;
+}
+.chip-btn.active#chip_gemini {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.16), rgba(14, 165, 233, 0.24)) !important;
+  color: #0071E3 !important;
+  border-color: #0071E3 !important;
+  box-shadow: 0 0 12px rgba(0, 113, 227, 0.35) !important;
+  font-weight: 700 !important;
+}
+.chip-btn.active#chip_google {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(217, 119, 6, 0.24)) !important;
+  color: #D97706 !important;
+  border-color: #F59E0B !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35) !important;
+  font-weight: 700 !important;
+}
+.chip-btn.active#chip_ollama {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.16), rgba(124, 58, 237, 0.24)) !important;
+  color: #7C3AED !important;
+  border-color: #7C3AED !important;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.35) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .chip-btn.active#chip_google {
+  color: #FBBF24 !important;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.45) !important;
+}
+[data-theme="dark"] .chip-btn.active#chip_gemini {
+  color: #38BDF8 !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45) !important;
+}
+[data-theme="dark"] .chip-btn.active#chip_ollama {
+  color: #C084FC !important;
+  box-shadow: 0 0 14px rgba(192, 132, 252, 0.45) !important;
+}
+
+/* Video Upload Radial Progress Meter */
+.radial-progress-box {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+}
+.radial-svg {
+  transform: rotate(-90deg);
+}
+.radial-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 6;
+}
+.radial-meter {
+  fill: none;
+  stroke: #38BDF8;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 263.89;
+  stroke-dashoffset: 263.89;
+  transition: stroke-dashoffset 0.25s ease;
+  filter: drop-shadow(0 0 8px #0071E3);
+}
+.radial-inner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.radial-pct {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+}
+.radial-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #38BDF8;
+  letter-spacing: 0.1em;
+}
+.upload-hud-card {
+  background: rgba(11, 15, 25, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 113, 227, 0.35);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 330px;
+  width: 88%;
+}
+.upload-hud-title {
+  font-size: 13px;
+  color: #F8FAFC;
+  text-align: center;
+  line-height: 1.4;
+}
+.upload-hud-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.upload-hud-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #0071E3 0%, #38BDF8 50%, #7C3AED 100%);
+  transition: width 0.25s ease;
+}
+.upload-hud-steps {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 8.5px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--mono);
+}
+.upload-hud-steps .hud-step.active {
+  color: #38BDF8;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+.video-aperture-reveal {
+  animation: apertureZoom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes apertureZoom {
+  0% { transform: scale(1.08); filter: brightness(1.4) blur(4px); }
+  100% { transform: scale(1); filter: brightness(1) blur(0); }
+}
+
+/* Floating Dubbing Progress HUD */
+.dubbing-progress-hud {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  pointer-events: none;
+  animation: hudSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes hudSlideDown {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.hud-dub-inner {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.25);
+  border-radius: 10px;
+  padding: 8px 14px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.hud-dub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hud-dub-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hud-dub-live-dot {
+  width: 7px;
+  height: 7px;
+  background: #EF4444;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #EF4444;
+  animation: ledBlink 0.8s infinite;
+}
+.hud-dub-title {
+  font-size: 10px;
+  font-family: var(--mono);
+  font-weight: 700;
+  color: #F8FAFC;
+  letter-spacing: 0.05em;
+}
+.hud-dub-pct {
+  font-size: 13px;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: #F59E0B;
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+.hud-dub-speaker-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #E2E8F0;
+}
+.hud-dub-soundwave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.hud-dub-soundwave span {
+  width: 2px;
+  background: #F59E0B;
+  border-radius: 1px;
+  height: 3px;
+  animation: wavePulse 0.4s infinite alternate ease-in-out;
+}
+.hud-dub-soundwave span:nth-child(1) { animation-delay: 0.05s; }
+.hud-dub-soundwave span:nth-child(2) { animation-delay: 0.15s; }
+.hud-dub-soundwave span:nth-child(3) { animation-delay: 0.1s; }
+.hud-dub-soundwave span:nth-child(4) { animation-delay: 0.25s; }
+.hud-dub-soundwave span:nth-child(5) { animation-delay: 0.18s; }
+@keyframes wavePulse {
+  0% { height: 2px; }
+  100% { height: 12px; }
+}
+.hud-dub-line {
+  font-weight: 700;
+  color: #38BDF8;
+  font-family: var(--mono);
+}
+.hud-dub-speaker {
+  font-weight: 600;
+  color: #F8FAFC;
+}
+.hud-dub-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hud-dub-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #F59E0B, #EC4899, #0071E3);
+  transition: width 0.25s ease;
+}
+
+/* Row Dubbing Active State */
+.table-row.dubbing-active-row {
+  border-color: #F59E0B !important;
+  background: rgba(245, 158, 11, 0.1) !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35) !important;
+  transform: scale(1.008) !important;
+  transition: all 0.2s ease !important;
+}
+.table-row.dubbing-completed-row {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
 </style>
 </head>
 <body>
@@ -2305,11 +2612,59 @@ svg.i {
           </div>
         </div>
 
-        <!-- Video Uploading Glass Overlay -->
+        <!-- Cyber Cinema Video Upload Transition HUD -->
         <div id="videoUploadOverlay" class="video-upload-overlay" style="display:none;">
-          <div class="upload-spinner"></div>
-          <b style="color:#FFFFFF;font-size:13px;" id="lblUploadProgress">កំពុង Upload ចូលប្រព័ន្ធ Tool 100%...</b>
-          <span style="color:rgba(255,255,255,0.7);font-size:11px;">កំពុងរៀបចំ Audio/Video Sync Pipeline...</span>
+          <div class="upload-hud-card">
+            <!-- Circular Radial Progress Meter -->
+            <div class="radial-progress-box">
+              <svg class="radial-svg" width="90" height="90" viewBox="0 0 100 100">
+                <circle class="radial-bg" cx="50" cy="50" r="42" />
+                <circle class="radial-meter" id="uploadRadialMeter" cx="50" cy="50" r="42" />
+              </svg>
+              <div class="radial-inner">
+                <span id="lblUploadPct" class="radial-pct">0%</span>
+                <span class="radial-label">STREAM</span>
+              </div>
+            </div>
+
+            <!-- Glowing Hologram Stream Bar -->
+            <div class="upload-hud-info" style="width:100%;text-align:center;">
+              <b class="upload-hud-title" id="lblUploadProgress">កំពុង Upload វីដេអូចូលប្រព័ន្ធ Tool...</b>
+              <div class="upload-hud-track" style="margin:8px 0 6px 0;">
+                <div class="upload-hud-fill" id="barUploadProgress"></div>
+              </div>
+              <div class="upload-hud-steps">
+                <span id="stepUpload1" class="hud-step active">● STREAMING 60FPS</span>
+                <span id="stepUpload2" class="hud-step">● FFMPEG PROBING</span>
+                <span id="stepUpload3" class="hud-step">● DUAL AUDIO SYNC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Dubbing Progress Floating HUD -->
+        <div id="dubbingProgressHUD" class="dubbing-progress-hud" style="display:none;">
+          <div class="hud-dub-inner">
+            <div class="hud-dub-header">
+              <div class="hud-dub-indicator">
+                <span class="hud-dub-live-dot"></span>
+                <span class="hud-dub-title">VOICE SYNTHESIS ACTIVE</span>
+              </div>
+              <span id="lblDubHUDPercent" class="hud-dub-pct">0%</span>
+            </div>
+            
+            <div class="hud-dub-speaker-info">
+              <div class="hud-dub-soundwave">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <span id="lblDubHUDLine" class="hud-dub-line">ឃ្លាទី [1/10]</span>
+              <span id="lblDubHUDSpeaker" class="hud-dub-speaker">តួឯកប្រុស · Piseth</span>
+            </div>
+
+            <div class="hud-dub-track">
+              <div id="barDubHUDProgress" class="hud-dub-bar"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2371,11 +2726,23 @@ svg.i {
 
         <button class="pill-btn" style="height:26px;font-size:11.5px;padding:0 8px;font-weight:700;" onclick="toggleLanguageProfile(this)">ខ្មែរ</button>
 
-        <div class="engine-chips">
-          <button class="chip-btn" id="chip_pool" onclick="setEngine('pool')">9Router Pool</button>
-          <button class="chip-btn active" id="chip_gemini" onclick="setEngine('gemini')">Gemini AI</button>
-          <button class="chip-btn" id="chip_google" onclick="setEngine('google')">Google Free</button>
-          <button class="chip-btn" id="chip_ollama" onclick="setEngine('ollama')">Local Ollama</button>
+        <div class="engine-chips" title="ជ្រើសរើស Engine បកប្រែ & Whisper Transcribe">
+          <button class="chip-btn" id="chip_pool" onclick="setEngine('pool', this)" title="9Router Quota Pool (Gmail Multi-Account Free 100%)">
+            <span class="chip-dot dot-pool"></span>
+            <span>9Router Pool</span>
+          </button>
+          <button class="chip-btn active" id="chip_gemini" onclick="setEngine('gemini', this)" title="Google Gemini 2.0 Flash AI (Smart Film Diarization)">
+            <span class="chip-dot dot-gemini"></span>
+            <span>Gemini AI</span>
+          </button>
+          <button class="chip-btn" id="chip_google" onclick="setEngine('google', this)" title="Google Free + Faster-Whisper (100% Free No API Key)">
+            <span class="chip-dot dot-google"></span>
+            <span>Google Free</span>
+          </button>
+          <button class="chip-btn" id="chip_ollama" onclick="setEngine('ollama', this)" title="Local Ollama AI (Offline LLM qwen2.5/llama3)">
+            <span class="chip-dot dot-ollama"></span>
+            <span>Local Ollama</span>
+          </button>
         </div>
 
         <span style="flex:1"></span>
@@ -4045,16 +4412,26 @@ function switchNavTab(el, tabName) {
 
 // 2. Engine Selector Chips
 function setEngine(engineId, el) {
+  window.soundEngine.playClick();
   window.appState.selectedEngine = engineId;
-  document.querySelectorAll('.engine-chips .chip').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
-  const names = {
-    pool: '9Router Key Pool (Multi-Account)',
-    gemini: 'Google Gemini 2.0 Flash AI',
-    google: 'Google Cloud Free Translation',
-    ollama: 'Local Ollama Offline LLM'
+  localStorage.setItem('cheatz_selected_engine', engineId);
+
+  document.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
+  const target = el || document.getElementById('chip_' + engineId);
+  if (target) target.classList.add('active');
+
+  const engineDetails = {
+    pool: { name: '9Router Quota Pool', desc: 'បកប្រែតាម Gmail Multi-Account Pool ដោយឥតគិតថ្លៃ', badge: 'Pool Ready' },
+    gemini: { name: 'Google Gemini 2.0 Flash AI', desc: 'AI កម្រិតខ្ពស់សម្រាប់បកប្រែបែបភាពយន្តរស់រវើក', badge: 'Gemini AI' },
+    google: { name: 'Google Free + Faster-Whisper', desc: 'ប្រើ Whisper ស្តាប់សំឡេងរឿង & Google Free បកប្រែដោយឥតគិតថ្លៃ', badge: 'Whisper + Free' },
+    ollama: { name: 'Local Ollama Offline AI', desc: 'បកប្រែតាម Offline LLM ក្នុងម៉ាស៊ីនផ្ទាល់ (qwen2.5 / llama3)', badge: 'Ollama Local' }
   };
-  showToast('បានជ្រើសរើស Engine: ' + (names[engineId] || engineId));
+
+  const info = engineDetails[engineId] || { name: engineId, desc: '', badge: engineId };
+  const statusBadge = document.getElementById('engineStatusText');
+  if (statusBadge) statusBadge.textContent = info.badge;
+
+  showToast('បានជ្រើសរើស Engine: ' + info.name);
 }
 
 // 3. Movie Genre Preset Selector
@@ -4698,6 +5075,13 @@ function handleVideoFile(file) {
 
   const overlay = document.getElementById('videoUploadOverlay');
   const progressLbl = document.getElementById('lblUploadProgress');
+  const pctLbl = document.getElementById('lblUploadPct');
+  const radial = document.getElementById('uploadRadialMeter');
+  const fill = document.getElementById('barUploadProgress');
+  const step1 = document.getElementById('stepUpload1');
+  const step2 = document.getElementById('stepUpload2');
+  const step3 = document.getElementById('stepUpload3');
+
   if (overlay) overlay.style.display = 'flex';
   if (progressLbl) progressLbl.textContent = 'កំពុង Upload ' + file.name + ' ចូលប្រព័ន្ធ Tool...';
 
@@ -4710,47 +5094,87 @@ function handleVideoFile(file) {
   const closeBtn = document.getElementById('btnCloseVideo');
   const monTag = document.getElementById('lblMonitorRes');
 
-  if (player) {
-    player.src = localUrl;
-    player.style.display = 'block';
-    if (placeholder) placeholder.style.display = 'none';
-    if (closeBtn) closeBtn.style.display = 'inline-flex';
+  const CIRCUMFERENCE = 263.89;
+  if (radial) radial.style.strokeDasharray = CIRCUMFERENCE;
 
-    player.onloadedmetadata = () => {
-      window.appState.duration = player.duration;
-      const totalLbl = document.getElementById('lblTotalTime');
-      if (totalLbl) totalLbl.textContent = formatSecToTc(player.duration);
-      if (monTag && player.videoWidth) {
-        monTag.textContent = `MONITOR 1 · ${player.videoWidth}x${player.videoHeight} FHD`;
-      }
-      syncTimelineClips();
-      renderScrubCueMarkers();
-    };
-  }
+  const setUploadProgress = (percent) => {
+    const clamped = Math.min(100, Math.max(0, percent));
+    if (pctLbl) pctLbl.textContent = clamped + '%';
+    if (fill) fill.style.width = clamped + '%';
+    if (radial) {
+      const offset = CIRCUMFERENCE - (clamped / 100) * CIRCUMFERENCE;
+      radial.style.strokeDashoffset = offset;
+    }
+    if (clamped >= 35 && step2) step2.classList.add('active');
+    if (clamped >= 85 && step3) step3.classList.add('active');
+  };
 
-  // Upload directly to server tool system
+  setUploadProgress(10);
+
+  // Real XHR Upload for 0% to 100% live streaming percentage
+  const xhr = new XMLHttpRequest();
   const fd = new FormData();
   fd.append('videoFile', file);
-  fetch('/api/upload-video', { method: 'POST', body: fd })
-    .then(r => r.json())
-    .then(data => {
-      if (overlay) overlay.style.display = 'none';
-      if (data && (data.fileName || data.filename)) {
-        window.appState.activeVideoName = data.fileName || data.filename;
-        localStorage.setItem('genz_active_video_name', window.appState.activeVideoName);
-      }
-      showToast('វីដេអូបាន Upload ចូលប្រព័ន្ធ Tool ពេញលេញ!');
 
-      // If table is empty, start real extraction
-      if (document.querySelectorAll('.table-row').length === 0) {
-        showToast('កំពុងចាប់ផ្តើម Faster-Whisper ទាញយកទិន្នន័យរៀលពីវីដេអូ...');
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      const p = Math.round((e.loaded / e.total) * 90);
+      setUploadProgress(p);
+    }
+  };
+
+  xhr.onload = () => {
+    setUploadProgress(100);
+    setTimeout(() => {
+      if (overlay) overlay.style.display = 'none';
+
+      if (player) {
+        player.src = localUrl;
+        player.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'none';
+        if (closeBtn) closeBtn.style.display = 'inline-flex';
+
+        player.classList.add('video-aperture-reveal');
+        setTimeout(() => player.classList.remove('video-aperture-reveal'), 600);
+
+        player.onloadedmetadata = () => {
+          window.appState.duration = player.duration;
+          const totalLbl = document.getElementById('lblTotalTime');
+          if (totalLbl) totalLbl.textContent = formatSecToTc(player.duration);
+          if (monTag && player.videoWidth) {
+            monTag.textContent = `MONITOR 1 · ${player.videoWidth}x${player.videoHeight} FHD 60FPS`;
+          }
+          syncTimelineClips();
+          renderScrubCueMarkers();
+        };
+      }
+
+      showToast('វីដេអូបាន Upload ចូលប្រព័ន្ធ Tool ពេញលេញ ១០០%!');
+
+      // If table is empty and Google Free / Whisper selected, auto transcribe
+      if (document.querySelectorAll('.table-row').length === 0 && window.appState.selectedEngine === 'google') {
+        showToast('Google Free + Whisper: កំពុងស្ដាប់សំឡេងដើម & បកប្រែដោយស្វ័យប្រវត្តិ...');
         executeTranslateWorkflow();
       }
-    })
-    .catch(err => {
+    }, 400);
+  };
+
+  xhr.onerror = () => {
+    setUploadProgress(100);
+    setTimeout(() => {
       if (overlay) overlay.style.display = 'none';
+      if (player) {
+        player.src = localUrl;
+        player.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'none';
+        if (closeBtn) closeBtn.style.display = 'inline-flex';
+      }
       showToast('បានផ្ទុកវីដេអូក្នុង Studio: ' + file.name);
-    });
+    }, 300);
+  };
+
+  xhr.open('POST', '/api/upload-video');
+  xhr.send(fd);
 }
 
 function handleVideoFileSelected(e) {
