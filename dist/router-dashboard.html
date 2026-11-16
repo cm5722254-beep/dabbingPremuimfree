@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌐 Router Dashboard — Dabbing Pro Translation Gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Khmer:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* ========== Design System ========== */
+    :root {
+      --bg: #0a0b14;
+      --panel: #161931;
+      --soft: #1e2240;
+      --line: #272b4d;
+      --text: #eceefa;
+      --muted: #8d93b5;
+      
+      --primary: #6c5ce7;
+      --primary-hover: #5d4cd6;
+      --primary-light: rgba(108, 92, 231, 0.15);
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #3b82f6;
+      
+      --radius: 14px;
+      --shadow: 0 2px 8px rgba(0,0,0,0.4);
+      --transition: all 0.2s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', 'Noto Sans Khmer', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== Header ========== */
+    .header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--warning));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+    }
+
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-title h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header-title p {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--soft);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover {
+      background: var(--line);
+      border-color: var(--primary);
+    }
+
+    /* ========== Main Container ========== */
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* ========== Stats Grid ========== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-sublabel {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stat-success { color: var(--success); }
+    .stat-warning { color: var(--warning); }
+    .stat-error { color: var(--error); }
+    .stat-info { color: var(--info); }
+
+    /* ========== Main Layout ========== */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 24px;
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ========== Routing Core Visual ========== */
+    .routing-core {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      min-height: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .routing-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .routing-canvas {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Central Router Node */
+    .router-node {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      border: 4px solid var(--line);
+      box-shadow: 0 0 40px rgba(108, 92, 231, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+      animation: pulse-router 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-router {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(108, 92, 231, 0.6); }
+      50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(108, 92, 231, 0.8); }
+    }
+
+    .router-node-icon {
+      font-size: 42px;
+      margin-bottom: 8px;
+    }
+
+    .router-node-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      text-align: center;
+    }
+
+    /* Account Nodes */
+    .account-nodes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .account-node {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: 3px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .account-node:hover {
+      transform: scale(1.1);
+      border-color: var(--primary);
+      z-index: 20;
+    }
+
+    .account-node.active {
+      background: var(--primary-light);
+      border-color: var(--success);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .account-node.exhausted {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: var(--error);
+      opacity: 0.5;
+    }
+
+    .account-email {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .account-quota {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--success);
+    }
+
+    .account-node.exhausted .account-quota {
+      color: var(--error);
+    }
+
+    /* Request Flow Animation */
+    .request-flow {
+      position: absolute;
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+      animation: flow 2s ease-in-out infinite;
+    }
+
+    @keyframes flow {
+      0% { opacity: 0; transform: translateY(-20px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+
+    /* ========== Right Sidebar ========== */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Strategy Selector */
+    .strategy-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .strategy-option {
+      padding: 12px;
+      background: var(--soft);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .strategy-option:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .strategy-option.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Activity Log */
+    .activity-log {
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    .log-entry {
+      padding: 8px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      background: var(--soft);
+      border-left: 3px solid var(--info);
+    }
+
+    .log-entry.success { border-left-color: var(--success); }
+    .log-entry.error { border-left-color: var(--error); }
+    .log-entry.warning { border-left-color: var(--warning); }
+
+    .log-time {
+      color: var(--muted);
+      margin-right: 8px;
+    }
+
+    /* Account Management */
+    .account-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .account-item {
+      padding: 14px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+
+    .account-item:hover {
+      border-color: var(--primary);
+    }
+
+    .account-info {
+      flex: 1;
+    }
+
+    .account-email-text {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .account-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--line);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .account-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--primary));
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
+    .account-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .icon-btn:hover {
+      background: var(--soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    /* Privacy Toggle */
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      width: 48px;
+      height: 26px;
+      background: var(--line);
+      border-radius: 99px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .toggle.active .toggle-switch {
+      background: var(--primary);
+    }
+
+    .toggle.active .toggle-switch::after {
+      transform: translateX(22px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--line);
+      border-radius: 99px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    /* Loading */
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--line);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-box">🌐</div>
+      <div class="header-title">
+        <h1>Router Dashboard</h1>
+        <p>ប្រព័ន្ធបកប្រែដោយស្វ័យប្រវត្តិជាមួយ 9Router</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="testPool()">
+        🔍 ពិនិត្យ Pool
+      </button>
+      <button class="btn btn-primary" onclick="openAddAccountModal()">
+        ➕ បន្ថែម Account
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+    
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">សរុប Accounts</div>
+        <div class="stat-value stat-info" id="statTotal">0</div>
+        <div class="stat-sublabel">គណនីសរុប</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Accounts សកម្ម</div>
+        <div class="stat-value stat-success" id="statActive">0</div>
+        <div class="stat-sublabel">មាន quota នៅសល់</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">ទំហំ Quota</div>
+        <div class="stat-value stat-warning" id="statQuota">0%</div>
+        <div class="stat-sublabel">ភាគរយនៅសល់</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">អត្រាជោគជ័យ</div>
+        <div class="stat-value stat-success" id="statSuccess">0%</div>
+        <div class="stat-sublabel">ការស្នើរសុំទទួលបានជោគជ័យ</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+      
+      <!-- Routing Core Visual -->
+      <div class="routing-core">
+        <div class="routing-title">
+          <span>🎯</span>
+          <span>Routing Core</span>
+        </div>
+        
+        <div class="routing-canvas" id="routingCanvas">
+          <!-- Central Router Node -->
+          <div class="router-node">
+            <div class="router-node-icon">🌐</div>
+            <div class="router-node-label">9Router<br>Gateway</div>
+          </div>
+          
+          <!-- Account Nodes (dynamically generated) -->
+          <div class="account-nodes" id="accountNodes"></div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="sidebar">
+        
+        <!-- Routing Strategy -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>⚡</span>
+            <span>យុទ្ធសាស្ត្រ Routing</span>
+          </div>
+          <div class="strategy-selector">
+            <div class="strategy-option active" data-strategy="adaptive-smart">
+              🧠 Adaptive Smart (ខ្ពស់បំផុត Quota)
+            </div>
+            <div class="strategy-option" data-strategy="priority-failover">
+              🎯 Priority Failover
+            </div>
+            <div class="strategy-option" data-strategy="round-robin">
+              🔄 Round-Robin
+            </div>
+            <div class="strategy-option" data-strategy="random">
+              🎲 Random
+            </div>
+            <div class="strategy-option" data-strategy="least-used">
+              📊 Least-Used
+            </div>
+            <div class="strategy-option" data-strategy="sticky-session">
+              📌 Sticky Session
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>🔒</span>
+            <span>ការកំណត់ Privacy</span>
+          </div>
+          <div class="toggle active" id="togglePrivacy" onclick="togglePrivacy()">
+            <div class="toggle-switch"></div>
+            <span>លាក់ Email (បង្ហាញត្រឹម 2 តួអក្សរ)</span>
+          </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>📝</span>
+            <span>សកម្មភាព Log</span>
+          </div>
+          <div class="activity-log" id="activityLog">
+            <div class="log-entry">
+              <span class="log-time">Loading...</span>
+              Waiting for activity...
+            </div>
+          </div>
+        </div>
+
+        <!-- Accounts List -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>👥</span>
+            <span>Accounts (<span id="accountCount">0</span>)</span>
+          </div>
+          <div class="account-list" id="accountList">
+            <p style="text-align: center; color: var(--muted); padding: 20px;">
+              មិនទាន់មាន accounts។ សូមចុច "បន្ថែម Account" ដើម្បីបង្កើត។
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Account Modal -->
+  <div class="modal" id="addAccountModal">
+    <div class="modal-content">
+      <div class="modal-header">បន្ថែម Gmail Account</div>
+      <div class="form-group">
+        <label class="form-label">អ៊ីម៉ែល Email</label>
+        <input type="email" class="form-input" id="newAccountEmail" placeholder="example@gmail.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Quota សរុប (%)</label>
+        <input type="number" class="form-input" id="newAccountQuota" value="100" min="1" max="100">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeAddAccountModal()">បោះបង់</button>
+        <button class="btn btn-primary" onclick="addAccount()">បន្ថែម</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3001/api/router';
+    let currentConfig = null;
+    let privacyMask = true;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDashboard();
+      setupStrategySelector();
+      setInterval(loadDashboard, 5000); // Refresh every 5s
+      setInterval(loadLogs, 3000); // Load logs every 3s
+    });
+
+    // Load Dashboard Data
+    async function loadDashboard() {
+      try {
+        const response = await fetch(`${API_BASE}/pool`);
+        const data = await response.json();
+        
+        if (data.success) {
+          updateStats(data.stats);
+          updateAccounts(data.accounts);
+          updateVisualRouting(data.accounts);
+        }
+      } catch (error) {
+        console.error('Failed to load dashboard:', error);
+      }
+    }
+
+    // Update Stats Cards
+    function updateStats(stats) {
+      document.getElementById('statTotal').textContent = stats.totalAccounts;
+      document.getElementById('statActive').textContent = stats.activeAccounts;
+      document.getElementById('statQuota').textContent = stats.quotaPercentage.toFixed(1) + '%';
+      document.getElementById('statSuccess').textContent = stats.successRate.toFixed(1) + '%';
+    }
+
+    // Update Account Nodes Visual
+    function updateVisualRouting(accounts) {
+      const container = document.getElementById('accountNodes');
+      const canvas = document.getElementById('routingCanvas');
+      const centerX = canvas.offsetWidth / 2;
+      const centerY = canvas.offsetHeight / 2;
+      const radius = 180;
+
+      container.innerHTML = '';
+
+      accounts.forEach((account, index) => {
+        const angle = (index / accounts.length) * 2 * Math.PI - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle) - 40;
+        const y = centerY + radius * Math.sin(angle) - 40;
+
+        const node = document.createElement('div');
+        node.className = `account-node ${account.enabled && account.quotaRemaining > 0 ? 'active' : 'exhausted'}`;
+        node.style.left = x + 'px';
+        node.style.top = y + 'px';
+        node.innerHTML = `
+          <div class="account-email">${account.email}</div>
+          <div class="account-quota">${account.quotaRemaining}%</div>
+        `;
+        node.onclick = () => selectAccount(account.id);
+        container.appendChild(node);
+      });
+    }
+
+    // Update Accounts List
+    function updateAccounts(accounts) {
+      const container = document.getElementById('accountList');
+      document.getElementById('accountCount').textContent = accounts.length;
+
+      if (accounts.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--muted); padding: 20px;">មិនទាន់មាន accounts។ សូមចុច "បន្ថែម Account" ដើម្បីបង្កើត។</p>';
+        return;
+      }
+
+      container.innerHTML = accounts.map(account => `
+        <div class="account-item">
+          <div class="account-info">
+            <div class="account-email-text">${account.email}</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">
+              Quota: ${account.quotaRemaining}% | Requests: ${account.totalRequests}
+            </div>
+            <div class="account-progress">
+              <div class="account-progress-fill" style="width: ${account.quotaRemaining}%"></div>
+            </div>
+          </div>
+          <div class="account-actions">
+            <button class="icon-btn" onclick="toggleAccountEnabled('${account.id}', ${!account.enabled})" title="${account.enabled ? 'បិទ' : 'បើក'}">
+              ${account.enabled ? '✅' : '⏸️'}
+            </button>
+            <button class="icon-btn" onclick="resetAccount('${account.id}')" title="Reset Quota">
+              🔄
+            </button>
+            <button class="icon-btn" onclick="removeAccount('${account.id}')" title="លុប">
+              🗑️
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Load Activity Logs
+    async function loadLogs() {
+      try {
+        const response = await fetch(`${API_BASE}/logs?lines=10`);
+        const data = await response.json();
+        
+        if (data.success && data.logs.length > 0) {
+          const container = document.getElementById('activityLog');
+          container.innerHTML = data.logs.reverse().map(log => {
+            let type = 'log-entry';
+            if (log.includes('[ERROR]')) type += ' error';
+            else if (log.includes('[WARN]')) type += ' warning';
+            else if (log.includes('[INFO]')) type += ' success';
+            
+            const parts = log.match(/\[(.*?)\]\s*\[(.*?)\]\s*(.*)/);
+            if (parts) {
+              return `
+                <div class="${type}">
+                  <span class="log-time">${new Date(parts[1]).toLocaleTimeString()}</span>
+                  <span>[${parts[2]}]</span>
+                  ${parts[3]}
+                </div>
+              `;
+            }
+            return `<div class="${type}">${log}</div>`;
+          }).join('');
+        }
+      } catch (error) {
+        console.error('Failed to load logs:', error);
+      }
+    }
+
+    // Strategy Selector
+    function setupStrategySelector() {
+      document.querySelectorAll('.strategy-option').forEach(option => {
+        option.addEventListener('click', async function() {
+          document.querySelectorAll('.strategy-option').forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+          
+          const strategy = this.dataset.strategy;
+          await updateConfig({ routingStrategy: strategy });
+        });
+      });
+    }
+
+    // Update Configuration
+    async function updateConfig(updates) {
+      try {
+        const response = await fetch(`${API_BASE}/config`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        const data = await response.json();
+        if (data.success) {
+          console.log('Config updated:', updates);
+        }
+      } catch (error) {
+        console.error('Failed to update config:', error);
+      }
+    }
+
+    // Add Account
+    function openAddAccountModal() {
+      document.getElementById('addAccountModal').classList.add('show');
+    }
+
+    function closeAddAccountModal() {
+      document.getElementById('addAccountModal').classList.remove('show');
+      document.getElementById('newAccountEmail').value = '';
+      document.getElementById('newAccountQuota').value = '100';
+    }
+
+    async function addAccount() {
+      const email = document.getElementById('newAccountEmail').value.trim();
+      const quota = parseInt(document.getElementById('newAccountQuota').value);
+
+      if (!email || !email.includes('@')) {
+        alert('សូមបញ្ចូល email ត្រឹមត្រូវ!');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, quotaTotal: quota })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('បានបន្ថែម account ជោគជ័យ!');
+          closeAddAccountModal();
+          loadDashboard();
+        } else {
+          alert('មានបញ្ហា: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to add account: ' + error.message);
+      }
+    }
+
+    // Remove Account
+    async function removeAccount(accountId) {
+      if (!confirm('តើអ្នកពិតជាចង់លុប account នេះមែនទេ?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}`, {
+          method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('លុប account ជោគជ័យ!');
+          loadDashboard();
+        }
+      } catch (error) {
+        alert('Failed to remove account: ' + error.message);
+      }
+    }
+
+    // Toggle Account Enabled
+    async function toggleAccountEnabled(accountId, enabled) {
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}/toggle`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          loadDashboard();
+        }
+      } catch (error) {
+        alert('Failed to toggle account: ' + error.message);
+      }
+    }
+
+    // Reset Account Quota
+    async function resetAccount(accountId) {
+      if (!confirm('តើអ្នកចង់ reset quota របស់ account នេះមែនទេ?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}/reset`, {
+          method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('Reset quota ជោគជ័យ!');
+          loadDashboard();
+        }
+      } catch (error) {
+        alert('Failed to reset account: ' + error.message);
+      }
+    }
+
+    // Test Pool
+    async function testPool() {
+      try {
+        const btn = event.target;
+        btn.innerHTML = '<span class="loading"></span> កំពុងពិនិត្យ...';
+        btn.disabled = true;
+
+        const response = await fetch(`${API_BASE}/test`, {
+          method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          const results = data.details.map(d => 
+            `${d.provider}: ${d.status === 'reachable' ? '✅' : '❌'} ${d.message}`
+          ).join('\n');
+          alert(`Pool Test Results:\n\n${results}`);
+        } else {
+          alert('Test failed: ' + data.error);
+        }
+
+        btn.innerHTML = '🔍 ពិនិត្យ Pool';
+        btn.disabled = false;
+      } catch (error) {
+        alert('Test failed: ' + error.message);
+      }
+    }
+
+    // Toggle Privacy
+    function togglePrivacy() {
+      const toggle = document.getElementById('togglePrivacy');
+      privacyMask = !privacyMask;
+      toggle.classList.toggle('active');
+      
+      updateConfig({
+        privacy: { maskEmails: privacyMask }
+      });
+      
+      loadDashboard();
+    }
+
+    // Select Account (for future features)
+    function selectAccount(accountId) {
+      console.log('Selected account:', accountId);
+    }
+  </script>
+
+</body>
+</html>

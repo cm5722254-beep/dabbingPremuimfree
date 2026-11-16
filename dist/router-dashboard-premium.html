@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌐 9Router Gateway — AI Translation Routing System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Khmer:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ========== PREMIUM DESIGN SYSTEM ========== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      /* Dark Theme Colors */
+      --bg-primary: #0a0b14;
+      --bg-secondary: #13152a;
+      --bg-tertiary: #1a1d3a;
+      --surface: #1e2240;
+      --surface-hover: #252952;
+      --border: #2d3255;
+      --border-light: #3a3f6b;
+      
+      /* Text Colors */
+      --text-primary: #e8ecfd;
+      --text-secondary: #a0a6c9;
+      --text-muted: #6b7199;
+      --text-dim: #4a4e73;
+      
+      /* Brand Colors */
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.4);
+      
+      /* Semantic Colors */
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.3);
+      --warning: #f59e0b;
+      --warning-glow: rgba(245, 158, 11, 0.3);
+      --error: #ef4444;
+      --error-glow: rgba(239, 68, 68, 0.3);
+      --info: #3b82f6;
+      --info-glow: rgba(59, 130, 246, 0.3);
+      
+      /* Effects */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --glow: 0 0 20px;
+      
+      /* Radius */
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      /* Transitions */
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Khmer', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ========== SCROLLBAR ========== */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { 
+      background: var(--border); 
+      border-radius: 99px;
+      transition: var(--transition);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+    /* ========== HEADER ========== */
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 0 30px var(--primary-glow);
+      animation: float 3s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes shine {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand-info h1 {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--primary-light), var(--text-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .brand-info p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ========== MAIN CONTAINER ========== */
+    .container {
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    /* ========== STATS GRID ========== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+    .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+    .stat-icon.yellow { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+    .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+
+    .stat-value {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-sublabel {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .stat-trend.up {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .stat-trend.down {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+    }
+
+    /* ========== DASHBOARD LAYOUT ========== */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
+    }
+
+    @media (max-width: 1400px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ========== ROUTING CANVAS ========== */
+    .routing-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      min-height: 600px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .routing-panel::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      opacity: 0.05;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .routing-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .routing-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .routing-title svg {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
+    }
+
+    .routing-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .routing-canvas {
+      position: relative;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Central Router Node */
+    .router-node {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: 4px solid var(--bg-secondary);
+      box-shadow: 0 0 60px var(--primary-glow), 0 0 100px var(--primary-glow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+      animation: pulse-router 3s ease-in-out infinite;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .router-node:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 80px var(--primary-glow), 0 0 120px var(--primary-glow);
+    }
+
+    @keyframes pulse-router {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .router-node::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      opacity: 0.3;
+      animation: ripple 3s ease-in-out infinite;
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 0.3; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    .router-node-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    .router-node-label {
+      font-size: 15px;
+      font-weight: 800;
+      color: white;
+      text-align: center;
+      line-height: 1.3;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .router-node-sublabel {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 4px;
+    }
+
+    /* Account Nodes */
+    .account-nodes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .account-node {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 3px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .account-node:hover {
+      transform: scale(1.15);
+      border-color: var(--primary);
+      z-index: 20;
+      box-shadow: 0 0 30px var(--primary-glow);
+    }
+
+    .account-node.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+      border-color: var(--success);
+      box-shadow: 0 0 25px var(--success-glow);
+      animation: glow-active 2s ease-in-out infinite;
+    }
+
+    @keyframes glow-active {
+      0%, 100% { box-shadow: 0 0 25px var(--success-glow); }
+      50% { box-shadow: 0 0 35px var(--success-glow); }
+    }
+
+    .account-node.exhausted {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: var(--error);
+      opacity: 0.6;
+    }
+
+    .account-email {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .account-quota {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--success);
+    }
+
+    .account-node.exhausted .account-quota {
+      color: var(--error);
+    }
+
+    /* Connection Lines */
+    svg.connections {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .connection-line {
+      stroke: var(--border-light);
+      stroke-width: 2;
+      fill: none;
+      opacity: 0.4;
+      animation: dash 20s linear infinite;
+    }
+
+    .connection-line.active {
+      stroke: var(--primary);
+      opacity: 0.8;
+      animation: dash 3s linear infinite;
+    }
+
+    @keyframes dash {
+      to { stroke-dashoffset: -1000; }
+    }
+
+    /* Request Flow Particles */
+    .flow-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      box-shadow: 0 0 10px var(--primary-glow);
+      animation: flow-move 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes flow-move {
+      0% { opacity: 0; transform: scale(0); }
+      10% { opacity: 1; transform: scale(1); }
+      90% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0); }
+    }
+
+    /* ========== RIGHT SIDEBAR ========== */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .panel:hover {
+      border-color: var(--border-light);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .panel-title svg {
+      width: 20px;
+      height: 20px;
+      color: var(--primary);
+    }
+
+    .panel-badge {
+      padding: 4px 12px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Strategy Selector */
+    .strategy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .strategy-option {
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .strategy-option:hover {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      transform: translateX(4px);
+    }
+
+    .strategy-option.active {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .strategy-option svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* Activity Log */
+    .activity-log {
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .log-entry {
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border-left: 3px solid var(--info);
+      transition: var(--transition);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .log-entry:hover {
+      background: var(--surface-hover);
+      transform: translateX(4px);
+    }
+
+    .log-entry.success { border-left-color: var(--success); }
+    .log-entry.error { border-left-color: var(--error); }
+    .log-entry.warning { border-left-color: var(--warning); }
+
+    .log-time {
+      color: var(--text-muted);
+      margin-right: 8px;
+    }
+
+    /* Account List */
+    .account-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .account-item {
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: var(--transition);
+    }
+
+    .account-item:hover {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      transform: translateX(4px);
+    }
+
+    .account-info {
+      margin-bottom: 12px;
+    }
+
+    .account-email-text {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 16px;
+    }
+
+    .account-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-primary);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .account-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--primary));
+      border-radius: 99px;
+      transition: width 0.5s ease;
+      box-shadow: 0 0 10px var(--success-glow);
+    }
+
+    .account-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .icon-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Toggle Switch */
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: var(--radius);
+      transition: var(--transition);
+    }
+
+    .toggle-group:hover {
+      background: var(--surface);
+    }
+
+    .toggle-switch {
+      width: 48px;
+      height: 26px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 99px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .toggle-group.active .toggle-switch {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .toggle-group.active .toggle-switch::after {
+      transform: translateX(22px);
+      background: white;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: var(--shadow-xl);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-header svg {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .modal-footer .btn {
+      flex: 1;
+    }
+
+    /* Loading State */
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      padding: 16px 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+      z-index: 3000;
+      animation: slideInRight 0.3s ease;
+      transform: translateX(400px);
+      transition: var(--transition);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--error); }
+    .toast.warning { border-left: 4px solid var(--warning); }
+    .toast.info { border-left: 4px solid var(--info); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 20px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .header { padding: 16px 20px; }
+      .routing-canvas { height: 400px; }
+      .router-node { width: 140px; height: 140px; }
+      .account-node { width: 80px; height: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <span>🌐</span>
+      </div>
+      <div class="brand-info">
+        <h1>9Router Gateway</h1>
+        <p>ប្រព័ន្ធបកប្រែដោយស្វ័យប្រវត្តិជាមួយ AI Routing</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="testPool()">
+        <svg data-lucide="activity"></svg>
+        <span>ពិនិត្យ Pool</span>
+      </button>
+      <button class="btn btn-primary" onclick="openAddAccountModal()">
+        <svg data-lucide="user-plus"></svg>
+        <span>បន្ថែម Account</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+    
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-label">សរុប Accounts</div>
+          <div class="stat-icon blue">
+            <svg data-lucide="users"></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sublabel">គណនីសរុបក្នុង Pool</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-label">Accounts សកម្ម</div>
+          <div class="stat-icon green">
+            <svg data-lucide="check-circle"></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="statActive">0</div>
+        <div class="stat-sublabel">មាន Quota នៅសល់</div>
+        <div class="stat-trend up" id="trendActive">
+          <svg data-lucide="trending-up"></svg>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-label">ទំហំ Quota</div>
+          <div class="stat-icon yellow">
+            <svg data-lucide="zap"></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="statQuota">0%</div>
+        <div class="stat-sublabel">ភាគរយនៅសល់ក្នុង Pool</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-label">អត្រាជោគជ័យ</div>
+          <div class="stat-icon green">
+            <svg data-lucide="target"></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="statSuccess">0%</div>
+        <div class="stat-sublabel">ការស្នើរសុំទទួលបានជោគជ័យ</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+      
+      <!-- Routing Canvas -->
+      <div class="routing-panel">
+        <div class="routing-header">
+          <div class="routing-title">
+            <svg data-lucide="globe"></svg>
+            <span>Routing Core</span>
+          </div>
+          <div class="routing-status">
+            <div class="status-dot"></div>
+            <span>ដំណើរការ</span>
+          </div>
+        </div>
+        
+        <div class="routing-canvas" id="routingCanvas">
+          <!-- SVG Connections -->
+          <svg class="connections" id="connectionsSvg"></svg>
+          
+          <!-- Central Router Node -->
+          <div class="router-node" id="routerNode">
+            <div class="router-node-icon">🌐</div>
+            <div class="router-node-label">
+              9Router<br>Gateway
+            </div>
+            <div class="router-node-sublabel">AI Translation Router</div>
+          </div>
+          
+          <!-- Account Nodes (dynamically generated) -->
+          <div class="account-nodes" id="accountNodes"></div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="sidebar">
+        
+        <!-- Routing Strategy -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg data-lucide="zap"></svg>
+              <span>យុទ្ធសាស្ត្រ Routing</span>
+            </div>
+          </div>
+          <div class="strategy-list">
+            <div class="strategy-option active" data-strategy="adaptive-smart">
+              <svg data-lucide="brain"></svg>
+              <span>Adaptive Smart (ខ្ពស់បំផុត Quota)</span>
+            </div>
+            <div class="strategy-option" data-strategy="priority-failover">
+              <svg data-lucide="list-ordered"></svg>
+              <span>Priority Failover</span>
+            </div>
+            <div class="strategy-option" data-strategy="round-robin">
+              <svg data-lucide="refresh-cw"></svg>
+              <span>Round-Robin</span>
+            </div>
+            <div class="strategy-option" data-strategy="random">
+              <svg data-lucide="shuffle"></svg>
+              <span>Random</span>
+            </div>
+            <div class="strategy-option" data-strategy="least-used">
+              <svg data-lucide="bar-chart"></svg>
+              <span>Least-Used</span>
+            </div>
+            <div class="strategy-option" data-strategy="sticky-session">
+              <svg data-lucide="pin"></svg>
+              <span>Sticky Session</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg data-lucide="shield"></svg>
+              <span>ការកំណត់ Privacy</span>
+            </div>
+          </div>
+          <div class="toggle-group active" id="togglePrivacy" onclick="togglePrivacy()">
+            <div class="toggle-switch"></div>
+            <div class="toggle-label">លាក់ Email (បង្ហាញត្រឹម 2 តួអក្សរ)</div>
+          </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg data-lucide="activity"></svg>
+              <span>សកម្មភាព Log</span>
+            </div>
+            <div class="panel-badge" id="logCount">0</div>
+          </div>
+          <div class="activity-log" id="activityLog">
+            <div class="log-entry">
+              <span class="log-time">...</span>
+              រង់ចាំសកម្មភាព...
+            </div>
+          </div>
+        </div>
+
+        <!-- Accounts List -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg data-lucide="users"></svg>
+              <span>Accounts</span>
+            </div>
+            <div class="panel-badge" id="accountCount">0</div>
+          </div>
+          <div class="account-list" id="accountList">
+            <p style="text-align: center; color: var(--text-muted); padding: 30px 20px; line-height: 1.8;">
+              <svg data-lucide="inbox" style="width: 48px; height: 48px; margin: 0 auto 16px; display: block; opacity: 0.3;"></svg>
+              មិនទាន់មាន accounts។<br>
+              សូមចុច <strong>"បន្ថែម Account"</strong> ដើម្បីបង្កើត។
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Account Modal -->
+  <div class="modal" id="addAccountModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <svg data-lucide="user-plus"></svg>
+        <span>បន្ថែម Gmail Account</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">អ៊ីម៉ែល Email</label>
+        <input type="email" class="form-input" id="newAccountEmail" placeholder="example@gmail.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Quota សរុប (%)</label>
+        <input type="number" class="form-input" id="newAccountQuota" value="100" min="1" max="100">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeAddAccountModal()">
+          <svg data-lucide="x"></svg>
+          <span>បោះបង់</span>
+        </button>
+        <button class="btn btn-primary" onclick="addAccount()">
+          <svg data-lucide="check"></svg>
+          <span>បន្ថែម</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <svg data-lucide="check-circle"></svg>
+    <span id="toastMessage">Success!</span>
+  </div>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    const API_BASE = 'http://localhost:3001/api/router';
+    let currentConfig = null;
+    let privacyMask = true;
+    let updateInterval = null;
+    let logInterval = null;
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard();
+      setupEventListeners();
+    });
+
+    function initDashboard() {
+      loadDashboard();
+      updateInterval = setInterval(loadDashboard, 5000); // Every 5s
+      logInterval = setInterval(loadLogs, 3000); // Every 3s
+      createFlowParticles();
+    }
+
+    function setupEventListeners() {
+      // Strategy selector
+      document.querySelectorAll('.strategy-option').forEach(option => {
+        option.addEventListener('click', async function() {
+          document.querySelectorAll('.strategy-option').forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+          const strategy = this.dataset.strategy;
+          await updateConfig({ routingStrategy: strategy });
+          showToast('Strategy updated: ' + strategy, 'success');
+        });
+      });
+
+      // Close modal on outside click
+      document.getElementById('addAccountModal').addEventListener('click', (e) => {
+        if (e.target.id === 'addAccountModal') {
+          closeAddAccountModal();
+        }
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAddAccountModal();
+        }
+      });
+    }
+
+    // Load Dashboard Data
+    async function loadDashboard() {
+      try {
+        const response = await fetch(`${API_BASE}/pool`);
+        const data = await response.json();
+        
+        if (data.success) {
+          updateStats(data.stats);
+          updateAccounts(data.accounts);
+          updateVisualRouting(data.accounts);
+        }
+      } catch (error) {
+        console.error('Failed to load dashboard:', error);
+        showToast('Failed to connect to backend', 'error');
+      }
+    }
+
+    // Update Stats Cards
+    function updateStats(stats) {
+      document.getElementById('statTotal').textContent = stats.totalAccounts || 0;
+      document.getElementById('statActive').textContent = stats.activeAccounts || 0;
+      document.getElementById('statQuota').textContent = (stats.quotaPercentage || 0).toFixed(1) + '%';
+      document.getElementById('statSuccess').textContent = (stats.successRate || 0).toFixed(1) + '%';
+
+      // Update trends
+      const activeTrend = document.getElementById('trendActive');
+      if (stats.totalAccounts > 0) {
+        const percent = ((stats.activeAccounts / stats.totalAccounts) * 100).toFixed(0);
+        activeTrend.querySelector('span').textContent = percent + '%';
+        activeTrend.classList.toggle('up', stats.activeAccounts > 0);
+        activeTrend.classList.toggle('down', stats.activeAccounts === 0);
+      }
+    }
+
+    // Update Visual Routing
+    function updateVisualRouting(accounts) {
+      const container = document.getElementById('accountNodes');
+      const canvas = document.getElementById('routingCanvas');
+      const svgContainer = document.getElementById('connectionsSvg');
+      
+      const centerX = canvas.offsetWidth / 2;
+      const centerY = canvas.offsetHeight / 2;
+      const radius = Math.min(canvas.offsetWidth, canvas.offsetHeight) * 0.35;
+
+      container.innerHTML = '';
+      svgContainer.innerHTML = '';
+
+      if (accounts.length === 0) return;
+
+      accounts.forEach((account, index) => {
+        const angle = (index / accounts.length) * 2 * Math.PI - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle) - 50;
+        const y = centerY + radius * Math.sin(angle) - 50;
+
+        // Create node
+        const node = document.createElement('div');
+        const isActive = account.enabled && account.quotaRemaining > 0;
+        node.className = `account-node ${isActive ? 'active' : 'exhausted'}`;
+        node.style.left = x + 'px';
+        node.style.top = y + 'px';
+        node.style.animationDelay = `${index * 0.1}s`;
+        node.innerHTML = `
+          <div class="account-email">${account.email || 'Unknown'}</div>
+          <div class="account-quota">${account.quotaRemaining || 0}%</div>
+        `;
+        node.onclick = () => selectAccount(account.id);
+        container.appendChild(node);
+
+        // Create connection line
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class', `connection-line ${isActive ? 'active' : ''}`);
+        line.setAttribute('x1', centerX);
+        line.setAttribute('y1', centerY);
+        line.setAttribute('x2', x + 50);
+        line.setAttribute('y2', y + 50);
+        line.setAttribute('stroke-dasharray', '5,5');
+        line.setAttribute('stroke-dashoffset', index * 100);
+        svgContainer.appendChild(line);
+      });
+
+      // Re-initialize Lucide icons
+      lucide.createIcons();
+    }
+
+    // Create Flow Particles
+    function createFlowParticles() {
+      const canvas = document.getElementById('routingCanvas');
+      setInterval(() => {
+        if (document.querySelectorAll('.account-node.active').length > 0) {
+          const particle = document.createElement('div');
+          particle.className = 'flow-particle';
+          particle.style.left = Math.random() * canvas.offsetWidth + 'px';
+          particle.style.top = Math.random() * canvas.offsetHeight + 'px';
+          canvas.appendChild(particle);
+          setTimeout(() => particle.remove(), 3000);
+        }
+      }, 2000);
+    }
+
+    // Update Accounts List
+    function updateAccounts(accounts) {
+      const container = document.getElementById('accountList');
+      document.getElementById('accountCount').textContent = accounts.length;
+
+      if (accounts.length === 0) {
+        container.innerHTML = `
+          <p style="text-align: center; color: var(--text-muted); padding: 30px 20px; line-height: 1.8;">
+            <svg data-lucide="inbox" style="width: 48px; height: 48px; margin: 0 auto 16px; display: block; opacity: 0.3;"></svg>
+            មិនទាន់មាន accounts។<br>
+            សូមចុច <strong>"បន្ថែម Account"</strong> ដើម្បីបង្កើត។
+          </p>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = accounts.map(account => {
+        const isActive = account.enabled && account.quotaRemaining > 0;
+        return `
+          <div class="account-item">
+            <div class="account-info">
+              <div class="account-email-text">
+                ${account.email}
+                ${isActive ? '<span style="color: var(--success);">●</span>' : '<span style="color: var(--error);">●</span>'}
+              </div>
+              <div class="account-meta">
+                <span>Quota: ${account.quotaRemaining}%</span>
+                <span>Requests: ${account.totalRequests || 0}</span>
+              </div>
+            </div>
+            <div class="account-progress-bar">
+              <div class="account-progress-fill" style="width: ${account.quotaRemaining}%"></div>
+            </div>
+            <div class="account-actions">
+              <button class="icon-btn" onclick="toggleAccountEnabled('${account.id}', ${!account.enabled})" title="${account.enabled ? 'បិទ' : 'បើក'}">
+                <svg data-lucide="${account.enabled ? 'pause' : 'play'}"></svg>
+                <span>${account.enabled ? 'បិទ' : 'បើក'}</span>
+              </button>
+              <button class="icon-btn" onclick="resetAccount('${account.id}')" title="Reset">
+                <svg data-lucide="refresh-cw"></svg>
+                <span>Reset</span>
+              </button>
+              <button class="icon-btn" onclick="removeAccount('${account.id}')" title="លុប">
+                <svg data-lucide="trash-2"></svg>
+                <span>លុប</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Load Activity Logs
+    async function loadLogs() {
+      try {
+        const response = await fetch(`${API_BASE}/logs?lines=15`);
+        const data = await response.json();
+        
+        if (data.success && data.logs.length > 0) {
+          const container = document.getElementById('activityLog');
+          document.getElementById('logCount').textContent = data.logs.length;
+          
+          container.innerHTML = data.logs.reverse().map(log => {
+            let type = 'log-entry';
+            if (log.includes('[ERROR]')) type += ' error';
+            else if (log.includes('[WARN]')) type += ' warning';
+            else if (log.includes('[INFO]')) type += ' success';
+            
+            const parts = log.match(/\[(.*?)\]\s*\[(.*?)\]\s*(.*)/);
+            if (parts) {
+              const time = new Date(parts[1]).toLocaleTimeString('km-KH', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+              });
+              return `
+                <div class="${type}">
+                  <span class="log-time">${time}</span>
+                  <span style="color: var(--text-muted);">[${parts[2]}]</span>
+                  ${parts[3]}
+                </div>
+              `;
+            }
+            return `<div class="${type}">${log}</div>`;
+          }).join('');
+        }
+      } catch (error) {
+        console.error('Failed to load logs:', error);
+      }
+    }
+
+    // Update Configuration
+    async function updateConfig(updates) {
+      try {
+        const response = await fetch(`${API_BASE}/config`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        const data = await response.json();
+        if (data.success) {
+          console.log('Config updated:', updates);
+          return true;
+        }
+      } catch (error) {
+        console.error('Failed to update config:', error);
+        showToast('Failed to update configuration', 'error');
+      }
+      return false;
+    }
+
+    // Add Account
+    function openAddAccountModal() {
+      document.getElementById('addAccountModal').classList.add('show');
+      document.getElementById('newAccountEmail').focus();
+    }
+
+    function closeAddAccountModal() {
+      document.getElementById('addAccountModal').classList.remove('show');
+      document.getElementById('newAccountEmail').value = '';
+      document.getElementById('newAccountQuota').value = '100';
+    }
+
+    async function addAccount() {
+      const email = document.getElementById('newAccountEmail').value.trim();
+      const quota = parseInt(document.getElementById('newAccountQuota').value);
+
+      if (!email || !email.includes('@')) {
+        showToast('សូមបញ្ចូល email ត្រឹមត្រូវ!', 'error');
+        return;
+      }
+
+      if (quota < 1 || quota > 100) {
+        showToast('Quota ត្រូវតែរវាង 1-100%', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, quotaTotal: quota })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast('បានបន្ថែម account ជោគជ័យ!', 'success');
+          closeAddAccountModal();
+          loadDashboard();
+        } else {
+          showToast('មានបញ្ហា: ' + data.error, 'error');
+        }
+      } catch (error) {
+        showToast('Failed to add account: ' + error.message, 'error');
+      }
+    }
+
+    // Remove Account
+    async function removeAccount(accountId) {
+      if (!confirm('តើអ្នកពិតជាចង់លុប account នេះមែនទេ?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}`, {
+          method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast('លុប account ជោគជ័យ!', 'success');
+          loadDashboard();
+        } else {
+          showToast('Failed: ' + data.error, 'error');
+        }
+      } catch (error) {
+        showToast('Failed to remove account: ' + error.message, 'error');
+      }
+    }
+
+    // Toggle Account Enabled
+    async function toggleAccountEnabled(accountId, enabled) {
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}/toggle`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast(enabled ? 'Account enabled' : 'Account disabled', 'success');
+          loadDashboard();
+        }
+      } catch (error) {
+        showToast('Failed to toggle account', 'error');
+      }
+    }
+
+    // Reset Account Quota
+    async function resetAccount(accountId) {
+      if (!confirm('តើអ្នកចង់ reset quota របស់ account នេះមែនទេ?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/accounts/${accountId}/reset`, {
+          method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast('Reset quota ជោគជ័យ!', 'success');
+          loadDashboard();
+        }
+      } catch (error) {
+        showToast('Failed to reset account', 'error');
+      }
+    }
+
+    // Test Pool
+    async function testPool() {
+      const btn = event.target.closest('.btn');
+      const originalHTML = btn.innerHTML;
+      
+      btn.innerHTML = '<div class="loading-spinner"></div> <span>កំពុងពិនិត្យ...</span>';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE}/test`, {
+          method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          const results = data.details.map(d => 
+            `${d.provider}: ${d.status === 'reachable' ? '✅' : '❌'} ${d.message}`
+          ).join('\n');
+          alert(`Pool Test Results:\n\n${results}\n\nReachable: ${data.reachable}/${data.tested}`);
+          showToast('Pool test completed', 'success');
+        } else {
+          showToast('Test failed: ' + data.error, 'error');
+        }
+      } catch (error) {
+        showToast('Test failed: ' + error.message, 'error');
+      } finally {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        lucide.createIcons();
+      }
+    }
+
+    // Toggle Privacy
+    function togglePrivacy() {
+      const toggle = document.getElementById('togglePrivacy');
+      privacyMask = !privacyMask;
+      toggle.classList.toggle('active');
+      
+      updateConfig({
+        privacy: { maskEmails: privacyMask }
+      });
+      
+      showToast('Privacy setting updated', 'info');
+      loadDashboard();
+    }
+
+    // Select Account
+    function selectAccount(accountId) {
+      console.log('Selected account:', accountId);
+      showToast('Account selected: ' + accountId, 'info');
+    }
+
+    // Show Toast Notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const messageEl = document.getElementById('toastMessage');
+      
+      toast.className = `toast ${type}`;
+      messageEl.textContent = message;
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+
+      lucide.createIcons();
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (updateInterval) clearInterval(updateInterval);
+      if (logInterval) clearInterval(logInterval);
+    });
+  </script>
+
+</body>
+</html>
