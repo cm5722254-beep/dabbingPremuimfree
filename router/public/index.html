@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GodMode Pool PRO — Local AI Request Router & Account Pool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #090c13;
+      color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      height: 62px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #0d121c;
+      z-index: 50;
+      position: relative;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-text {
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge.green {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge.amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .badge .dot.pulse {
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-group {
+      display: flex;
+      background: #141a27;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 3px;
+    }
+    .btn-toggle {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-toggle.active {
+      background: #f97316;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-action {
+      background: #141a27;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: #1e2638;
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fff;
+    }
+
+    .btn-primary {
+      background: #f97316;
+      border: none;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #ea580c;
+    }
+
+    /* MAIN STAGE */
+    .stage {
+      position: relative;
+      height: calc(100vh - 62px - 56px);
+      width: 100vw;
+      background: radial-gradient(circle at 50% 50%, #151a27 0%, #0c101a 50%, #060910 100%);
+      overflow: hidden;
+    }
+    #orbitCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* CORE NODE */
+    .core-node {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f97316 0%, #ea580c 45%, #9a3412 85%, #431407 100%);
+      box-shadow: 0 0 65px rgba(249, 115, 22, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .core-node:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+      box-shadow: 0 0 85px rgba(249, 115, 22, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.6);
+    }
+    .core-icon {
+      font-size: 26px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+    .core-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+    .core-subtitle {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.2px;
+    }
+
+    /* ACCOUNT NODES CONTAINER */
+    .node-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .account-card {
+      position: absolute;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+      background: #0f1420;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 5px 12px 5px 9px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .account-card:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+      z-index: 30;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .account-card.ready {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: #0c1819;
+    }
+    .account-card.ready .status-dot {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .account-card.working {
+      border-color: #38bdf8;
+      background: #0b1e33;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.4);
+    }
+    .account-card.working .status-dot {
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+
+    .account-card.rate-limited {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: #1e1910;
+    }
+    .account-card.rate-limited .status-dot {
+      background: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+    }
+
+    .account-card.quarantined {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: #1b1114;
+    }
+    .account-card.quarantined .status-dot {
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .node-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .node-email {
+      font-size: 11px;
+      font-weight: 700;
+      color: #f1f5f9;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .status-text {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .tag-channel {
+      font-size: 8px;
+      font-weight: 800;
+      color: #64748b;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 4px;
+      border-radius: 4px;
+      margin-left: 2px;
+    }
+    .tag-channel.google {
+      background: rgba(66, 133, 244, 0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.4);
+    }
+    .tag-flight {
+      font-size: 9px;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
+    .node-counter {
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      margin-left: 2px;
+    }
+
+    /* TICKER STATUS BAR */
+    .ticker-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 24px;
+      background: rgba(13, 18, 28, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
+      color: #94a3b8;
+      z-index: 30;
+      max-width: 540px;
+    }
+    .ticker-pill {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      font-weight: 700;
+      font-size: 10.5px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* FOOTER METRICS */
+    .footer-bar {
+      height: 56px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #090c13;
+      z-index: 50;
+    }
+    .metrics-stats {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12.5px;
+      color: #94a3b8;
+    }
+    .metric-item b {
+      color: #f1f5f9;
+      font-weight: 800;
+    }
+    .metric-item.failed b {
+      color: #ef4444;
+    }
+
+    .metrics-bar-track {
+      width: 140px;
+      height: 6px;
+      background: #1e2638;
+      border-radius: 3px;
+      display: flex;
+      overflow: hidden;
+    }
+    .bar-segment {
+      height: 100%;
+      transition: width 0.3s;
+    }
+    .bar-green { background: #10b981; }
+    .bar-amber { background: #f59e0b; }
+    .bar-red { background: #ef4444; }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-card {
+      background: #0d121c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      width: 520px;
+      max-width: 94vw;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    .form-input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .form-input:focus { border-color: #f97316; }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #1f2937;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+    .google-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo-text">GodMode Pool PRO</div>
+      <div class="badge green">
+        <span class="dot pulse"></span>
+        <span>127.0.0.1:20128</span>
+      </div>
+      <div class="badge amber" id="topWorkingBadge">
+        <span class="dot"></span>
+        <span id="lblWorkingCount">Working · 0</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="btn-group">
+        <button class="btn-toggle active" id="btnStratRoundRobin" onclick="setStrategy('round-robin')">Round robin</button>
+        <button class="btn-toggle" id="btnStratLeastUsed" onclick="setStrategy('least-used')">Least used</button>
+        <button class="btn-toggle" id="btnStratRandom" onclick="setStrategy('random')">Random</button>
+      </div>
+
+      <button class="btn-action" onclick="sendTestRequest()">
+        <span>⚡</span> Send a test
+      </button>
+      <button class="btn-action" onclick="verifyAllAccounts()">
+        <span>🔄</span> Verify all
+      </button>
+      <button class="btn-danger" onclick="clearDemoAccountsPrompt()" title="Remove demo mock accounts">
+        <span>🗑️</span> Clear Demo Accounts
+      </button>
+      <button class="btn-primary" onclick="openAddModal()">
+        + Add account
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN STAGE -->
+  <main class="stage">
+    <canvas id="orbitCanvas"></canvas>
+
+    <!-- Core Center Node -->
+    <div class="core-node" onclick="sendTestRequest()" title="Click to Send Test Request">
+      <div class="core-icon">☀️</div>
+      <div class="core-title">Core</div>
+      <div class="core-subtitle" id="coreRoutingLabel">Routing 0 requests</div>
+    </div>
+
+    <!-- Radial Account Nodes Container -->
+    <div class="node-container" id="nodesContainer"></div>
+
+    <!-- Live Status Ticker -->
+    <div class="ticker-bar" id="tickerBar">
+      <span class="ticker-pill"><span class="dot"></span> Streaming</span>
+      <span id="tickerSnippetText">ag/gemini-2.0-flash ready for requests.</span>
+    </div>
+  </main>
+
+  <!-- FOOTER METRICS -->
+  <footer class="footer-bar">
+    <div class="metrics-stats">
+      <div class="metric-item"><b id="mReady">0</b> ready</div>
+      <div class="metric-item"><b id="mTotal">0</b> in the pool</div>
+      <div class="metric-item"><b id="mInFlight">0</b> in flight</div>
+      <div class="metric-item"><b id="mServed">0</b> served</div>
+      <div class="metric-item failed"><b id="mFailed">0</b> failed</div>
+    </div>
+
+    <div class="metrics-bar-track">
+      <div class="bar-segment bar-green" id="barGreen" style="width: 50%;"></div>
+      <div class="bar-segment bar-amber" id="barAmber" style="width: 25%;"></div>
+      <div class="bar-segment bar-red" id="barRed" style="width: 25%;"></div>
+    </div>
+  </footer>
+
+  <!-- ADD ACCOUNT MODAL (REAL GOOGLE AUTH INTEGRATED) -->
+  <div class="modal-backdrop" id="modalAdd">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🔑</span> Add Google / Gemini Account
+        </div>
+        <button class="modal-close" onclick="closeAddModal()">✕</button>
+      </div>
+
+      <!-- Quick 1-Click Google Sign-In & Key Generator -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12px;font-weight:700;color:#93c5fd;">១. Sign In ជាមួយ Google (1-Click Google Account):</span>
+        <button class="google-btn" onclick="openGoogleSignInPage()">
+          <svg style="width:18px;height:18px;" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          Sign in with Google (Open Google AI Studio)
+        </button>
+        <span style="font-size:10.5px;color:#94a3b8;">ចុច Sign in រួចចម្លង Key ឥតគិតថ្លៃ (Free Tier 15 RPM) យកមកដាក់ប្រអប់ខាងក្រោម</span>
+      </div>
+
+      <div class="form-group">
+        <label>២. Google Gemini API Key ឬ Token (ពិតប្រាកដ):</label>
+        <input class="form-input" id="inpApiKey" placeholder="AIzaSy..." style="font-family:'JetBrains Mono',monospace;">
+      </div>
+
+      <div class="form-group">
+        <label>Account Email (Optional Label):</label>
+        <input class="form-input" id="inpEmail" placeholder="your.google.account@gmail.com">
+      </div>
+
+      <div class="form-group">
+        <label>Optional Proxy (HTTP / SOCKS5):</label>
+        <input class="form-input" id="inpProxy" placeholder="http://127.0.0.1:7890">
+      </div>
+
+      <div id="addStatusMsg" style="font-size:11.5px;display:none;"></div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px;">
+        <button class="btn-action" onclick="closeAddModal()">Cancel</button>
+        <button class="btn-primary" id="btnSubmitAccount" onclick="submitGoogleAccount()">
+          <span>✓</span> Verify &amp; Connect Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let state = {
+      accounts: [],
+      metrics: {},
+      strategy: 'round-robin'
+    };
+
+    const canvas = document.getElementById('orbitCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('nodesContainer');
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); renderNodes(); });
+    resizeCanvas();
+
+    // Fetch initial accounts
+    async function loadData() {
+      try {
+        const res = await fetch('/api/accounts');
+        const d = await res.json();
+        if (d.success) {
+          state.accounts = d.accounts || [];
+          state.metrics = d.metrics || {};
+          state.strategy = d.strategy || 'round-robin';
+          updateUI();
+        }
+      } catch (e) {
+        console.error('Fetch accounts error:', e);
+      }
+    }
+
+    // Connect SSE Telemetry
+    function connectTelemetry() {
+      const evtSource = new EventSource('/api/telemetry/stream');
+      evtSource.addEventListener('snapshot', (e) => {
+        const d = JSON.parse(e.data);
+        state.accounts = d.accounts || [];
+        state.metrics = d.metrics || {};
+        updateUI();
+      });
+      evtSource.addEventListener('account_update', (e) => {
+        const d = JSON.parse(e.data);
+        const idx = state.accounts.findIndex(a => a.id === d.account.id);
+        if (idx !== -1) state.accounts[idx] = d.account;
+        else state.accounts.push(d.account);
+        state.metrics = d.metrics || state.metrics;
+        updateUI();
+      });
+      evtSource.addEventListener('strategy_change', (e) => {
+        const d = JSON.parse(e.data);
+        state.strategy = d.strategy;
+        state.metrics = d.metrics || state.metrics;
+        updateUI();
+      });
+    }
+
+    function updateUI() {
+      // Update Strategy Buttons
+      document.getElementById('btnStratRoundRobin').classList.toggle('active', state.strategy === 'round-robin');
+      document.getElementById('btnStratLeastUsed').classList.toggle('active', state.strategy === 'least-used');
+      document.getElementById('btnStratRandom').classList.toggle('active', state.strategy === 'random');
+
+      // Update Metrics Footer
+      const m = state.metrics;
+      document.getElementById('mReady').textContent = m.readyCount ?? 0;
+      document.getElementById('mTotal').textContent = m.totalAccounts ?? state.accounts.length;
+      document.getElementById('mInFlight').textContent = m.inFlightRequests ?? 0;
+      document.getElementById('mServed').textContent = m.totalServed ?? 0;
+      document.getElementById('mFailed').textContent = m.totalFailed ?? 0;
+
+      // Update Working Badges
+      const working = state.accounts.filter(a => a.status === 'WORKING').length;
+      document.getElementById('lblWorkingCount').textContent = `Working · ${working}`;
+      document.getElementById('coreRoutingLabel').textContent = `Routing ${m.inFlightRequests ?? working} requests`;
+
+      if (m.lastResponseSnippet) {
+        document.getElementById('tickerSnippetText').textContent = m.lastResponseSnippet;
+      }
+
+      // Progress bar distribution
+      const tot = Math.max(1, (m.totalServed || 0) + (m.totalFailed || 0));
+      const gPct = Math.round(((m.totalServed || 0) / tot) * 75);
+      const aPct = Math.min(25, (m.inFlightRequests || 0) * 8 + 5);
+      const rPct = 100 - gPct - aPct;
+      document.getElementById('barGreen').style.width = Math.max(10, gPct) + '%';
+      document.getElementById('barAmber').style.width = Math.max(5, aPct) + '%';
+      document.getElementById('barRed').style.width = Math.max(5, rPct) + '%';
+
+      renderNodes();
+    }
+
+    // Render Radial Nodes & Connection Lines
+    function renderNodes() {
+      container.innerHTML = '';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const count = state.accounts.length;
+      if (count === 0) return;
+
+      const radiusX = Math.min(centerX - 130, 480);
+      const radiusY = Math.min(centerY - 80, 260);
+
+      // Draw Orbit Path Ellipse
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      state.accounts.forEach((acc, i) => {
+        const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+        const x = centerX + Math.cos(angle) * radiusX;
+        const y = centerY + Math.sin(angle) * radiusY;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+
+        if (acc.status === 'WORKING') {
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = '#38bdf8';
+          ctx.shadowBlur = 12;
+          ctx.setLineDash([]);
+        } else if (acc.status === 'READY') {
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.45)';
+          ctx.lineWidth = 1.2;
+          ctx.shadowBlur = 0;
+          ctx.setLineDash([3, 5]);
+        } else if (acc.status === 'RATE_LIMITED') {
+          ctx.strokeStyle = 'rgba(245, 158, 11, 0.55)';
+          ctx.lineWidth = 1.4;
+          ctx.shadowBlur = 0;
+          ctx.setLineDash([4, 4]);
+        } else {
+          ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
+          ctx.lineWidth = 1.2;
+          ctx.shadowBlur = 0;
+          ctx.setLineDash([2, 5]);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Create Card Element
+        const card = document.createElement('div');
+        const stClass = acc.status.toLowerCase().replace('_', '-');
+        card.className = `account-card ${stClass}`;
+        card.style.left = `${x}px`;
+        card.style.top = `${y}px`;
+        card.onclick = () => testSingleAccount(acc.id);
+
+        let statusLabel = 'Ready';
+        if (acc.status === 'WORKING') statusLabel = `Working · ${acc.activeRequests || 1} request`;
+        else if (acc.status === 'RATE_LIMITED') statusLabel = 'Rate limited';
+        else if (acc.status === 'QUARANTINED') statusLabel = acc.quarantineReason || '[403]: HTTP 403';
+
+        const flightTag = (acc.activeRequests > 0)
+          ? `<span class="tag-flight">▶ ${acc.activeRequests}</span>`
+          : '';
+
+        const isGoogle = acc.channel === 'GOOGLE_AUTH';
+        const channelBadge = isGoogle
+          ? `<span class="tag-channel google">GOOGLE</span>`
+          : `<span class="tag-channel">${acc.channel || 'WEB'}</span>`;
+
+        card.innerHTML = `
+          <span class="status-dot"></span>
+          <div class="node-info">
+            <span class="node-email">${acc.maskedEmail || 'acc***@***'}</span>
+            <span class="status-text">${statusLabel}</span>
+          </div>
+          ${channelBadge}
+          ${flightTag}
+          <span class="node-counter">${acc.totalServed || 0}</span>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    async function setStrategy(s) {
+      state.strategy = s;
+      updateUI();
+      try {
+        await fetch('/api/router/strategy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ strategy: s })
+        });
+      } catch (e) {}
+    }
+
+    async function sendTestRequest() {
+      try {
+        document.getElementById('tickerSnippetText').textContent = 'Dispatching test request through Core Load Balancer...';
+        const res = await fetch('/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'gemini-2.0-flash',
+            messages: [{ role: 'user', content: 'Say "OK"' }]
+          })
+        });
+        const d = await res.json();
+        const snippet = d.choices?.[0]?.message?.content || 'OK';
+        document.getElementById('tickerSnippetText').textContent = `Core responded: "${snippet}"`;
+      } catch (e) {
+        document.getElementById('tickerSnippetText').textContent = 'Test failed: ' + e.message;
+      }
+    }
+
+    async function verifyAllAccounts() {
+      try {
+        document.getElementById('tickerSnippetText').textContent = 'Verifying all accounts across the pool...';
+        const res = await fetch('/api/accounts/verify-all', { method: 'POST' });
+        const d = await res.json();
+        document.getElementById('tickerSnippetText').textContent = `Verification complete: ${d.verified} nodes tested.`;
+      } catch (e) {}
+    }
+
+    async function testSingleAccount(id) {
+      try {
+        await fetch(`/api/accounts/${id}/test`, { method: 'POST' });
+      } catch (e) {}
+    }
+
+    function openGoogleSignInPage() {
+      window.open('https://aistudio.google.com/app/apikey', '_blank', 'width=800,height=600');
+    }
+
+    function openAddModal() {
+      document.getElementById('modalAdd').classList.add('show');
+      const st = document.getElementById('addStatusMsg');
+      if (st) st.style.display = 'none';
+    }
+    function closeAddModal() {
+      document.getElementById('modalAdd').classList.remove('show');
+    }
+
+    async function submitGoogleAccount() {
+      const apiKey = document.getElementById('inpApiKey').value.trim();
+      const email = document.getElementById('inpEmail').value.trim();
+      const proxy = document.getElementById('inpProxy').value.trim();
+      const statusEl = document.getElementById('addStatusMsg');
+      const btn = document.getElementById('btnSubmitAccount');
+
+      if (!apiKey) {
+        alert('សូមបញ្ចូល Google Gemini API Key ឬ Token!');
+        return;
+      }
+
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#38bdf8';
+        statusEl.textContent = '⏳ កំពុងផ្ទៀងផ្ទាត់ជាមួយ Google API (Verifying with Google)...';
+      }
+      if (btn) btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/accounts/google-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ apiKey, email, proxy })
+        });
+        const d = await res.json();
+        if (d.success) {
+          if (statusEl) {
+            statusEl.style.color = '#10b981';
+            statusEl.textContent = '✓ បានផ្ទៀងផ្ទាត់ និងភ្ជាប់ Google Account ជោគជ័យ!';
+          }
+          setTimeout(() => {
+            closeAddModal();
+            document.getElementById('inpApiKey').value = '';
+            document.getElementById('inpEmail').value = '';
+            document.getElementById('inpProxy').value = '';
+            loadData();
+          }, 800);
+        } else {
+          if (statusEl) {
+            statusEl.style.color = '#ef4444';
+            statusEl.textContent = '❌ ' + (d.error || 'Failed to authenticate with Google');
+          }
+        }
+      } catch (e) {
+        if (statusEl) {
+          statusEl.style.color = '#ef4444';
+          statusEl.textContent = '❌ Error: ' + e.message;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function clearDemoAccountsPrompt() {
+      if (!confirm('តើអ្នកពិតជាចង់លុប Account Demo ទាំងអស់ចេញពី Pool មែនទេ? (ទុកតែ Real Accounts ដែលមាន Key)')) return;
+      try {
+        const res = await fetch('/api/accounts/clear-demo', { method: 'POST' });
+        const d = await res.json();
+        if (d.success) {
+          document.getElementById('tickerSnippetText').textContent = `Cleaned! Remaining accounts: ${d.count}`;
+          loadData();
+        }
+      } catch (e) {
+        alert('Failed: ' + e.message);
+      }
+    }
+
+    loadData();
+    connectTelemetry();
+  </script>
+</body>
+</html>
