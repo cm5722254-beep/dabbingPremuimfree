@@ -2826,7 +2826,7 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
         </div>
 
         <div class="engine-chips" title="ជ្រើសរើស Engine បកប្រែ & Whisper Transcribe">
-          <button class="chip-btn" id="chip_pool" onclick="setEngine('pool', this)" title="9Router Quota Pool (Gmail Multi-Account Free 100%)">
+          <button class="chip-btn" id="chip_pool" onclick="setEngine('pool', this)" ondblclick="window.open('http://127.0.0.1:20128', '_blank')" title="9Router Quota Pool (ចុច ២ ដងដើម្បីបើក Dashboard 127.0.0.1:20128)">
             <span class="chip-dot dot-pool"></span>
             <span>Pool</span>
           </button>
@@ -3283,6 +3283,17 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
       <div class="row" style="justify-content:space-between;">
         <span id="lblKeyPoolCount" style="font-size:11px;color:var(--primary);font-weight:700;">ផ្ទុក 19 Keys ក្នុង Pool</span>
         <button class="pill-btn" onclick="testKeyPoolHealth()">តេស្តសុខភាព Key Pool</button>
+      </div>
+
+      <div style="background:linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(124, 58, 237, 0.12)); border:1px solid rgba(0, 113, 227, 0.35); border-radius:10px; padding:12px; margin-top:10px; display:flex; align-items:center; justify-content:space-between;">
+        <div>
+          <b style="font-size:12.5px; color:var(--ink);">GodMode Pool PRO (Orbital Solar Balance)</b>
+          <span style="font-size:11px; color:var(--ink2); display:block;">Dashboard ចែកចាយបន្ទុក Multi-Account តាម Port 127.0.0.1:20128</span>
+        </div>
+        <a href="http://127.0.0.1:20128" target="_blank" class="pill-btn pill-primary" style="text-decoration:none; font-size:11.5px; height:28px;">
+          <svg class="i" style="width:12px;height:12px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>បើក Dashboard 20128</span>
+        </a>
       </div>
     </div>
     <div class="modal-footer">
