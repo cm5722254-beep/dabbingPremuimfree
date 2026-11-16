@@ -1,0 +1,14 @@
+{
+  "name": "Music Focus",
+  "target_lufs": -14.0,
+  "true_peak": -0.5,
+  "dialogue_boost": 1.0,
+  "bgm_volume": 0.40,
+  "ducking_db": -8.0,
+  "ducking_attack_ms": 70,
+  "ducking_release_ms": 250,
+  "warmth_low_shelf_db": 3.0,
+  "presence_high_shelf_db": 1.5,
+  "stereo_width": 1.4
+}
+

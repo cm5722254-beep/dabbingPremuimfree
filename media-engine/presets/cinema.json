@@ -1,0 +1,14 @@
+{
+  "name": "Cinema Master",
+  "target_lufs": -16.0,
+  "true_peak": -1.0,
+  "dialogue_boost": 1.2,
+  "bgm_volume": 0.25,
+  "ducking_db": -12.0,
+  "ducking_attack_ms": 50,
+  "ducking_release_ms": 300,
+  "warmth_low_shelf_db": 2.5,
+  "presence_high_shelf_db": 1.8,
+  "stereo_width": 1.25
+}
+

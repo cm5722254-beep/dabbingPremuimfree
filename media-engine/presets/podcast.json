@@ -1,0 +1,14 @@
+{
+  "name": "Podcast Focus",
+  "target_lufs": -18.0,
+  "true_peak": -1.0,
+  "dialogue_boost": 1.4,
+  "bgm_volume": 0.15,
+  "ducking_db": -16.0,
+  "ducking_attack_ms": 30,
+  "ducking_release_ms": 400,
+  "warmth_low_shelf_db": 1.5,
+  "presence_high_shelf_db": 3.0,
+  "stereo_width": 1.0
+}
+
