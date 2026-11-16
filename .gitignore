@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Local Environment & Logs
+logs/
+*.log
+.env
+.env.local
+*.local.json
+gemini_config.local.json
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Heavy Binaries & Executables (Exceeds GitHub 100MB limit)
+*.exe
+media-engine/bin/
+tools/ffmpeg.exe
+tools/ffprobe.exe
+dist/*.exe
+tools/python/
+tools/models/*.onnx
+
+# AI Models & Large Weight Checkpoints (>100MB)
+tools/whisper_models/
+data/whisper_models/
+*.bin
+*.pth
+
+# Media uploads, renders, test video footage & audio caches
+uploads/*
+!uploads/.gitkeep
+videos/*
+!videos/.gitkeep
+voice_split_out/
+data/audio_cache/*
+data/outputs/*
+data/uploads/*
+
+# Temporary, Backup & Automation Helper Scripts
+tools/make_*.py
+*.bak
+*.tmp
+*.corrupted*
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
