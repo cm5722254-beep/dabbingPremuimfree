@@ -570,12 +570,13 @@ svg.i {
 [data-screen-mode="compact"] .table-head {
   height: 28px !important;
   font-size: 10px !important;
-  grid-template-columns: 24px 28px 56px 56px 1fr 115px 65px 38px !important;
+  letter-spacing: normal !important;
+  grid-template-columns: 24px 28px 56px 56px minmax(180px, 1fr) 130px 75px 38px !important;
 }
 [data-screen-mode="compact"] .table-row {
-  height: 29px !important;
+  height: 32px !important;
   font-size: 11.5px !important;
-  grid-template-columns: 24px 28px 56px 56px 1fr 115px 65px 38px !important;
+  grid-template-columns: 24px 28px 56px 56px minmax(180px, 1fr) 130px 75px 38px !important;
 }
 [data-screen-mode="compact"] .cell-tc {
   font-size: 10px !important;
@@ -617,12 +618,15 @@ svg.i {
   grid-template-columns: clamp(330px, 25vw, 420px) 1fr !important;
   gap: 8px !important;
 }
-[data-screen-mode="standard"] .table-head,
-[data-screen-mode="standard"] .table-row {
-  grid-template-columns: 28px 34px 62px 62px 1fr 140px 75px 44px !important;
+[data-screen-mode="standard"] .table-head {
+  letter-spacing: normal !important;
+  grid-template-columns: 28px 34px 64px 64px minmax(200px, 1fr) 150px 85px 44px !important;
 }
 [data-screen-mode="standard"] .table-row {
+  grid-template-columns: 28px 34px 64px 64px minmax(200px, 1fr) 150px 85px 44px !important;
   height: 35px !important;
+  font-size: 13px !important;
+}
   font-size: 13px !important;
 }
 [data-screen-mode="standard"] .lane-row {
@@ -1614,6 +1618,35 @@ svg.i {
 .voice-emotion-tag {
   font-size: 10px;
   color: var(--ink3);
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  user-select: none;
+  vertical-align: middle;
+}
+.tag-badge-male {
+  background: rgba(14, 165, 233, 0.16);
+  color: #38BDF8;
+  border: 1px solid rgba(14, 165, 233, 0.4);
+}
+.tag-badge-female {
+  background: rgba(236, 72, 153, 0.16);
+  color: #F472B6;
+  border: 1px solid rgba(236, 72, 153, 0.4);
+}
+.tag-badge-think {
+  background: rgba(168, 85, 247, 0.16);
+  color: #C084FC;
+  border: 1px solid rgba(168, 85, 247, 0.4);
 }
 
 .cell-speed {
@@ -4588,18 +4621,36 @@ const INITIAL_FILM_CUES = [
 
 // --- B. Table Row Builder (Strict 8 Columns Matching Header Exactly) ---
 function renderTableRow(item) {
-  const isFemale = item.g === 'female' || (item.gender && item.gender === 'female');
+  let rawText = item.km || item.text || '';
+  let autoTag = '';
+  const tagMatch = rawText.match(/^\[(M|F|M_THINK|F_THINK|NARRATOR|KID|ELDER)\]/);
+  if (tagMatch) {
+    autoTag = tagMatch[0];
+  } else if (item.tag) {
+    autoTag = item.tag;
+  }
+
+  const isFemale = autoTag === '[F]' || autoTag === '[F_THINK]' || item.g === 'female' || (item.gender && item.gender.toLowerCase() === 'female');
+  const isThink = autoTag === '[M_THINK]' || autoTag === '[F_THINK]';
   const genderClass = isFemale ? 'pill-female' : 'pill-male';
   const genderLabel = isFemale ? 'ស្រី' : 'ប្រុស';
-  const emTag = item.em ? `[${item.em}]` : '';
+  const emotionVal = isThink ? 'សំឡេងក្នុងចិត្ត' : (item.em || item.emotion || 'normal');
+  const emTag = `[${emotionVal}]`;
+
+  let badgeHtml = '';
+  if (autoTag) {
+    const badgeClass = isThink ? 'tag-badge-think' : (isFemale ? 'tag-badge-female' : 'tag-badge-male');
+    badgeHtml = `<span class="tag-badge ${badgeClass}">${autoTag}</span>`;
+  }
+  const displayText = rawText.replace(/^\[(M|F|M_THINK|F_THINK|NARRATOR|KID|ELDER)\]\s*/, '');
 
   const div = document.createElement('div');
   div.className = 'table-row';
   div.dataset.id = item.id;
-  div.dataset.speaker = item.spk || 'តួអង្គ';
+  div.dataset.speaker = item.spk || (isFemale ? 'តួស្រី 1' : 'តួប្រុស 1');
   div.dataset.gender = isFemale ? 'female' : 'male';
   div.dataset.voice = item.v || (isFemale ? 'Sreymom · Lead' : 'Piseth · Lead');
-  div.dataset.emotion = item.em || 'normal';
+  div.dataset.emotion = emotionVal;
   if (item.audioUrl) div.dataset.audioUrl = item.audioUrl;
 
   div.innerHTML = `
@@ -4607,10 +4658,10 @@ function renderTableRow(item) {
     <span class="cell-num">${item.id}</span>
     <span class="cell-tc" contenteditable="true">${item.s}</span>
     <span class="cell-tc" contenteditable="true">${item.e}</span>
-    <div class="cell-text" contenteditable="true" spellcheck="false">${item.km}</div>
+    <div class="cell-text" contenteditable="true" spellcheck="false">${badgeHtml}${displayText}</div>
     <div class="cell-voice">
       <span class="voice-gender-pill ${genderClass}">${genderLabel}</span>
-      <b style="color:var(--ink);">${item.spk || 'តួអង្គ'}</b>
+      <b style="color:var(--ink);">${item.spk || (isFemale ? 'តួស្រី 1' : 'តួប្រុស 1')}</b>
       <span class="voice-emotion-tag">${emTag}</span>
       <div class="speaker-soundwave"><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span></div>
     </div>
@@ -5091,14 +5142,51 @@ function seekVideoScrub(e) {
   v.currentTime = pct * dur;
 }
 
-function seekTimelineByClick(e) {
+let isScrubbingTimeline = false;
+
+function scrubTimeline(e) {
   const lanes = document.getElementById('timelineLanes');
   const v = document.getElementById('mainVideoPlayer');
   if (!lanes || !v) return;
   const rect = lanes.getBoundingClientRect();
   const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  const dur = v.duration || window.appState.duration;
+  const dur = v.duration || window.appState.duration || 1;
   v.currentTime = pct * dur;
+  if (typeof syncLivePlayback === 'function') syncLivePlayback();
+}
+
+function seekTimelineByClick(e) {
+  scrubTimeline(e);
+}
+
+// Global Timeline Drag Scrubbing Initializer
+function initTimelineScrubbing() {
+  const lanes = document.getElementById('timelineLanes');
+  if (!lanes || lanes.dataset.scrubBound === 'true') return;
+  lanes.dataset.scrubBound = 'true';
+
+  lanes.addEventListener('mousedown', (e) => {
+    isScrubbingTimeline = true;
+    scrubTimeline(e);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isScrubbingTimeline) {
+      e.preventDefault();
+      scrubTimeline(e);
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isScrubbingTimeline) {
+      isScrubbingTimeline = false;
+    }
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTimelineScrubbing);
+} else {
+  setTimeout(initTimelineScrubbing, 50);
 }
 
 function cycleAspectRatio() {
@@ -6693,37 +6781,41 @@ function switchVoiceCloneTab(tab, btn) {
   document.getElementById('sectionColab').style.display = (tab === 'colab' ? 'flex' : 'none');
 }
 
+const PRESET_VOICE_AUDIO_MAP = {
+  piseth: '/voice-library-files/custom_voice_vid10.mp3',
+  sovann: '/voice-library-files/vp_character_20_male.mp3',
+  rathana: '/voice-library-files/custom_voice_vid14.mp3',
+  chhornai: '/voice-library-files/vp_character_20_female.mp3',
+  sage: '/voice-library-files/custom_voice_vid15.mp3',
+  apov: '/voice-library-files/custom_voice_vid12.mp3',
+  narrator: '/voice-library-files/custom_voice_vid19.mp3'
+};
+
+function getVoiceLibraryAudioPlayer() {
+  let player = document.getElementById('voiceLibraryGlobalAudio');
+  if (!player) {
+    player = document.createElement('audio');
+    player.id = 'voiceLibraryGlobalAudio';
+    player.preload = 'auto';
+    player.style.display = 'none';
+    document.body.appendChild(player);
+  }
+  return player;
+}
+
 function auditionVoice(voiceId, voiceName, pitch, rate) {
   if (window.soundEngine) window.soundEngine.playAction();
   showToast('កំពុងចាក់សំឡេងគំរូ: ' + voiceName);
 
-  // Use Web Speech API or Web Audio Acoustic Synthesis with pitch & rate
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const samplePhrases = {
-      piseth: 'សួស្តី! ខ្ញុំជាតួឯកប្រុសស្វាហាប់ ត្រៀមខ្លួនការពារយុត្តិធម៌។',
-      sovann: 'កោះហៅមេទ័ពទាំងអស់មកជួបជុំគ្នា! រឿងនេះមិនអាចធ្វេសប្រហែសបានទេ។',
-      rathana: 'បងអើយ... សូមប្រយ័ត្នខ្លួនផង ខ្ញុំរង់ចាំបងត្រឡប់មកវិញ។',
-      chhornai: 'ចូលមក! អ្នកណាក៏មិនអាចឆ្លងកាត់ច្រកទ្វារនេះបានជាដាច់ខាត!',
-      sage: 'អ្នកក្លាហានវ័យក្មេង... គម្ពីរក្បាច់គុននេះ ជាជោគវាសនារបស់ឯងហើយ។',
-      narrator: 'កាលពីព្រេងនាយ នៅនគរមួយដ៏សម្បូរសប្បាយ រឿងរ៉ាវអស្ចារ្យបានកើតឡើង...'
-    };
-
-    const phrase = samplePhrases[voiceId] || 'សួស្តី! នេះជាសំឡេងតួអង្គខ្មែរ VoxCPM2 ជំនាន់ថ្មី។';
-    const utter = new SpeechSynthesisUtterance(phrase);
-    utter.pitch = pitch || 1.0;
-    utter.rate = rate || 1.0;
-
-    // find khmer or asian voice if available
-    const voices = window.speechSynthesis.getVoices();
-    const khVoice = voices.find(v => v.lang.includes('km') || v.lang.includes('KH') || v.name.includes('Khmer'));
-    if (khVoice) utter.voice = khVoice;
-
-    window.speechSynthesis.speak(utter);
-  } else {
-    // Web Audio synthesizer tone fallback
-    if (window.soundEngine) window.soundEngine.playSuccess();
-  }
+  const audioUrl = PRESET_VOICE_AUDIO_MAP[voiceId] || '/voice-library-files/custom_voice_vid10.mp3';
+  const player = getVoiceLibraryAudioPlayer();
+  player.pause();
+  player.src = audioUrl;
+  player.playbackRate = rate || 1.0;
+  player.currentTime = 0;
+  player.play().catch(e => {
+    console.warn('[Audition Voice Playback]', e.message);
+  });
 }
 
 function selectVoiceActor(voiceId, voiceName) {
@@ -7184,24 +7276,26 @@ function playRealVoiceAudio(url, name, btn) {
   if (window.soundEngine) window.soundEngine.playAction();
   showToast('កំពុងចាក់សំឡេងពិត: ' + name);
 
-  if (realAudioPlayerInstance) {
-    realAudioPlayerInstance.pause();
-    realAudioPlayerInstance = null;
-  }
+  const player = getVoiceLibraryAudioPlayer();
+  player.pause();
+  player.src = url;
+  player.currentTime = 0;
+  player.playbackRate = 1.0;
 
-  realAudioPlayerInstance = new Audio(url);
   if (btn) {
-    const origText = btn.innerHTML;
-    btn.innerHTML = '<span style="color:#10B981; font-weight:700;">Playing...</span>';
-    realAudioPlayerInstance.onended = () => {
-      btn.innerHTML = origText;
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = '<span style="color:#10B981; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><svg viewBox="0 0 24 24" class="i" style="width:11px;height:11px;fill:#10B981;"><polygon points="5 3 19 12 5 21 5 3"/></svg> Playing...</span>';
+    player.onended = () => {
+      btn.innerHTML = origHTML;
     };
-    realAudioPlayerInstance.onerror = () => {
-      btn.innerHTML = origText;
+    player.onerror = () => {
+      btn.innerHTML = origHTML;
       showToast('មិនអាចចាក់សំឡេងបានទេ: ' + name);
     };
   }
-  realAudioPlayerInstance.play().catch(() => {});
+  player.play().catch(e => {
+    console.warn('[Play Real Voice Audio]', e.message);
+  });
 }
 
 function assignRealVoiceToActor(voiceId, voiceName, audioUrl) {

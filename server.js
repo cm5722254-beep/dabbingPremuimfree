@@ -1240,39 +1240,11 @@ async function translateToKhmer(text, genre = 'ancient_wuxia') {
     return s;
   }
 
-  // 1. Chrome Extension dict endpoint (Ultra-fast)
+  // 1. Google Translate Single API (Primary - Highly Accurate Full Sentence Translation)
   try {
-    const url = `https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl=km&q=${encodeURIComponent(clean)}`;
-    const res = await new Promise((resolve, reject) => {
-      const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } }, (r) => {
-        let data = '';
-        r.on('data', chunk => data += chunk);
-        r.on('end', () => {
-          try {
-            const p = JSON.parse(data);
-            if (Array.isArray(p) && p[0]) {
-              const tr = Array.isArray(p[0]) ? p[0][0] : p[0];
-              if (tr && typeof tr === 'string') return resolve(tr);
-            }
-            resolve(null);
-          } catch (e) { resolve(null); }
-        });
-      });
-      req.on('error', () => resolve(null));
-      req.setTimeout(4500, () => { req.destroy(); resolve(null); });
-    });
-    if (res && res !== clean) {
-      const polished = polishToSpokenFilmKhmer(res, genre);
-      translationCache.set(cacheKey, polished);
-      return polished;
-    }
-  } catch (e) {}
-
-  // 2. Google Translate Single API
-  try {
-    const url2 = `https://translate.google.com/translate_a/single?client=at&dt=t&sl=auto&tl=km&q=${encodeURIComponent(clean)}`;
-    const res2 = await new Promise((resolve) => {
-      const req = https.get(url2, { 
+    const url = `https://translate.google.com/translate_a/single?client=at&dt=t&sl=auto&tl=km&q=${encodeURIComponent(clean)}`;
+    const res = await new Promise((resolve) => {
+      const req = https.get(url, { 
         headers: { 'User-Agent': 'GoogleTranslate/6.28.0.05.419409849 (Linux; U; Android 11; Pixel 5)' } 
       }, (r) => {
         let data = '';
@@ -1291,8 +1263,39 @@ async function translateToKhmer(text, genre = 'ancient_wuxia') {
       req.on('error', () => resolve(null));
       req.setTimeout(4500, () => { req.destroy(); resolve(null); });
     });
-    if (res2) {
-      const polished = polishToSpokenFilmKhmer(res2, genre);
+    if (res) {
+      // Remove any leaked English words/medical dictionary garbage (like hypochondriasis)
+      const sanitized = res.replace(/[a-zA-Z]{3,}/g, '').replace(/\s{2,}/g, ' ').trim();
+      const polished = polishToSpokenFilmKhmer(sanitized || res, genre);
+      translationCache.set(cacheKey, polished);
+      return polished;
+    }
+  } catch (e) {}
+
+  // 2. Fallback Web GTX API
+  try {
+    const url2 = `https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl=km&q=${encodeURIComponent(clean)}`;
+    const res2 = await new Promise((resolve) => {
+      const req = https.get(url2, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } }, (r) => {
+        let data = '';
+        r.on('data', chunk => data += chunk);
+        r.on('end', () => {
+          try {
+            const p = JSON.parse(data);
+            if (Array.isArray(p) && p[0]) {
+              const tr = Array.isArray(p[0]) ? p[0][0] : p[0];
+              if (tr && typeof tr === 'string') return resolve(tr);
+            }
+            resolve(null);
+          } catch (e) { resolve(null); }
+        });
+      });
+      req.on('error', () => resolve(null));
+      req.setTimeout(4500, () => { req.destroy(); resolve(null); });
+    });
+    if (res2 && res2 !== clean) {
+      const sanitized = res2.replace(/[a-zA-Z]{3,}/g, '').replace(/\s{2,}/g, ' ').trim();
+      const polished = polishToSpokenFilmKhmer(sanitized || res2, genre);
       translationCache.set(cacheKey, polished);
       return polished;
     }
@@ -1999,51 +2002,48 @@ async function translateItemsWithGemini(items, apiKey, model, genre = 'ancient_w
       text: it.text || it.originalText || ''
     }));
 
-    const systemPrompt = `You are an Expert Movie & Drama Subtitler, Dubbing Director and Voice Actor into 100% COLLOQUIAL SPOKEN Khmer (ភាសាទូទៅនិយាយចចាមអារ៉ាម).
+    const systemPrompt = `You are an Expert Subtitler & Dubbing Translator (អ្នកបកប្រែខ្សែភាពយន្តនិងរឿងភាគអាជីព) specializing in 100% NATURAL SPOKEN KHMER (ភាសានិយាយភាពយន្តធម្មជាតិ).
 
-Translate dialogue into REAL everyday Khmer that regular people speak - NOT formal/literary Khmer! Follow these 8 STRICT RULES:
+Your mission is to translate each dialogue into standard spoken film Khmer. Strictly follow these 6 RULES:
 
-1. 💬 ភាសាទូទៅមនុស្សនិយាយ 100% (TRUE COLLOQUIAL SPOKEN KHMER):
-   - NEVER EVER use formal/bookish words like: "ខ្ញុំបាទ", "នាងខ្ញុំ", "យើងខ្ញុំ", "លោកអ្នក", "គាត់", "ត្រូវការ"
-   - ALWAYS use casual daily speech: "អញ", "ហែង", "ឯង", "ខ្ញុំ", "គេ", "វា", "ចង់", "ត្រូវ"
-   - Use TONS of natural particles: ហ្មង, វើយ, ណា, ណ៎, អ៎, ចា៎ស, ហ្នឹង, អី, ម៉េចចឹង, អីគេ, អត់ទេ, ហើយ, ទៅ, មក, អេ
+1. ភាសានិយាយធម្មជាតិ (Natural Spoken Language):
+   - ហាមដាច់ខាតការបកប្រែតាមបែបសរសេរស្ងួតៗ (Word-for-word).
+   - ត្រូវប្រើប្រាស់ពាក្យពេចន៍ដែលប្រជាជនខ្មែរនិយមនិយាយប្រចាំថ្ងៃ ដូចជាការបន្ថែមពាក្យបញ្ជាក់ន័យ (ណា, ណ៎, ហ្មង, តើ, អញ្ចឹង, វើយ, ហាស, ចា៎, ចុះ... ទៅតាមបរិបទ).
+   - NEVER use formal textbook phrases like "ខ្ញុំបាទ", "នាងខ្ញុំ", "លោកអ្នក", "ត្រូវការជំនួយ".
 
-   EXAMPLES - WRONG vs RIGHT:
-   ❌ "ខ្ញុំបាទមិនយល់ទេ" → ✅ "អញអត់យល់អីទេ" or "ខ្ញុំអត់ច្បាស់ទេ"
-   ❌ "នាងត្រូវការជំនួយ" → ✅ "គេចង់ឲ្យជួយហ្មង" or "ឯងត្រូវការជំនួយអត់?"
-   ❌ "គាត់ទៅណាហើយ?" → ✅ "វាទៅណាហើយ?" or "គេទៅណាហ្នឹង?"
-   ❌ "សូមអភ័យទោស" → ✅ "សូរីណា" or "អត់អីទេ"
+2. សព្វនាមនិងទំនាក់ទំនងតួអង្គ (Character Pronouns & Dynamics):
+   - ត្រូវកែប្រែពាក្យហៅគ្នាឲ្យត្រូវនឹងចរិត និងទំនាក់ទំនងជាក់ស្តែង (បង/អូន, ឯង/អញ, ខ្ញុំ/លោក, ពួកម៉ាក, អា...) មិនត្រូវបកប្រែត្រង់ៗរឹងស្តូកនោះទេ។
 
-2. 👥 សព្វនាម ភាសាទូទៅពិតប្រាកដ (REAL COLLOQUIAL PRONOUNS):
-   - Casual friends: អញ/ហែង, ឯង/ខ្ញុំ, ម៉ាក/អាម៉ាក
-   - Lovers (casual): បង/អូន, អេបង, ស្នេហ៍
-   - Family: ម៉ែ/កូន, ប៉ា/កូន, បង/ប្អូន, ពូ/មីង/អ៊ំ
-   - Elders respect: ពូ, មីង, លោកតា, យាយ
-   - Enemies/Anger: អា/មឹង (insults), ឯង/អញ (confrontational)
-   - Kids talking: បង/បង, ខ្ញុំ/បង
-   
-3. 😤 អារម្មណ៍ពិតប្រាកដ (Emotion Classification):
-   ["ធម្មតា", "ស្នេហា", "ខឹង", "ភ័យ", "សប្បាយ", "ក្រៀមក្រំ", "ភ្ញាក់ផ្អើល", "ស្រែក", "យំ", "សើច", "កុមារ", "ចាស់", "មនុស្សអាក្រក់", "សំឡេងក្នុងចិត្ត", "អង្វរ", "ធុញ", "ចំអក", "រំភើប", "ឡូយ", "មេធ្មប់", "ព្រះរាជា"]
+3. អារម្មណ៍និងបរិបទ (Emotional Depth):
+   - ត្រូវឆ្លុះបញ្ចាំងពីអារម្មណ៍ពិតរបស់តួអង្គ (ខឹង, សើច, យំ, ផ្អែមល្ហែម, ចំអក, ភ័យ...) ឲ្យអ្នកស្តាប់ ឬអ្នកអានមានអារម្មណ៍ដូចកំពុងទស្សនាខ្សែភាពយន្តពិតៗ។
 
-4. ⚡ និយាយខ្លី រហ័ស មានអារម្មណ៍ (Concise & Emotional):
-   - Keep it SHORT like real speech
-   - Add emotional energy with particles
-   - Match lip-sync timing
+4. ភាពខ្លី ខ្លឹម និងស៊ីសង្វាក់ (Conciseness & Timing):
+   - ឃ្លាប្រយោគត្រូវតែខ្លី ល្មមនឹងការនិយាយចេញមកទាន់ពេលវេលានៃឈុតឆាក (Lip-sync friendly / Subtitle reading speed).
 
-5. 🚫 លុបភាសាបរទេសទាំងអស់ (Remove ALL foreign text)
+5. ការសម្គាល់ប្រភេទសំឡេង (Audio Type / Character Tags):
+   - រាល់បន្ទាត់ subtitle នីមួយៗ ត្រូវដាក់ Tag សម្គាល់ឲ្យច្បាស់នៅដើមឃ្លា៖
+     [M] : សំឡេងតួប្រុស (Male Dialogue)
+     [F] : សំឡេងតួស្រី (Female Dialogue)
+     [M_THINK] : សំឡេងគិតក្នុងចិត្តរបស់តួប្រុស (Male Thought)
+     [F_THINK] : សំឡេងគិតក្នុងចិត្តរបស់តួស្រី (Female Thought)
+     [NARRATOR] : សំឡេងអ្នករៀបរាប់ (Narrator)
+     [KID] : សំឡេងកុមារ (Child Dialogue)
+     [ELDER] : សំឡេងមនុស្សចាស់ (Elder Dialogue)
 
-6. 📝 Return ONLY valid JSON array:
-   [{"idx": 0, "khmer": "អត្ថបទខ្មែរពិតប្រាកដ", "emotion": "អារម្មណ៍"}]
+6. ទម្រង់លទ្ធផល (Strict Output Format):
+   Return ONLY a valid JSON array matching this structure:
+   [
+     {
+       "idx": 0,
+       "tag": "[M]",
+       "khmer": "[M] ឃ្លានិយាយខ្មែរធម្មជាតិ...",
+       "emotion": "ខឹង",
+       "gender": "Male"
+     }
+   ]
 
-7. 🎭 តាមបែបរឿង (Genre-specific style):
+Genre Specific Guidelines (${genreConfig.name}):
 ${genreConfig.promptRule}
-
-8. ✅ FINAL CHECK - Read each line and ask:
-   - Does this sound like a REAL Cambodian person talking? 
-   - Would people say this in daily life?
-   - Is it TOO formal or bookish? → FIX IT!
-
-REMEMBER: Think like you're translating for a REAL movie dub where actors speak NATURALLY, not reading from a textbook!
 
 Dialogue lines to translate:
 ${JSON.stringify(inputLines)}`;
@@ -2066,7 +2066,12 @@ ${JSON.stringify(inputLines)}`;
 
         chunk.forEach((it, idx) => {
           const p = transMap.get(idx);
-          const km = p?.khmer || it.text;
+          let km = p?.khmer || it.text;
+          const tag = p?.tag || (km && km.match(/^\[(M|F|M_THINK|F_THINK|NARRATOR|KID|ELDER)\]/) ? km.match(/^\[(M|F|M_THINK|F_THINK|NARRATOR|KID|ELDER)\]/)[0] : (it.gender === 'Female' ? '[F]' : '[M]'));
+          if (km && !km.startsWith('[')) {
+            km = `${tag} ${km}`;
+          }
+          const inferredGender = (tag === '[F]' || tag === '[F_THINK]') ? 'Female' : (tag === '[KID]' ? (it.gender || 'Female') : 'Male');
           const emo = (p?.emotion && EMOTION_PRESETS[p.emotion]) 
             ? p.emotion 
             : detectEmotionFromContext(km, it.originalText || it.text);
@@ -2074,7 +2079,9 @@ ${JSON.stringify(inputLines)}`;
             ...it,
             text: km,
             originalText: it.originalText || it.text,
-            emotion: emo
+            emotion: emo,
+            gender: p?.gender || inferredGender,
+            role: inferredGender === 'Female' ? 'ស្រី' : 'ប្រុស'
           });
         });
         continue;
@@ -2086,13 +2093,18 @@ ${JSON.stringify(inputLines)}`;
     // Fallback for this chunk if Gemini fails
     for (const it of chunk) {
       const orig = it.text || it.originalText || '';
-      const km = await translateToKhmer(orig);
+      let km = await translateToKhmer(orig, genre);
+      const isFem = it.gender === 'Female' || /female|girl|woman|នារី|ស្រី/i.test(it.speaker || it.role || '');
+      const tag = isFem ? '[F]' : '[M]';
+      if (km && !km.startsWith('[')) km = `${tag} ${km}`;
       const emo = detectEmotionFromContext(km || orig, orig);
       translated.push({
         ...it,
         text: km || orig,
         originalText: it.originalText || orig,
-        emotion: emo
+        emotion: emo,
+        gender: isFem ? 'Female' : 'Male',
+        role: isFem ? 'ស្រី' : 'ប្រុស'
       });
     }
   }
