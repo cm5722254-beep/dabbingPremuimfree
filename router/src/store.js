@@ -15,9 +15,9 @@ class AccountStore {
   constructor() {
     this.accounts = [];
     this.strategy = 'round-robin';
-    this.totalServed = 146;
-    this.totalFailed = 57;
-    this.lastResponseSnippet = 'ag/gemini-2.0-flash answered in 0.6 s ("OK").';
+    this.totalServed = 0;
+    this.totalFailed = 0;
+    this.lastResponseSnippet = 'GodMode Pool PRO Ready';
     this.init();
   }
 

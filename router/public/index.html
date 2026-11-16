@@ -521,13 +521,10 @@
       </div>
 
       <button class="btn-action" onclick="sendTestRequest()">
-        <span>⚡</span> Send a test
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:currentColor;vertical-align:middle;margin-right:4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Send a test
       </button>
       <button class="btn-action" onclick="verifyAllAccounts()">
-        <span>🔄</span> Verify all
-      </button>
-      <button class="btn-danger" onclick="clearDemoAccountsPrompt()" title="Remove demo mock accounts">
-        <span>🗑️</span> Clear Demo Accounts
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:middle;margin-right:4px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Verify all
       </button>
       <button class="btn-primary" onclick="openAddModal()">
         + Add account
@@ -541,7 +538,9 @@
 
     <!-- Core Center Node -->
     <div class="core-node" onclick="sendTestRequest()" title="Click to Send Test Request">
-      <div class="core-icon">☀️</div>
+      <div class="core-icon">
+        <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:none;stroke:#F59E0B;stroke-width:2;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </div>
       <div class="core-title">Core</div>
       <div class="core-subtitle" id="coreRoutingLabel">Routing 0 requests</div>
     </div>
@@ -549,10 +548,14 @@
     <!-- Radial Account Nodes Container -->
     <div class="node-container" id="nodesContainer"></div>
 
+    <div id="emptyAccountsPrompt" style="display:none; position:absolute; bottom:20%; left:50%; transform:translateX(-50%); font-size:12px; color:#94A3B8; background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.1); padding:8px 18px; border-radius:20px; pointer-events:none; z-index:10; white-space:nowrap; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
+      គ្មាន Demo Account ឡើយ · សូមចុច "+ Add account" ដើម្បីភ្ជាប់ Google AI Studio API Key ពិតប្រាកដ
+    </div>
+
     <!-- Live Status Ticker -->
     <div class="ticker-bar" id="tickerBar">
       <span class="ticker-pill"><span class="dot"></span> Streaming</span>
-      <span id="tickerSnippetText">ag/gemini-2.0-flash ready for requests.</span>
+      <span id="tickerSnippetText">GodMode Pool PRO Ready.</span>
     </div>
   </main>
 
@@ -578,9 +581,9 @@
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🔑</span> Add Google / Gemini Account
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#38BDF8;stroke-width:2;vertical-align:middle;margin-right:6px;"><path d="M21 2l-2 2m-1.5 1.5L12 11l4 4 5.5-5.5a2.121 2.121 0 0 0 0-3L20 5l1-1z"/><circle cx="7.5" cy="16.5" r="4.5"/></svg>Add Google / Gemini Account
         </div>
-        <button class="modal-close" onclick="closeAddModal()">✕</button>
+        <button class="modal-close" onclick="closeAddModal()"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
 
       <!-- Quick 1-Click Google Sign-In & Key Generator -->
@@ -618,7 +621,7 @@
       <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px;">
         <button class="btn-action" onclick="closeAddModal()">Cancel</button>
         <button class="btn-primary" id="btnSubmitAccount" onclick="submitGoogleAccount()">
-          <span>✓</span> Verify &amp; Connect Account
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none;vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>Verify &amp; Connect Account
         </button>
       </div>
     </div>
@@ -726,6 +729,8 @@
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const count = state.accounts.length;
+      const emptyHint = document.getElementById('emptyAccountsPrompt');
+      if (emptyHint) emptyHint.style.display = count === 0 ? 'block' : 'none';
       if (count === 0) return;
 
       const radiusX = Math.min(centerX - 130, 480);
@@ -885,7 +890,7 @@
       if (statusEl) {
         statusEl.style.display = 'block';
         statusEl.style.color = '#38bdf8';
-        statusEl.textContent = '⏳ កំពុងផ្ទៀងផ្ទាត់ជាមួយ Google API (Verifying with Google)...';
+        statusEl.textContent = 'កំពុងផ្ទៀងផ្ទាត់ជាមួយ Google API (Verifying with Google)...';
       }
       if (btn) btn.disabled = true;
 
@@ -899,7 +904,7 @@
         if (d.success) {
           if (statusEl) {
             statusEl.style.color = '#10b981';
-            statusEl.textContent = '✓ បានផ្ទៀងផ្ទាត់ និងភ្ជាប់ Google Account ជោគជ័យ!';
+            statusEl.textContent = 'បានផ្ទៀងផ្ទាត់ និងភ្ជាប់ Google Account ជោគជ័យ!';
           }
           setTimeout(() => {
             closeAddModal();
@@ -911,30 +916,16 @@
         } else {
           if (statusEl) {
             statusEl.style.color = '#ef4444';
-            statusEl.textContent = '❌ ' + (d.error || 'Failed to authenticate with Google');
+            statusEl.textContent = (d.error || 'Failed to authenticate with Google');
           }
         }
       } catch (e) {
         if (statusEl) {
           statusEl.style.color = '#ef4444';
-          statusEl.textContent = '❌ Error: ' + e.message;
+          statusEl.textContent = 'Error: ' + e.message;
         }
       } finally {
         if (btn) btn.disabled = false;
-      }
-    }
-
-    async function clearDemoAccountsPrompt() {
-      if (!confirm('តើអ្នកពិតជាចង់លុប Account Demo ទាំងអស់ចេញពី Pool មែនទេ? (ទុកតែ Real Accounts ដែលមាន Key)')) return;
-      try {
-        const res = await fetch('/api/accounts/clear-demo', { method: 'POST' });
-        const d = await res.json();
-        if (d.success) {
-          document.getElementById('tickerSnippetText').textContent = `Cleaned! Remaining accounts: ${d.count}`;
-          loadData();
-        }
-      } catch (e) {
-        alert('Failed: ' + e.message);
       }
     }
 

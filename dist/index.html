@@ -2963,7 +2963,7 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
           <button class="pill-btn" style="height:24px;font-size:11px;padding:0 8px;" onclick="openStudioModal('modalOcr')" title="Scan OCR ពីវីដេអូ">OCR</button>
           <button class="pill-btn" style="height:24px;font-size:11px;padding:0 8px;" onclick="openStudioModal('modalFindReplace')" title="ស្វែងរក & ជំនួសពាក្យ">ស្វែងរក</button>
           <button class="pill-btn" style="height:24px;font-size:11px;padding:0 8px;" onclick="exportSrtFile()" title="ទាញយក SRT">Export SRT</button>
-          <button class="pill-btn" style="height:24px;font-size:11px;padding:0 8px;color:var(--red);" onclick="clearAllDemoCues()" title="លុប Subtitle ទាំងអស់">សម្អាត</button>
+          <button class="pill-btn" style="height:24px;font-size:11px;padding:0 8px;color:var(--red);" onclick="clearAllSubtitles()" title="សម្អាត Subtitle ទាំងអស់">សម្អាត</button>
         </div>
       </div>
 
@@ -3876,7 +3876,7 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
             <b style="font-size:14.5px; color:#F9FAFB;">GodMode Pool PRO (Orbital Solar Balance)</b>
             <span class="pill-status" style="background:rgba(16, 185, 129, 0.2); color:#10B981; border:1px solid rgba(16, 185, 129, 0.4); font-size:10px; height:20px;">
               <span class="chip-dot dot-pool" style="width:6px; height:6px;"></span>
-              <span id="lblGodModeActiveStatus">19 Google Accounts Online</span>
+              <span id="lblGodModeActiveStatus">0 Google Accounts Online</span>
             </span>
           </div>
           <span style="font-size:11px; color:#94A3B8;">Local Multi-Account Quota Router នៅលើ Port 127.0.0.1:20128 (ស្ថិតក្នុង Tool ផ្ទាល់ ១០០%)</span>
@@ -3899,7 +3899,7 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
         <div style="display:flex; align-items:center; gap:6px;">
           <button class="pill-btn pill-primary" onclick="syncGodModeAccounts()" style="height:28px; font-size:11px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
             <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            <span>Sync Google AI Studio (19 Accounts)</span>
+            <span>Sync Google AI Studio</span>
           </button>
           <button class="pill-btn" onclick="refreshGodModeFrame()" style="height:28px; font-size:11px;">
             <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -4571,6 +4571,9 @@ function showToast(msg, dur = 3200) {
 function openStudioModal(id) {
   const m = document.getElementById(id);
   if (m) m.classList.add('show');
+  if (id === 'modalGodModePool' && typeof syncGodModeAccounts === 'function') {
+    syncGodModeAccounts();
+  }
 }
 function closeStudioModal(id) {
   const m = document.getElementById(id);
@@ -4593,8 +4596,8 @@ function toggleTheme() {
 // Global App State
 window.appState = {
   activeVideoUrl: null,
-  activeVideoName: localStorage.getItem('genz_active_video_name') || 'video_1794127956161_aarcb.mp4',
-  duration: 157.8,
+  activeVideoName: localStorage.getItem('genz_active_video_name') || '',
+  duration: 0,
   currentTime: 0,
   isPlaying: false,
   selectedEngine: 'gemini',
@@ -4610,14 +4613,8 @@ window.appState = {
   bgmDucking: true
 };
 
-// Initial High-Quality Film Cues (Pre-populated so table is never empty!)
-const INITIAL_FILM_CUES = [
-  { id: 1, s: "00:00.50", e: "00:03.20", km: "ឆាប់បញ្ឈប់ភ្លាមទៅ កុំធ្វើបាបគាត់ឱ្យសោះ!", orig: "快点停手，不要伤害他！", spk: "តួប្រុស 1", g: "male", em: "angry", v: "Piseth · Lead" },
-  { id: 2, s: "00:03.80", e: "00:06.50", km: "ព្រះនាងម្ចាស់ សូមយាងថយក្រោយ ទីនេះមានគ្រោះថ្នាក់ណាស់!", orig: "公主殿下，请您退后，这里很危险！", spk: "តួប្រុស 2", g: "male", em: "normal", v: "Dara · General" },
-  { id: 3, s: "00:07.10", e: "00:09.80", km: "តើឱ្យខ្ញុំដាច់ចិត្តរត់ចោលអ្នកទាំងអស់គ្នាដោយរបៀបណាទៅ?", orig: "我怎么能丢下你们不管呢？", spk: "តួស្រី 1", g: "female", em: "crying", v: "Sreymom · Lead" },
-  { id: 4, s: "00:10.40", e: "00:13.00", km: "ប្រយ័ត្នទាំងអស់គ្នា! មានខ្មាន់កាំភ្លើងលួចបង្កប់ខ្លួន!", orig: "大家小心，有刺客潜伏在暗处！", spk: "តួប្រុស 1", g: "male", em: "angry", v: "Piseth · Lead" },
-  { id: 5, s: "00:13.60", e: "00:16.20", km: "ខ្សឹបតិចៗទៅ កុំឱ្យពួកគេដឹងខ្លួនឱ្យសោះ។", orig: "嘘... 小声点，别让他们发现了。", spk: "តួស្រី 1", g: "female", em: "whisper", v: "Sreymom · Lead" }
-];
+// 100% Real Subtitles - Zero Demo Data
+const INITIAL_FILM_CUES = [];
 
 // --- B. Table Row Builder (Strict 8 Columns Matching Header Exactly) ---
 function renderTableRow(item) {
@@ -5225,11 +5222,11 @@ function syncTimelineClips() {
   voiceLane.innerHTML = '';
   if (ruler) ruler.innerHTML = '';
 
-  const dur = window.appState.duration || 157.8;
+  const dur = window.appState.duration || 0;
   const rows = document.querySelectorAll('.table-row');
 
   // Render ticks on ruler
-  if (ruler) {
+  if (ruler && dur > 0) {
     for (let s = 0; s <= dur; s += 15) {
       const pct = (s / dur) * 100;
       const tick = document.createElement('span');
@@ -5575,7 +5572,7 @@ function filterSubtitleTable() {
   if (showLbl) showLbl.textContent = `Showing ${visible} of ${rows.length}`;
 }
 
-function clearAllDemoCues() {
+function clearAllSubtitles() {
   const container = document.getElementById('subTableBody');
   if (container) container.innerHTML = '';
   updateCueCounts();
@@ -7355,7 +7352,7 @@ async function syncGodModeAccounts() {
   try {
     const res = await fetch('http://127.0.0.1:20128/api/accounts');
     const data = await res.json();
-    const count = data.accounts ? data.accounts.length : 19;
+    const count = data.accounts ? data.accounts.length : 0;
     
     const lbl = document.getElementById('lblGodModeActiveStatus');
     if (lbl) lbl.textContent = `${count} Google Accounts Online`;
@@ -7364,10 +7361,10 @@ async function syncGodModeAccounts() {
 
     refreshGodModeFrame();
     if (window.soundEngine) window.soundEngine.playSuccess();
-    showToast(`Sync ជោគជ័យ! បានផ្ទុក ${count} Google Accounts ក្នុង Constellation!`);
+    showToast(`Sync ជោគជ័យ! បានផ្ទុក ${count} Google Accounts ក្នុង Constellation`);
   } catch (err) {
     refreshGodModeFrame();
-    showToast('Sync ជោគជ័យ! Constellation បានផ្ទុក Accounts');
+    showToast('ភ្ជាប់ទៅកាន់ GodMode Pool: http://127.0.0.1:20128');
   }
 }
 
