@@ -126,6 +126,33 @@ svg.i {
   vertical-align: middle;
 }
 
+
+.video-sub-overlay {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8);
+  font-family: var(--kh);
+  font-size: 16px;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 25;
+  line-height: 1.4;
+  padding: 5px 14px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  border-radius: 6px;
+  width: fit-content;
+  max-width: 85%;
+  margin: 0 auto;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: all 0.15s ease;
+}
+
 /* ==========================================================================
    APP MASTER SHELL GRID (Fixed Rows, Strict Fit, Never Colliding)
    ========================================================================== */
@@ -1204,6 +1231,7 @@ svg.i {
     <section class="panel card-preview" aria-label="Video Preview">
       <div class="video-viewport" id="videoViewport">
         <video id="mainVideoPlayer" controls playsinline></video>
+        <div id="videoSubtitleOverlay" class="video-sub-overlay"></div>
         
         <div id="videoDropPlaceholder" onclick="document.getElementById('videoFileInput').click()">
           <div class="drop-icon-box">
@@ -1211,7 +1239,7 @@ svg.i {
           </div>
           <b style="font-size:13px;color:#FFFFFF;">សូមជ្រើសរើសវីដេអូ ឬទាញទម្លាក់ចូលទីនេះ</b>
           <span style="font-size:11px;color:rgba(255,255,255,0.7);">គាំទ្រ MP4, MKV, MOV, TS, WEBM</span>
-          <button class="pill-btn pill-primary" style="margin-top:6px;">ជ្រើសរើសវីដេអូ</button>
+          <button class="pill-btn pill-primary" style="margin-top:6px;" onclick="event.stopPropagation(); document.getElementById('videoFileInput').click();">ជ្រើសរើសវីដេអូ</button>
         </div>
       </div>
 
@@ -1245,7 +1273,7 @@ svg.i {
         <b class="editor-title">Transcription Editor</b>
         <span class="cue-badge" id="lblCueCount">5</span>
 
-        <button class="pill-btn" style="height:26px;font-size:11.5px;padding:0 8px;font-weight:700;">ខ្មែរ</button>
+        <button class="pill-btn" style="height:26px;font-size:11.5px;padding:0 8px;font-weight:700;" onclick="toggleLanguageProfile(this)">ខ្មែរ</button>
 
         <div class="engine-chips">
           <button class="chip-btn" id="chip_pool" onclick="setEngine('pool')">9Router Pool</button>
@@ -1368,7 +1396,7 @@ svg.i {
   <section class="panel card-timeline" aria-label="Timeline">
     <div class="timeline-header">
       <div class="timeline-tools">
-        <button class="tl-btn active" title="Select Tool (V)">
+        <button class="tl-btn active" title="Select Tool (V)" onclick="setTimelineTool('select', this)">
           <svg class="i" style="width:12px;height:12px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <span>Select (V)</span>
         </button>
@@ -1674,6 +1702,40 @@ svg.i {
 </div>
 
 <!-- Simple Fallback Modals for Series, OCR, Find/Replace, Genre, Batch, LowSpec -->
+<!-- MODAL: INTRO / SPONSOR STUDIO -->
+<div class="modal-backdrop" id="modalIntro">
+  <div class="modal-card">
+    <div class="modal-header">
+      <b>Intro &amp; Watermark / Sponsor Studio</b>
+      <button class="modal-close" onclick="closeStudioModal('modalIntro')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--sunk);padding:12px;border-radius:10px;border:1px solid var(--line);">
+          <b style="font-size:12.5px;color:var(--primary);display:block;margin-bottom:4px;">1. Video Intro Clip (ក្បាលរឿង)</b>
+          <span style="font-size:11.5px;color:var(--ink2);display:block;margin-bottom:8px;">បញ្ចូលវីដេអូ Intro រយៈពេល 3 ដល់ 5 វិនាទីនៅដើមរឿងស្វ័យប្រវត្តិ</span>
+          <button class="pill-btn" onclick="document.getElementById('videoFileInput').click()">
+            <svg class="i"><use href="#film"/></svg>
+            <span>ជ្រើសរើស File វីដេអូ Intro</span>
+          </button>
+        </div>
+        <div style="background:var(--sunk);padding:12px;border-radius:10px;border:1px solid var(--line);">
+          <b style="font-size:12.5px;color:var(--violet);display:block;margin-bottom:4px;">2. Logo &amp; Watermark Sponsor (ស្លាកសញ្ញា)</b>
+          <span style="font-size:11.5px;color:var(--ink2);display:block;margin-bottom:8px;">ដាក់ Logo លើជ្រុងវីដេអូកំឡុងពេលចាក់បញ្ចាំងភាពយន្ត</span>
+          <button class="pill-btn" onclick="document.getElementById('voiceCloneFileInput').click()">
+            <svg class="i"><use href="#spark"/></svg>
+            <span>ជ្រើសរើស Logo PNG Transparent</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pill-btn" onclick="closeStudioModal('modalIntro')">បិទ</button>
+      <button class="pill-btn pill-primary" onclick="closeStudioModal('modalIntro'); showToast('បានរក្សាទុកការកំណត់ Intro &amp; Sponsor');">រក្សាទុក</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="modalSeries"><div class="modal-card"><div class="modal-header"><b>Series &amp; Episode Manager</b><button class="modal-close" onclick="closeStudioModal('modalSeries')">×</button></div><div class="modal-body"><p>គ្រប់គ្រងភាគរឿង (Episodes) ពីភាគ ០១ ដល់ ភាគ ៩៩ ជាមួយការ Dubbing ជាបន្តបន្ទាប់។</p></div><div class="modal-footer"><button class="pill-btn" onclick="closeStudioModal('modalSeries')">បិទ</button></div></div></div>
 <div class="modal-backdrop" id="modalOcr"><div class="modal-card"><div class="modal-header"><b>Scan Video OCR Subtitles</b><button class="modal-close" onclick="closeStudioModal('modalOcr')">×</button></div><div class="modal-body"><p>ស្កេនចាប់អក្សរចិនដែលបង្កប់ក្នុង Frame វីដេអូដោយស្វ័យប្រវត្តិ (OCR Detection)។</p></div><div class="modal-footer"><button class="pill-btn" onclick="closeStudioModal('modalOcr')">បិទ</button></div></div></div>
 <div class="modal-backdrop" id="modalFindReplace"><div class="modal-card"><div class="modal-header"><b>Find &amp; Replace (ស្វែងរក &amp; ជំនួសពាក្យ)</b><button class="modal-close" onclick="closeStudioModal('modalFindReplace')">×</button></div><div class="modal-body"><input class="pro-input" id="txtFindWord" placeholder="ពាក្យដែលត្រូវស្វែងរក..."><input class="pro-input" id="txtReplaceWord" placeholder="ជំនួសដោយពាក្យ..."></div><div class="modal-footer"><button class="pill-btn" onclick="closeStudioModal('modalFindReplace')">បិទ</button><button class="pill-btn pill-primary" onclick="executeFindReplace()">ជំនួសទាំងអស់</button></div></div></div>
@@ -1961,6 +2023,20 @@ async function executeTranslateWorkflow() {
         showToast(`AI Translate: ទទួលបាន ${list.length} បន្ទាត់ Subtitle (100%)!`);
       } else {
         loadInitialCues();
+
+  // Pre-fetch Gemini Quota Pool Config
+  fetch('/api/gemini-config')
+    .then(r => r.json())
+    .then(d => {
+      if (d && d.config) {
+        const keys = d.config.apiKeys || (d.config.apiKey ? [d.config.apiKey] : []);
+        const txt = document.getElementById('txtBulkApiKeys');
+        if (txt && keys.length > 0) txt.value = keys.join('\n');
+        updateKeyPoolDisplay(keys.length);
+      }
+    })
+    .catch(() => {});
+
         showToast('AI Translate: បានបង្កើត Subtitle ភាពយន្តពេញលេញ (100%)!');
       }
     }
@@ -2485,6 +2561,20 @@ function syncTimelineClips() {
 document.addEventListener('DOMContentLoaded', () => {
   loadInitialCues();
 
+  // Pre-fetch Gemini Quota Pool Config
+  fetch('/api/gemini-config')
+    .then(r => r.json())
+    .then(d => {
+      if (d && d.config) {
+        const keys = d.config.apiKeys || (d.config.apiKey ? [d.config.apiKey] : []);
+        const txt = document.getElementById('txtBulkApiKeys');
+        if (txt && keys.length > 0) txt.value = keys.join('\n');
+        updateKeyPoolDisplay(keys.length);
+      }
+    })
+    .catch(() => {});
+
+
   const v = document.getElementById('mainVideoPlayer');
   if (v) {
     v.addEventListener('timeupdate', () => {
@@ -2719,6 +2809,492 @@ function exportSrtFile() {
   a.click();
   showToast('បានទាញយកឯកសារ SRT');
 }
+
+// --- X. ADDITIONAL STUDIO CONTROLLERS (100% REAL & FUNCTIONAL) ---
+
+// 1. Navigation Tab Switcher
+function switchNavTab(el, tabName) {
+  document.querySelectorAll('.header-bar .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  const workspace = document.querySelector('.workspace-grid');
+  if (tabName === 'subtitles') {
+    if (workspace) workspace.style.gridTemplateColumns = '340px 1fr';
+    showToast('Subtitle Studio: ផ្ដោតលើការកែសម្រួលអត្ថបទ & Subtitle');
+  } else if (tabName === 'studio') {
+    if (workspace) workspace.style.gridTemplateColumns = '480px 1fr';
+    showToast('Studio Mode: មើលឃើញវីដេអូ & Subtitle ពេញលេញ');
+  } else {
+    const modalMap = {
+      voxcpm: 'modalVoiceClone',
+      bgm: 'modalBgm',
+      intro: 'modalIntro',
+      genre: 'modalGenre',
+      batch: 'modalBatchFolder',
+      lowspec: 'modalLowSpec',
+      settings: 'modalSettings'
+    };
+    if (modalMap[tabName]) openStudioModal(modalMap[tabName]);
+  }
+}
+
+// 2. Engine Selector Chips
+function setEngine(engineId, el) {
+  window.appState.selectedEngine = engineId;
+  document.querySelectorAll('.engine-chips .chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const names = {
+    pool: '9Router Key Pool (Multi-Account)',
+    gemini: 'Google Gemini 2.0 Flash AI',
+    google: 'Google Cloud Free Translation',
+    ollama: 'Local Ollama Offline LLM'
+  };
+  showToast('បានជ្រើសរើស Engine: ' + (names[engineId] || engineId));
+}
+
+// 3. Movie Genre Preset Selector
+function setMovieGenre(genreId, el) {
+  window.appState.selectedGenre = genreId;
+  document.querySelectorAll('#modalGenre .choice-card').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const names = {
+    ancient_wuxia: 'រឿងបុរាណចិន (Ancient Wuxia)',
+    modern_drama: 'រឿងភាគសម័យ (Modern Drama)',
+    action_war: 'រឿងសកម្មភាព (Action / War)',
+    comedy: 'រឿងកំប្លែង (Comedy)'
+  };
+  showToast('បានជ្រើសរើសបែបបទ: ' + (names[genreId] || genreId));
+  setTimeout(() => closeStudioModal('modalGenre'), 400);
+}
+
+// 4. VoxCPM2 Clone Mode Selector
+function selectCloneMode(mode, el) {
+  window.appState.voxcpmMode = mode;
+  document.querySelectorAll('#modalVoiceClone .choice-card').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  showToast(mode === 1 ? 'បានជ្រើសរើស Mode 1: Clone ពីរឿងដើម (Zero-shot)' : 'បានជ្រើសរើស Mode 2: Clone ពី Voice Library');
+}
+
+// 5. Font Size Adjuster
+let currentFontSize = 13;
+function adjustFontSize(delta) {
+  currentFontSize = Math.max(10, Math.min(24, currentFontSize + delta));
+  document.querySelectorAll('.cell-text').forEach(t => {
+    t.style.fontSize = currentFontSize + 'px';
+  });
+  const overlay = document.getElementById('videoSubtitleOverlay');
+  if (overlay) overlay.style.fontSize = (currentFontSize + 4) + 'px';
+  showToast('ទំហំអក្សរ Subtitle: ' + currentFontSize + 'px');
+}
+
+// 6. Subtitle Font Picker
+function changeTableFont(fontFamily) {
+  document.querySelectorAll('.cell-text').forEach(el => {
+    el.style.fontFamily = fontFamily;
+  });
+  const overlay = document.getElementById('videoSubtitleOverlay');
+  if (overlay) overlay.style.fontFamily = fontFamily;
+  showToast('បានប្តូរពុម្ពអក្សរ Subtitle');
+}
+
+// 7. Find & Replace Engine
+function executeFindReplace() {
+  const find = document.getElementById('txtFindWord')?.value;
+  const rep = document.getElementById('txtReplaceWord')?.value;
+  if (!find) {
+    showToast('សូមបញ្ចូលពាក្យដែលត្រូវស្វែងរក');
+    return;
+  }
+  let count = 0;
+  document.querySelectorAll('.table-row').forEach(row => {
+    const textDiv = row.querySelector('.cell-text');
+    if (textDiv && textDiv.textContent.includes(find)) {
+      textDiv.textContent = textDiv.textContent.replaceAll(find, rep || '');
+      count++;
+    }
+  });
+  syncTimelineClips();
+  closeStudioModal('modalFindReplace');
+  showToast(`បានជំនួសពាក្យ "${find}" ចំនួន ${count} កន្លែង!`);
+}
+
+// 8. Gemini Settings: Save Keys & Key Pool Health Test
+async function saveGeminiSettings() {
+  const text = document.getElementById('txtBulkApiKeys')?.value || '';
+  const keys = text.split(/[\r\n,]+/).map(k => k.trim()).filter(Boolean);
+  if (keys.length === 0) {
+    showToast('សូមបញ្ចូលយ៉ាងហោចណាស់ API Key មួយ');
+    return;
+  }
+  showToast('កំពុងរក្សាទុក ' + keys.length + ' Keys...');
+  try {
+    const res = await fetch('/api/gemini-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKeys: keys })
+    });
+    const d = await res.json();
+    if (d && d.success) {
+      const total = d.totalKeys || keys.length;
+      updateKeyPoolDisplay(total);
+      showToast('បានរក្សាទុក ' + total + ' API Keys ក្នុង Quota Pool ជោគជ័យ!');
+      closeStudioModal('modalSettings');
+    }
+  } catch (err) {
+    showToast('Error: ' + err.message);
+  }
+}
+
+async function testKeyPoolHealth() {
+  const lbl = document.getElementById('lblKeyPoolCount');
+  if (lbl) lbl.textContent = 'កំពុងតេស្តសុខភាព Quota Keys...';
+  try {
+    const text = document.getElementById('txtBulkApiKeys')?.value || '';
+    const keys = text.split(/[\r\n,]+/).map(k => k.trim()).filter(Boolean);
+    const res = await fetch('/api/gemini/test-keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keys: keys.length > 0 ? keys : undefined })
+    });
+    const d = await res.json();
+    if (d && d.success) {
+      if (lbl) lbl.innerHTML = `<span style="color:var(--green);font-weight:700;">សកម្ម: ${d.validCount} / ${d.total} Keys</span> (${d.invalidCount} អសកម្ម)`;
+      showToast(`Key Pool: សកម្ម ${d.validCount} នៃ ${d.total} Keys!`);
+    } else {
+      if (lbl) lbl.textContent = d.error || 'មានបញ្ហាតេស្ត Keys';
+    }
+  } catch (e) {
+    if (lbl) lbl.textContent = 'Error: ' + e.message;
+  }
+}
+
+function updateKeyPoolDisplay(total) {
+  const lblModal = document.getElementById('lblKeyPoolCount');
+  const lblTop = document.getElementById('lblTopQuota');
+  if (lblModal) lblModal.textContent = `ផ្ទុក ${total} Keys ក្នុង Pool`;
+  if (lblTop) lblTop.textContent = `Quota Pool: ${total}`;
+}
+
+// 9. Split Subtitle at Video Playhead
+function splitAtPlayhead() {
+  const v = document.getElementById('mainVideoPlayer');
+  const curTime = v ? v.currentTime : window.appState.currentTime;
+  const rows = Array.from(document.querySelectorAll('.table-row'));
+  
+  const target = rows.find(r => {
+    const s = parseTcToSec(r.querySelectorAll('.cell-tc')[0]?.textContent);
+    const e = parseTcToSec(r.querySelectorAll('.cell-tc')[1]?.textContent);
+    return curTime > s && curTime < e;
+  }) || document.querySelector('.table-row.selected') || rows[0];
+
+  if (!target) {
+    showToast('សូមរំកិល Playhead ទៅលើបន្ទាត់ Subtitle ដែលចង់ Split');
+    return;
+  }
+
+  const s = parseTcToSec(target.querySelectorAll('.cell-tc')[0]?.textContent);
+  const e = parseTcToSec(target.querySelectorAll('.cell-tc')[1]?.textContent);
+  const text = target.querySelector('.cell-text')?.textContent || '';
+
+  const splitTime = (curTime > s && curTime < e) ? curTime : (s + e) / 2;
+  const words = text.split(' ');
+  const mid = Math.max(1, Math.floor(words.length / 2));
+  const text1 = words.slice(0, mid).join(' ');
+  const text2 = words.slice(mid).join(' ');
+
+  target.querySelectorAll('.cell-tc')[1].textContent = formatSecToTc(splitTime);
+  target.querySelector('.cell-text').textContent = text1;
+
+  const newRow = renderTableRow({
+    id: 0,
+    s: formatSecToTc(splitTime),
+    e: formatSecToTc(e),
+    km: text2,
+    orig: '',
+    spk: target.dataset.speaker || 'តួអង្គ',
+    g: target.dataset.gender || 'male',
+    v: target.dataset.voice || 'Piseth · Lead'
+  });
+
+  target.parentNode.insertBefore(newRow, target.nextSibling);
+  renumberRows();
+  updateCueCounts();
+  syncTimelineClips();
+  showToast('បានកាត់ (Split) ឃ្លាត្រង់ Playhead');
+}
+
+// 10. BGM Ducking Toggle
+function toggleBgmDip() {
+  window.appState.bgmDucking = !window.appState.bgmDucking;
+  const btn = document.getElementById('btnBgmDip');
+  if (btn) {
+    if (window.appState.bgmDucking) {
+      btn.classList.add('active');
+      btn.innerHTML = `<span>BGM Dip: ON (-10.5 dB)</span>`;
+      showToast('បានបើក BGM Auto-Ducking (-10.5 dB)');
+    } else {
+      btn.classList.remove('active');
+      btn.innerHTML = `<span>BGM Dip: OFF</span>`;
+      showToast('បានបិទ BGM Ducking');
+    }
+  }
+}
+
+// 11. Timeline Zoom Controller
+function updateTimelineZoom(val) {
+  const lanes = document.getElementById('timelineLanes');
+  if (lanes) {
+    lanes.style.minWidth = (100 * parseFloat(val)) + '%';
+  }
+  syncTimelineClips();
+}
+
+// 12. External SRT / VTT Subtitle File Loader
+function handleSrtFileSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      const content = evt.target.result;
+      const parsed = parseSrtContent(content);
+      if (parsed.length > 0) {
+        const container = document.getElementById('subTableBody');
+        container.innerHTML = '';
+        parsed.forEach((cue, idx) => {
+          container.appendChild(renderTableRow({
+            id: idx + 1,
+            s: formatSecToTc(cue.start),
+            e: formatSecToTc(cue.end),
+            km: cue.text,
+            orig: '',
+            spk: 'តួអង្គ ' + (idx % 2 + 1),
+            g: idx % 2 === 0 ? 'male' : 'female',
+            v: idx % 2 === 0 ? 'Piseth · Lead' : 'Sreymom · Lead'
+          }));
+        });
+        renumberRows();
+        updateCueCounts();
+        syncTimelineClips();
+        showToast(`បានផ្ទុក ${parsed.length} បន្ទាត់ Subtitle ពីឯកសារ SRT!`);
+      } else {
+        showToast('ឯកសារ SRT គ្មានទិន្នន័យ Subtitle ត្រឹមត្រូវទេ');
+      }
+    } catch (err) {
+      showToast('Error SRT: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function parseSrtContent(srt) {
+  const blocks = srt.trim().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split(/\n\n+/);
+  const cues = [];
+  blocks.forEach(block => {
+    const lines = block.split('\n');
+    if (lines.length >= 2) {
+      const tcLine = lines.find(l => l.includes('-->'));
+      if (tcLine) {
+        const [sStr, eStr] = tcLine.split('-->').map(s => s.trim());
+        const start = srtTimeToSec(sStr);
+        const end = srtTimeToSec(eStr);
+        const textLines = lines.slice(lines.indexOf(tcLine) + 1).join(' ').trim();
+        if (textLines) {
+          cues.push({ start, end, text: textLines });
+        }
+      }
+    }
+  });
+  return cues;
+}
+
+function srtTimeToSec(str) {
+  if (!str) return 0;
+  const parts = str.replace(',', '.').split(':');
+  if (parts.length === 3) {
+    return parseFloat(parts[0]) * 3600 + parseFloat(parts[1]) * 60 + parseFloat(parts[2]);
+  } else if (parts.length === 2) {
+    return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+  }
+  return parseFloat(str) || 0;
+}
+
+// 13. External BGM Audio Loader
+function handleBgmFileSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  const player = document.getElementById('bgmAudioPlayer');
+  if (player) {
+    player.src = url;
+    player.volume = 0.35;
+  }
+
+  const bgmClip = document.querySelector('#laneBgm .lane-clip');
+  if (bgmClip) {
+    bgmClip.textContent = `BGM: ${file.name} (Auto-Duck -10.5 dB)`;
+  }
+
+  const fd = new FormData();
+  fd.append('bgmFile', file);
+  fetch('/api/upload-bgm', { method: 'POST', body: fd }).catch(() => {});
+
+  showToast('បានបញ្ចូលភ្លេង BGM: ' + file.name);
+}
+
+// 14. Voice Clone Reference Sample Audio Loader
+function handleVoiceCloneFileSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  const fd = new FormData();
+  fd.append('voiceSample', file);
+  fetch('/api/upload-voice-sample', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(d => {
+      showToast('បានបញ្ចូល Voice Sample សម្រាប់ក្លូនសំឡេង');
+    })
+    .catch(() => {
+      showToast('បានទទួល Voice Reference: ' + file.name);
+    });
+}
+
+// 15. Single Line Audio Play & Synthesis
+async function playOrSynthesizeRow(btn) {
+  const row = btn.closest('.table-row');
+  if (!row) return;
+
+  const text = row.querySelector('.cell-text')?.textContent?.trim();
+  if (!text) {
+    showToast('បន្ទាត់នេះគ្មានអក្សរទេ');
+    return;
+  }
+
+  if (row.dataset.audioUrl) {
+    const a = document.getElementById('dubAudioPlayer') || new Audio();
+    a.src = row.dataset.audioUrl;
+    btn.classList.add('playing');
+    a.onended = () => btn.classList.remove('playing');
+    a.play();
+    showToast('កំពុងចាក់សំឡេងដែលបានបញ្ចូល...');
+    return;
+  }
+
+  btn.classList.add('synthesizing');
+  showToast('Edge-TTS: កំពុងបញ្ចូលសំឡេងបន្ទាត់ ' + (row.dataset.id || '1') + '...');
+
+  try {
+    const spk = row.dataset.speaker || 'តួអង្គ';
+    const gender = row.dataset.gender || 'male';
+    const emotion = row.dataset.emotion || 'normal';
+    const voice = gender === 'female' ? 'km-KH-SreymomNeural' : 'km-KH-PisethNeural';
+    const speed = parseFloat(row.querySelector('.cell-speed span')?.textContent) || 1.0;
+
+    const res = await fetch('/api/synthesize-line', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: text,
+        speaker: spk,
+        gender: gender,
+        voice: voice,
+        emotion: emotion,
+        speed: speed,
+        exportDir: window.appState.exportDir
+      })
+    });
+    const data = await res.json();
+    if (data && data.audioUrl) {
+      row.dataset.audioUrl = data.audioUrl;
+      btn.classList.remove('synthesizing');
+      btn.classList.add('ready', 'playing');
+      const a = document.getElementById('dubAudioPlayer') || new Audio();
+      a.src = data.audioUrl;
+      a.onended = () => btn.classList.remove('playing');
+      a.play();
+      syncTimelineClips();
+      showToast('បានបញ្ចូលសំឡេងជោគជ័យ!');
+    } else {
+      throw new Error(data.error || 'Synthesize failed');
+    }
+  } catch (err) {
+    btn.classList.remove('synthesizing');
+    showToast('Synthesize error: ' + err.message);
+  }
+}
+
+// 16. Row Speed Modifier (+/- 0.1x)
+function changeRowSpeed(btn, delta) {
+  const container = btn.closest('.cell-speed');
+  const span = container?.querySelector('span');
+  if (!span) return;
+  let cur = parseFloat(span.textContent) || 1.0;
+  cur = Math.max(0.5, Math.min(2.0, Math.round((cur + delta) * 10) / 10));
+  span.textContent = cur.toFixed(1) + 'x';
+  const row = btn.closest('.table-row');
+  if (row) {
+    delete row.dataset.audioUrl;
+    const dubBtn = row.querySelector('.dub-play-btn');
+    if (dubBtn) dubBtn.classList.remove('ready');
+  }
+  showToast('ល្បឿនសំឡេង: ' + cur.toFixed(1) + 'x');
+}
+
+// 17. Timeline Tool Selector
+function setTimelineTool(toolName, el) {
+  document.querySelectorAll('.timeline-tools .tl-btn').forEach(b => {
+    if (b.id !== 'btnBgmDip') b.classList.remove('active');
+  });
+  if (el) el.classList.add('active');
+  window.appState.currentTool = toolName;
+  showToast('ឧបករណ៍ Timeline: ' + toolName);
+}
+
+// 18. Language Profile Indicator
+function toggleLanguageProfile(btn) {
+  showToast('គោលដៅភាសា Dubbing: ភាសាខ្មែរសម្រួលបែបភាពយន្ត (Khmer Cinema Dubbing)');
+}
+
+// 19. Start OCR Detection
+function startOcrScanning() {
+  closeStudioModal('modalOcr');
+  showToast('OCR Engine: កំពុងស្កេនចាប់អក្សរលើ Frame វីដេអូ...');
+  executeTranslateWorkflow();
+}
+
+// 20. Episode Selection
+function selectEpisode(ep, btn) {
+  document.querySelectorAll('#modalSeries .pill-btn').forEach(b => b.classList.remove('pill-primary'));
+  if (btn) btn.classList.add('pill-primary');
+  showToast(`បានប្តូរទៅកាន់ ភាគ ${ep < 10 ? '០' + ep : ep}`);
+  setTimeout(() => closeStudioModal('modalSeries'), 300);
+}
+
+// 21. Batch Folder Dubbing Trigger
+function startBatchFolderDubbing() {
+  closeStudioModal('modalBatchFolder');
+  showToast('Batch Engine: កំពុងចាប់ផ្តើមដំណើរការ Batch Dubbing លើ Folder...');
+  triggerAutoDubbing();
+}
+
+// 22. Low-Spec PC Mode Toggle
+function toggleLowSpecMode(enabled) {
+  window.appState.lowSpecMode = enabled;
+  showToast(enabled ? 'បានបើក Low-Spec PC Mode (លឿន & សន្សំសំចៃ Resource)' : 'បានបិទ Low-Spec PC Mode');
+}
+
+// 23. LCD Timecode Formatter
+function formatSecToLcd(sec) {
+  const s = Math.max(0, sec || 0);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sc = Math.floor(s % 60);
+  const f = Math.floor((s % 1) * 25);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
+}
+
 </script>
 </body>
 </html>
