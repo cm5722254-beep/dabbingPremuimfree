@@ -153,6 +153,284 @@ svg.i {
   transition: all 0.15s ease;
 }
 
+
+/* ==========================================================================
+   STUDIO MONITOR HUD & DUAL AUDIO DUBBING VISUALIZER STYLES
+   ========================================================================== */
+.monitor-hud-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background: var(--sunk);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink2);
+}
+.hud-led-rec {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: ledBlink 1.8s infinite ease-in-out;
+}
+@keyframes ledBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+.hud-tag {
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+.hud-fps {
+  font-size: 9.5px;
+  padding: 1px 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--primary);
+  font-weight: 700;
+}
+.hud-audio-pill {
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink2);
+  font-size: 9.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.hud-audio-pill.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(0, 113, 227, 0.25);
+}
+
+.hud-vu-meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  padding: 0 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.vu-bar {
+  width: 3px;
+  border-radius: 1px;
+  background: #10B981;
+  height: 3px;
+  transition: height 0.08s ease;
+}
+.vu-bar.b4 { background: #F59E0B; }
+.vu-bar.b5 { background: #EF4444; }
+.hud-vu-meter.active .vu-bar {
+  animation: vuFluctuate 0.35s infinite alternate ease-in-out;
+}
+.hud-vu-meter.active .vu-bar.b1 { animation-delay: 0.05s; }
+.hud-vu-meter.active .vu-bar.b2 { animation-delay: 0.15s; }
+.hud-vu-meter.active .vu-bar.b3 { animation-delay: 0.1s; }
+.hud-vu-meter.active .vu-bar.b4 { animation-delay: 0.22s; }
+.hud-vu-meter.active .vu-bar.b5 { animation-delay: 0.18s; }
+@keyframes vuFluctuate {
+  0% { height: 2px; }
+  100% { height: 12px; }
+}
+
+#videoDropPlaceholder.drag-active {
+  border: 2px dashed var(--primary);
+  background: radial-gradient(circle at center, rgba(0, 113, 227, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
+  animation: borderLaser 1.5s infinite linear;
+}
+@keyframes borderLaser {
+  0% { box-shadow: 0 0 10px rgba(0, 113, 227, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(124, 58, 237, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(0, 113, 227, 0.3); }
+}
+
+.video-upload-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 14, 20, 0.92);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 30;
+}
+.upload-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ctl-btn {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+.ctl-btn:hover {
+  background: var(--sunk);
+  color: var(--ink);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.ctl-btn:active {
+  transform: scale(0.95);
+}
+
+.play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--g);
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+.play-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+}
+.play-btn.playing {
+  animation: playHalo 1.5s infinite ease-out;
+}
+@keyframes playHalo {
+  0% { box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 113, 227, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 113, 227, 0); }
+}
+
+.lcd-frame-box {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #00FF66;
+  background: #000000;
+  border: 1px solid #1A281E;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: 0.05em;
+  box-shadow: inset 0 1px 4px rgba(0, 255, 102, 0.15);
+}
+
+.vol-control-grp {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 6px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--sunk);
+  border: 1px solid var(--line);
+}
+.vol-slider {
+  width: 50px;
+  height: 4px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.scrub-playhead-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px var(--primary);
+  border: 2px solid var(--primary);
+  pointer-events: none;
+  left: 0%;
+  transition: left 0.04s linear;
+}
+.scrub-cue-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.scrub-cue-dot {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 1px;
+}
+
+.table-row.active-speaker {
+  background: var(--primary-soft) !important;
+  border-color: var(--primary) !important;
+  box-shadow: inset 3px 0 0 var(--primary), 0 0 14px rgba(0, 113, 227, 0.2);
+}
+.table-row.active-speaker .dub-play-btn {
+  background: var(--primary) !important;
+  color: #FFFFFF !important;
+  animation: dubPulse 1s infinite alternate;
+}
+@keyframes dubPulse {
+  0% { transform: scale(1); box-shadow: 0 0 4px var(--primary); }
+  100% { transform: scale(1.12); box-shadow: 0 0 14px var(--primary); }
+}
+
+.btn-translate, .btn-transcribe, .btn-dubbing, .pill-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-translate::after, .btn-transcribe::after, .btn-dubbing::after, .pill-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(25deg);
+  animation: btnShimmer 3.5s infinite;
+  pointer-events: none;
+}
+@keyframes btnShimmer {
+  0% { left: -60%; }
+  25% { left: 140%; }
+  100% { left: 140%; }
+}
+
 /* ==========================================================================
    APP MASTER SHELL GRID (Fixed Rows, Strict Fit, Never Colliding)
    ========================================================================== */
@@ -1228,40 +1506,107 @@ svg.i {
   <div class="workspace-grid">
 
     <!-- LEFT: VIDEO PLAYER CARD -->
-    <section class="panel card-preview" aria-label="Video Preview">
+    <section class="panel card-preview" aria-label="Studio Video Monitor">
+      <!-- 1. Monitor Top HUD Bar -->
+      <div class="monitor-hud-bar">
+        <div class="row" style="gap:6px;">
+          <span class="hud-led-rec" title="Studio Monitor Online"></span>
+          <span class="hud-tag" id="lblMonitorRes">MONITOR 1 · 1080p FHD</span>
+          <span class="hud-fps" id="lblMonitorFps">60 FPS</span>
+        </div>
+        <div class="row" style="gap:6px;">
+          <!-- Dual Audio Control Pills -->
+          <button class="hud-audio-pill active" id="btnToggleKhmerAudio" onclick="toggleKhmerDubbedAudio()" title="ចាក់សំឡេងខ្មែរដែលបានបញ្ចូលពេល Play វីដេអូ">
+            <svg class="i" style="width:11px;height:11px;"><use href="#mic"/></svg>
+            <span id="lblKhmerAudioStatus">Khmer Voice: 100%</span>
+          </button>
+          <button class="hud-audio-pill" id="btnToggleOrigAudio" onclick="toggleOriginalVocalAudio()" title="បិទ/បើកសំឡេងចិនដើមនៃវីដេអូ">
+            <svg class="i" style="width:11px;height:11px;"><use href="#sound"/></svg>
+            <span id="lblOrigVocalStatus">Orig Vocals: DUCKED</span>
+          </button>
+          <!-- Audio VU Visualizer Bars -->
+          <div class="hud-vu-meter" id="hudVuMeter" title="Live Audio Output Visualizer">
+            <div class="vu-bar b1"></div>
+            <div class="vu-bar b2"></div>
+            <div class="vu-bar b3"></div>
+            <div class="vu-bar b4"></div>
+            <div class="vu-bar b5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Video Viewport Frame -->
       <div class="video-viewport" id="videoViewport">
-        <video id="mainVideoPlayer" controls playsinline></video>
+        <video id="mainVideoPlayer" playsinline preload="auto"></video>
         <div id="videoSubtitleOverlay" class="video-sub-overlay"></div>
         
-        <div id="videoDropPlaceholder" onclick="document.getElementById('videoFileInput').click()">
+        <div id="videoDropPlaceholder" onclick="document.getElementById('videoFileInput').click()" ondragover="event.preventDefault(); this.classList.add('drag-active')" ondragleave="this.classList.remove('drag-active')" ondrop="handleVideoDrop(event)">
           <div class="drop-icon-box">
-            <svg class="i" style="width:26px;height:26px;"><use href="#film"/></svg>
+            <svg class="i" style="width:28px;height:28px;"><use href="#film"/></svg>
           </div>
-          <b style="font-size:13px;color:#FFFFFF;">សូមជ្រើសរើសវីដេអូ ឬទាញទម្លាក់ចូលទីនេះ</b>
-          <span style="font-size:11px;color:rgba(255,255,255,0.7);">គាំទ្រ MP4, MKV, MOV, TS, WEBM</span>
-          <button class="pill-btn pill-primary" style="margin-top:6px;" onclick="event.stopPropagation(); document.getElementById('videoFileInput').click();">ជ្រើសរើសវីដេអូ</button>
+          <b style="font-size:13.5px;color:#FFFFFF;letter-spacing:0.02em;">សូមជ្រើសរើសវីដេអូ ឬទាញទម្លាក់ចូលទីនេះ</b>
+          <span style="font-size:11.5px;color:rgba(255,255,255,0.75);">Upload ចូលប្រព័ន្ធ Tool ភ្លាមៗ (MP4, MKV, MOV, TS, WEBM)</span>
+          <div class="row" style="margin-top:6px;gap:8px;">
+            <button class="pill-btn pill-primary" onclick="event.stopPropagation(); document.getElementById('videoFileInput').click();">
+              <svg class="i"><use href="#plus"/></svg>
+              <span>ជ្រើសរើសវីដេអូ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Uploading Glass Overlay -->
+        <div id="videoUploadOverlay" class="video-upload-overlay" style="display:none;">
+          <div class="upload-spinner"></div>
+          <b style="color:#FFFFFF;font-size:13px;" id="lblUploadProgress">កំពុង Upload ចូលប្រព័ន្ធ Tool 100%...</b>
+          <span style="color:rgba(255,255,255,0.7);font-size:11px;">កំពុងរៀបចំ Audio/Video Sync Pipeline...</span>
         </div>
       </div>
 
+      <!-- 3. Precision Scrubbing Track -->
       <div class="video-scrub-bar">
-        <span class="time-mono" id="lblCurrentTime">00:00.0</span>
+        <span class="time-mono" id="lblCurrentTime">00:00.00</span>
         <div class="scrub-track" id="videoScrubTrack" onclick="seekVideoScrub(event)">
           <div class="scrub-progress" id="videoScrubProgress"></div>
+          <div class="scrub-playhead-dot" id="scrubPlayheadDot"></div>
+          <div class="scrub-cue-markers" id="scrubCueMarkers"></div>
         </div>
-        <span class="time-mono" id="lblTotalTime">02:37.8</span>
+        <span class="time-mono" id="lblTotalTime">00:00.00</span>
       </div>
 
+      <!-- 4. Studio Pro Transport Bar -->
       <div class="video-controls">
-        <div class="row">
-          <button class="play-btn" id="btnPlayPause" onclick="togglePlayVideo()">
+        <div class="row" style="gap:4px;">
+          <button class="ctl-btn" onclick="seekVideoToStart()" title="ទៅដើមវីដេអូ (00:00.00)">
+            <svg class="i" style="width:13px;height:13px;"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
+          </button>
+          <button class="ctl-btn" onclick="stepVideoFrame(-1)" title="ថយក្រោយ ១ Frame (-1 Frame)">
+            <svg class="i" style="width:12px;height:12px;"><polygon points="15 18 9 12 15 6 15 18"/></svg>
+          </button>
+          <button class="play-btn" id="btnPlayPause" onclick="togglePlayVideo()" title="Play / Pause (Spacebar)">
             <svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           </button>
-          <button class="pill-btn" onclick="skipVideo(-1)" style="height:28px;padding:0 6px;">−1s</button>
-          <button class="pill-btn" onclick="skipVideo(1)" style="height:28px;padding:0 6px;">+1s</button>
+          <button class="ctl-btn" onclick="stepVideoFrame(1)" title="ទៅមុខ ១ Frame (+1 Frame)">
+            <svg class="i" style="width:12px;height:12px;"><polygon points="9 18 15 12 9 6 9 18"/></svg>
+          </button>
+          <button class="ctl-btn" onclick="skipVideo(-1)" title="ថយក្រោយ ១ វិនាទី (−1s)">−1s</button>
+          <button class="ctl-btn" onclick="skipVideo(1)" title="ទៅមុខ ១ វិនាទី (+1s)">+1s</button>
         </div>
-        <div class="row">
-          <button class="pill-btn" id="btnAspectRatio" onclick="cycleAspectRatio()" style="font-size:11px;height:28px;">16:9</button>
-          <button class="pill-btn" id="btnCloseVideo" onclick="unloadActiveVideo()" style="font-size:11px;height:28px;color:var(--red);display:none;">បិទវីដេអូ</button>
+
+        <div class="lcd-frame-box" id="lblLcdFrameBox">F# 00000</div>
+
+        <div class="row" style="gap:4px;">
+          <div class="vol-control-grp" title="Master Audio Output">
+            <svg class="i" style="width:13px;height:13px;color:var(--ink2);"><use href="#sound"/></svg>
+            <input type="range" min="0" max="1" step="0.05" value="1" id="rngMasterVolume" class="vol-slider" oninput="changeMasterVolume(this.value)">
+          </div>
+          <button class="pill-btn" id="btnAspectRatio" onclick="cycleAspectRatio()" title="ប្តូរទំហំ Aspect Ratio">16:9</button>
+          <button class="ctl-btn" onclick="toggleVideoFullscreen()" title="ពង្រីកពេញអេក្រង់ (Fullscreen)">
+            <svg class="i" style="width:13px;height:13px;"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          </button>
+          <button class="pill-btn" id="btnCloseVideo" onclick="unloadActiveVideo()" style="color:var(--red);display:none;" title="បិទវីដេអូសកម្ម">
+            <svg class="i" style="width:12px;height:12px;"><use href="#trash"/></svg>
+            <span>បិទ</span>
+          </button>
         </div>
       </div>
     </section>
@@ -1848,14 +2193,21 @@ function toggleTheme() {
 // Global App State
 window.appState = {
   activeVideoUrl: null,
-  activeVideoName: 'video_1794127956161_aarcb.mp4',
+  activeVideoName: localStorage.getItem('genz_active_video_name') || 'video_1794127956161_aarcb.mp4',
   duration: 157.8,
   currentTime: 0,
   isPlaying: false,
   selectedEngine: 'gemini',
   selectedGenre: 'ancient_wuxia',
   exportDir: localStorage.getItem('genz_export_dir') || 'D:\\ALL PROJECT\\Cheatz Dubbing Studio Pro Next\\videos',
-  speakerVoiceMap: {}
+  speakerVoiceMap: {},
+  khmerDubEnabled: true,
+  muteOriginalVocal: true,
+  masterVolume: 1.0,
+  subFontSize: 14,
+  subFontFamily: 'Kantumruy Pro',
+  currentTool: 'select',
+  bgmDucking: true
 };
 
 // Initial High-Quality Film Cues (Pre-populated so table is never empty!)
@@ -2022,7 +2374,70 @@ async function executeTranslateWorkflow() {
         });
         showToast(`AI Translate: ទទួលបាន ${list.length} បន្ទាត់ Subtitle (100%)!`);
       } else {
-        loadInitialCues();
+        
+  
+  // Configure Video Player Listeners
+  const player = document.getElementById('mainVideoPlayer');
+  if (player) {
+    player.ontimeupdate = syncLivePlayback;
+
+    player.onplay = () => {
+      window.appState.isPlaying = true;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.add('playing');
+        btn.innerHTML = `<svg class="i" style="fill:#FFFFFF;stroke:none;"><use href="#pause"/></svg>`;
+      }
+    };
+
+    player.onpause = () => {
+      window.appState.isPlaying = false;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+      }
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) dubAudio.pause();
+      const vu = document.getElementById('hudVuMeter');
+      if (vu) vu.classList.remove('active');
+    };
+
+    player.onseeked = () => {
+      lastPlayedCueId = null;
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) {
+        dubAudio.pause();
+        dubAudio.currentTime = 0;
+      }
+      syncLivePlayback();
+    };
+
+    player.onended = () => {
+      window.appState.isPlaying = false;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+      }
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) dubAudio.pause();
+    };
+  }
+
+  // Keyboard Spacebar Play/Pause
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.target.closest('input, textarea, [contenteditable="true"]')) {
+      e.preventDefault();
+      togglePlayVideo();
+    }
+  });
+
+  // Load Real Project Data (or initial film cues if first run)
+  if (!loadRealProjectData()) {
+    loadInitialCues();
+  }
+  renderScrubCueMarkers();
 
   // Pre-fetch Gemini Quota Pool Config
   fetch('/api/gemini-config')
@@ -2559,7 +2974,70 @@ function syncTimelineClips() {
 
 // Update playhead on video timeupdate
 document.addEventListener('DOMContentLoaded', () => {
-  loadInitialCues();
+  
+  
+  // Configure Video Player Listeners
+  const player = document.getElementById('mainVideoPlayer');
+  if (player) {
+    player.ontimeupdate = syncLivePlayback;
+
+    player.onplay = () => {
+      window.appState.isPlaying = true;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.add('playing');
+        btn.innerHTML = `<svg class="i" style="fill:#FFFFFF;stroke:none;"><use href="#pause"/></svg>`;
+      }
+    };
+
+    player.onpause = () => {
+      window.appState.isPlaying = false;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+      }
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) dubAudio.pause();
+      const vu = document.getElementById('hudVuMeter');
+      if (vu) vu.classList.remove('active');
+    };
+
+    player.onseeked = () => {
+      lastPlayedCueId = null;
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) {
+        dubAudio.pause();
+        dubAudio.currentTime = 0;
+      }
+      syncLivePlayback();
+    };
+
+    player.onended = () => {
+      window.appState.isPlaying = false;
+      const btn = document.getElementById('btnPlayPause');
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.innerHTML = `<svg class="i" id="iconPlayPause" style="fill:#FFFFFF;stroke:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+      }
+      const dubAudio = document.getElementById('dubAudioPlayer');
+      if (dubAudio) dubAudio.pause();
+    };
+  }
+
+  // Keyboard Spacebar Play/Pause
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.target.closest('input, textarea, [contenteditable="true"]')) {
+      e.preventDefault();
+      togglePlayVideo();
+    }
+  });
+
+  // Load Real Project Data (or initial film cues if first run)
+  if (!loadRealProjectData()) {
+    loadInitialCues();
+  }
+  renderScrubCueMarkers();
 
   // Pre-fetch Gemini Quota Pool Config
   fetch('/api/gemini-config')
@@ -3293,6 +3771,303 @@ function formatSecToLcd(sec) {
   const sc = Math.floor(s % 60);
   const f = Math.floor((s % 1) * 25);
   return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
+}
+
+
+// ======================================================================
+// DUAL AUDIO ENGINE & LIVE SYNCHRONIZATION (100% REAL KHMER DUBBED VOICE)
+// ======================================================================
+let lastPlayedCueId = null;
+
+function syncLivePlayback() {
+  const player = document.getElementById('mainVideoPlayer');
+  if (!player || !player.duration) return;
+
+  const cur = player.currentTime;
+  const dur = player.duration;
+  window.appState.currentTime = cur;
+
+  // 1. Time Displays
+  const curLbl = document.getElementById('lblCurrentTime');
+  if (curLbl) curLbl.textContent = formatSecToTc(cur);
+  const totalLbl = document.getElementById('lblTotalTime');
+  if (totalLbl && dur) totalLbl.textContent = formatSecToTc(dur);
+
+  const pct = dur > 0 ? (cur / dur) * 100 : 0;
+  const progress = document.getElementById('videoScrubProgress');
+  if (progress) progress.style.width = pct + '%';
+  const dot = document.getElementById('scrubPlayheadDot');
+  if (dot) dot.style.left = pct + '%';
+  const playhead = document.getElementById('timelinePlayhead');
+  if (playhead) playhead.style.left = pct + '%';
+  const lcd = document.getElementById('lcdTimecode');
+  if (lcd) lcd.textContent = formatSecToLcd(cur) + ' / ' + formatSecToLcd(dur);
+
+  // LCD Frame Counter (at 25 fps)
+  const frameBox = document.getElementById('lblLcdFrameBox');
+  if (frameBox) {
+    const frameNum = Math.floor(cur * 25);
+    frameBox.textContent = `F# ${String(frameNum).padStart(5, '0')}`;
+  }
+
+  // 2. Match active subtitle cue
+  const rows = document.querySelectorAll('.table-row');
+  let activeCue = null;
+
+  for (const r of rows) {
+    const s = parseTcToSec(r.querySelectorAll('.cell-tc')[0]?.textContent);
+    const e = parseTcToSec(r.querySelectorAll('.cell-tc')[1]?.textContent);
+    if (cur >= s && cur <= e) {
+      activeCue = r;
+      break;
+    }
+  }
+
+  // 3. Render Subtitle Overlay on Video Frame
+  const overlay = document.getElementById('videoSubtitleOverlay');
+  const vu = document.getElementById('hudVuMeter');
+
+  if (activeCue) {
+    const cueId = activeCue.dataset.id;
+    const text = activeCue.querySelector('.cell-text')?.textContent || '';
+    if (overlay) {
+      overlay.textContent = text;
+      overlay.style.display = 'block';
+    }
+
+    // Highlight row in table
+    rows.forEach(r => r.classList.remove('active-speaker'));
+    activeCue.classList.add('active-speaker');
+
+    // 4. Play Khmer Audio Dub if enabled and cue has audioUrl
+    if (window.appState.khmerDubEnabled) {
+      if (lastPlayedCueId !== cueId && activeCue.dataset.audioUrl) {
+        lastPlayedCueId = cueId;
+        const dubAudio = document.getElementById('dubAudioPlayer') || new Audio();
+        dubAudio.src = activeCue.dataset.audioUrl;
+        const startSec = parseTcToSec(activeCue.querySelectorAll('.cell-tc')[0]?.textContent);
+        const offset = Math.max(0, cur - startSec);
+        dubAudio.currentTime = offset;
+        dubAudio.volume = window.appState.masterVolume || 1.0;
+        dubAudio.play().catch(() => {});
+        if (vu) vu.classList.add('active');
+      }
+    }
+
+    // 5. Duck / Mute original video vocals
+    if (window.appState.muteOriginalVocal) {
+      player.volume = 0.0;
+    } else {
+      player.volume = 0.15 * (window.appState.masterVolume || 1.0);
+    }
+  } else {
+    if (overlay) overlay.style.display = 'none';
+    rows.forEach(r => r.classList.remove('active-speaker'));
+    if (vu) vu.classList.remove('active');
+    lastPlayedCueId = null;
+
+    if (!window.appState.muteOriginalVocal) {
+      player.volume = window.appState.masterVolume || 1.0;
+    }
+  }
+}
+
+// Render cue markers along the scrub bar
+function renderScrubCueMarkers() {
+  const container = document.getElementById('scrubCueMarkers');
+  const dur = window.appState.duration;
+  if (!container || !dur || dur <= 0) return;
+
+  container.innerHTML = '';
+  const rows = document.querySelectorAll('.table-row');
+  rows.forEach(r => {
+    const s = parseTcToSec(r.querySelectorAll('.cell-tc')[0]?.textContent);
+    const pct = (s / dur) * 100;
+    if (pct >= 0 && pct <= 100) {
+      const dot = document.createElement('div');
+      dot.className = 'scrub-cue-dot';
+      dot.style.left = pct + '%';
+      container.appendChild(dot);
+    }
+  });
+}
+
+// Toggle Khmer Dubbed Audio Playback
+function toggleKhmerDubbedAudio() {
+  window.appState.khmerDubEnabled = !window.appState.khmerDubEnabled;
+  const pill = document.getElementById('btnToggleKhmerAudio');
+  const lbl = document.getElementById('lblKhmerAudioStatus');
+  if (pill) pill.classList.toggle('active', window.appState.khmerDubEnabled);
+  if (lbl) lbl.textContent = window.appState.khmerDubEnabled ? 'Khmer Voice: 100%' : 'Khmer Voice: OFF';
+  showToast(window.appState.khmerDubEnabled ? 'បានបើកសំឡេង Khmer Dubbing ស៊ីគ្នានឹងវីដេអូ' : 'បានបិទសំឡេង Khmer Dubbing');
+}
+
+// Toggle Original Video Vocal Mute / Duck
+function toggleOriginalVocalAudio() {
+  window.appState.muteOriginalVocal = !window.appState.muteOriginalVocal;
+  const pill = document.getElementById('btnToggleOrigAudio');
+  const lbl = document.getElementById('lblOrigVocalStatus');
+  if (pill) pill.classList.toggle('active', !window.appState.muteOriginalVocal);
+  if (lbl) lbl.textContent = window.appState.muteOriginalVocal ? 'Orig Vocals: MUTED' : 'Orig Vocals: DUCKED (15%)';
+  const player = document.getElementById('mainVideoPlayer');
+  if (player) {
+    player.volume = window.appState.muteOriginalVocal ? 0.0 : 0.15;
+  }
+  showToast(window.appState.muteOriginalVocal ? 'បានលុប/Mute សំឡេងចិនដើម ១០០%' : 'បានបើកសំឡេងដើម (កម្រិតស្រាល 15%)');
+}
+
+// Transport Controllers
+function seekVideoToStart() {
+  const player = document.getElementById('mainVideoPlayer');
+  if (player) {
+    player.currentTime = 0;
+    syncLivePlayback();
+  }
+  showToast('ត្រឡប់ទៅដើមវីដេអូ (00:00.00)');
+}
+
+function stepVideoFrame(frames) {
+  const player = document.getElementById('mainVideoPlayer');
+  if (player) {
+    const cur = player.currentTime;
+    player.currentTime = Math.max(0, Math.min(player.duration || 100, cur + (frames * (1 / 25))));
+    syncLivePlayback();
+  }
+}
+
+function changeMasterVolume(val) {
+  window.appState.masterVolume = parseFloat(val);
+  const player = document.getElementById('mainVideoPlayer');
+  const dubAudio = document.getElementById('dubAudioPlayer');
+  if (dubAudio) dubAudio.volume = window.appState.masterVolume;
+  if (player && !window.appState.muteOriginalVocal) {
+    player.volume = window.appState.masterVolume;
+  }
+}
+
+function toggleVideoFullscreen() {
+  const viewport = document.getElementById('videoViewport');
+  if (!viewport) return;
+  if (!document.fullscreenElement) {
+    viewport.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+// Video Drag & Drop and Upload into Tool System
+function handleVideoDrop(e) {
+  e.preventDefault();
+  const placeholder = document.getElementById('videoDropPlaceholder');
+  if (placeholder) placeholder.classList.remove('drag-active');
+  const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file) {
+    handleVideoFile(file);
+  }
+}
+
+function handleVideoFile(file) {
+  if (!file) return;
+
+  const overlay = document.getElementById('videoUploadOverlay');
+  const progressLbl = document.getElementById('lblUploadProgress');
+  if (overlay) overlay.style.display = 'flex';
+  if (progressLbl) progressLbl.textContent = 'កំពុង Upload ' + file.name + ' ចូលប្រព័ន្ធ Tool...';
+
+  const localUrl = URL.createObjectURL(file);
+  window.appState.activeVideoUrl = localUrl;
+  window.appState.activeVideoName = file.name;
+
+  const player = document.getElementById('mainVideoPlayer');
+  const placeholder = document.getElementById('videoDropPlaceholder');
+  const closeBtn = document.getElementById('btnCloseVideo');
+  const monTag = document.getElementById('lblMonitorRes');
+
+  if (player) {
+    player.src = localUrl;
+    player.style.display = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+    if (closeBtn) closeBtn.style.display = 'inline-flex';
+
+    player.onloadedmetadata = () => {
+      window.appState.duration = player.duration;
+      const totalLbl = document.getElementById('lblTotalTime');
+      if (totalLbl) totalLbl.textContent = formatSecToTc(player.duration);
+      if (monTag && player.videoWidth) {
+        monTag.textContent = `MONITOR 1 · ${player.videoWidth}x${player.videoHeight} FHD`;
+      }
+      syncTimelineClips();
+      renderScrubCueMarkers();
+    };
+  }
+
+  // Upload directly to server tool system
+  const fd = new FormData();
+  fd.append('videoFile', file);
+  fetch('/api/upload-video', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(data => {
+      if (overlay) overlay.style.display = 'none';
+      if (data && (data.fileName || data.filename)) {
+        window.appState.activeVideoName = data.fileName || data.filename;
+        localStorage.setItem('genz_active_video_name', window.appState.activeVideoName);
+      }
+      showToast('វីដេអូបាន Upload ចូលប្រព័ន្ធ Tool ពេញលេញ!');
+
+      // If table is empty, start real extraction
+      if (document.querySelectorAll('.table-row').length === 0) {
+        showToast('កំពុងចាប់ផ្តើម Faster-Whisper ទាញយកទិន្នន័យរៀលពីវីដេអូ...');
+        executeTranslateWorkflow();
+      }
+    })
+    .catch(err => {
+      if (overlay) overlay.style.display = 'none';
+      showToast('បានផ្ទុកវីដេអូក្នុង Studio: ' + file.name);
+    });
+}
+
+function handleVideoFileSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  if (file) handleVideoFile(file);
+}
+
+// Real Project Data Persistence (Zero Fake Data, Real Cues Stored)
+function saveRealProjectData() {
+  const rows = document.querySelectorAll('.table-row');
+  const projectCues = Array.from(rows).map((r, idx) => ({
+    id: idx + 1,
+    s: r.querySelectorAll('.cell-tc')[0]?.textContent || '00:00.00',
+    e: r.querySelectorAll('.cell-tc')[1]?.textContent || '00:02.50',
+    km: r.querySelector('.cell-text')?.textContent || '',
+    orig: '',
+    spk: r.dataset.speaker || 'តួអង្គ',
+    g: r.dataset.gender || 'male',
+    v: r.dataset.voice || 'Piseth · Lead',
+    em: r.dataset.emotion || 'normal',
+    audioUrl: r.dataset.audioUrl || ''
+  }));
+  localStorage.setItem('cheatz_real_project_cues', JSON.stringify(projectCues));
+}
+
+function loadRealProjectData() {
+  const saved = localStorage.getItem('cheatz_real_project_cues');
+  if (saved) {
+    try {
+      const cues = JSON.parse(saved);
+      if (Array.isArray(cues) && cues.length > 0) {
+        const container = document.getElementById('subTableBody');
+        if (container) {
+          container.innerHTML = '';
+          cues.forEach(c => container.appendChild(renderTableRow(c)));
+          updateCueCounts();
+          syncTimelineClips();
+          renderScrubCueMarkers();
+          return true;
+        }
+      }
+    } catch (e) {}
+  }
+  return false;
 }
 
 </script>
