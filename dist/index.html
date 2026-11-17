@@ -2180,12 +2180,42 @@ svg.i {
   animation: ledBlink 1.2s infinite;
 }
 
-.chip-btn.active#chip_pool {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(5, 150, 105, 0.24)) !important;
-  color: #10B981 !important;
-  border-color: #10B981 !important;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35) !important;
-  font-weight: 700 !important;
+.voice-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.voice-card:hover {
+  border-color: rgba(0, 113, 227, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  transform: translateY(-1px);
+}
+.voice-card.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary), 0 4px 16px rgba(0, 113, 227, 0.25);
+}
+.voice-name-input {
+  width: 100%;
+  height: 28px;
+  padding: 0 24px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--sunk);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.voice-name-input:focus {
+  border-color: var(--primary);
+  background: var(--panel);
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
 }
 .chip-btn.active#chip_gemini {
   background: linear-gradient(135deg, rgba(0, 113, 227, 0.16), rgba(14, 165, 233, 0.24)) !important;
@@ -2940,10 +2970,6 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
         </div>
 
         <div class="engine-chips" title="ជ្រើសរើស Engine បកប្រែ & Whisper Transcribe">
-          <button class="chip-btn" id="chip_pool" onclick="setEngine('pool', this)" ondblclick="openStudioModal('modalGodModePool')" title="GodMode Pool PRO (ចុច ២ ដងដើម្បីបើក In-App Quota Constellation)">
-            <span class="chip-dot dot-pool"></span>
-            <span>Pool</span>
-          </button>
           <button class="chip-btn active" id="chip_gemini" onclick="setEngine('gemini', this)" title="Google Gemini 2.0 Flash AI">
             <span class="chip-dot dot-gemini"></span>
             <span>Gemini</span>
@@ -3253,383 +3279,249 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
       </div>
 
       <!-- SECTION 1: VOICE LIBRARY -->
+      <!-- SECTION 1: VOICE LIBRARY -->
       <div id="sectionVoiceLib" class="voice-section" style="display:flex; flex-direction:column; gap:12px;">
 
-        <!-- REAL AUDIO SAMPLES FROM VOICE SPLIT TOOL (8 REAL AUDIO CLIPS) -->
-        <div style="background:var(--sunk); border:1px solid var(--line); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+        <!-- REAL AUDIO SAMPLES FROM VOICE SPLIT TOOL (8 REAL CLIPS) -->
+        <div style="background:var(--sunk); border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="chip-dot dot-pool" style="width:7px; height:7px; background:#10B981;"></span>
-              <b style="font-size:12.5px; color:var(--ink);">សំឡេងពិតពី Voice Split Tool (8 Real Audio Clips):</b>
+              <span class="chip-dot" style="width:8px; height:8px; background:#10B981; border-radius:50%; box-shadow:0 0 8px #10B981;"></span>
+              <div>
+                <b style="font-size:13px; color:var(--ink); display:block;">បណ្ណាល័យសំឡេងពិត (Voice Split Master Clips - 8 Characters)</b>
+                <span style="font-size:11px; color:var(--ink2);">ចុចលើប្រអប់ឈ្មោះដើម្បីកែសម្រួលឈ្មោះតួអង្គក្នុងរឿង (រក្សាទុក Auto) &bull; រើសក្លូនចាក់សោរតួអង្គ ១:១</span>
+              </div>
             </div>
-            <span class="pill-status" style="font-size:10px; height:20px; color:#10B981; font-weight:700;">8 MP3 Loaded</span>
+            <span class="pill-status" style="font-size:10.5px; height:22px; color:#10B981; border-color:rgba(16,185,129,0.3); font-weight:700;">8 MP3 Loaded</span>
           </div>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:8px;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
             
-            <!-- Real Clip 1: vid10 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #0071E3, #3B82F6); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    10
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ១០ (Heroic)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid10.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">37 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid10.mp3', 'តួអង្គ ១០', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid10', 'តួអង្គ ១០', '/voice-library-files/custom_voice_vid10.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 2: vid12 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #7C3AED, #A855F7); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    12
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ១២ (Commander)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid12.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">30 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid12.mp3', 'តួអង្គ ១២', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid12', 'តួអង្គ ១២', '/voice-library-files/custom_voice_vid12.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 3: vid14 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #EC4899, #F43F5E); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    14
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ១៤ (Gentle F)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid14.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">22 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid14.mp3', 'តួអង្គ ១៤', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid14', 'តួអង្គ ១៤', '/voice-library-files/custom_voice_vid14.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 4: vid15 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #059669, #10B981); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    15
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ១៥ (Sage/Elder)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid15.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">86 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid15.mp3', 'តួអង្គ ១៥', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid15', 'តួអង្គ ១៥', '/voice-library-files/custom_voice_vid15.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 5: vid19 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #D97706, #F59E0B); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    19
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ១៩ (Noble Youth)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid19.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">45 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid19.mp3', 'តួអង្គ ១៩', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid19', 'តួអង្គ ១៩', '/voice-library-files/custom_voice_vid19.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 6: vid20 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #2563EB, #1D4ED8); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    20
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួអង្គ ២០ (Core)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">custom_voice_vid20.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">39 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid20.mp3', 'តួអង្គ ២០', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid20', 'តួអង្គ ២០', '/voice-library-files/custom_voice_vid20.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 7: Female Character 20 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #DB2777, #BE185D); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    F20
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួស្រី ២០ (Princess)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">vp_character_20_female.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">241 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/vp_character_20_female.mp3', 'តួស្រី ២០', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('char20_female', 'តួស្រី ២០', '/voice-library-files/vp_character_20_female.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Real Clip 8: Male Character 20 -->
-            <div class="choice-card" style="padding:9px; display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <div style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #1E40AF, #1E3A8A); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px;">
-                    M20
-                  </div>
-                  <div>
-                    <b style="font-size:11.5px; color:var(--ink); display:block;">តួប្រុស ២០ (King Leader)</b>
-                    <span style="font-size:9.5px; color:var(--ink2);">vp_character_20_male.mp3</span>
-                  </div>
-                </div>
-                <span class="pill-status" style="font-size:9px; height:16px;">241 KB</span>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/vp_character_20_male.mp3', 'តួប្រុស ២០', this)" style="flex:1; height:24px; font-size:10px;">
-                  <svg class="i" viewBox="0 0 24 24" style="width:10px;height:10px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span>ស្តាប់ MP3</span>
-                </button>
-                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('char20_male', 'តួប្រុស ២០', '/voice-library-files/vp_character_20_male.mp3')" style="height:24px; font-size:10px; padding:0 8px;">
-                  <span>រើសក្លូន</span>
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <b style="font-size:12.5px; color:var(--ink);">បញ្ជីតួអង្គសំឡេងខ្មែរ (Khmer Master Voice Actors):</b>
-          <button class="pill-btn" onclick="scanVoiceLibrary()" style="font-size:11px; height:26px;">
-            <svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            <span>Scan ស្វែងរកសំឡេង</span>
-          </button>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
-          
-          <!-- Actor 1: Piseth -->
-          <div class="choice-card active" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 1: vid10 (Male Lead) -->
+            <div class="choice-card voice-card" id="card_voice_vid10">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #0071E3, #3B82F6); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  M1
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #0071E3, #3B82F6); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M10
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">ពិសិដ្ឋ (Piseth)</b>
-                  <span style="font-size:10px; color:var(--ink2);">តួឯកប្រុសស្វាហាប់ / Heroic</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid10" data-id="vid10" data-fallback="តួឯកប្រុស (Heroic Lead)" value="តួឯកប្រុស (Heroic Lead)" oninput="onVoiceActorNameInput('vid10', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(59,130,246,0.15); color:#60A5FA; border:1px solid rgba(59,130,246,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Neural HD</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid10.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">37 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid10.mp3', getVoiceName('vid10', 'តួឯកប្រុស'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid10', getVoiceName('vid10', 'តួឯកប្រុស'), '/voice-library-files/custom_voice_vid10.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('piseth', 'ពិសិដ្ឋ', 1.0, 1.0)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('piseth', 'ពិសិដ្ឋ')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Actor 2: Sovann -->
-          <div class="choice-card" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 2: vid12 (Male Commander) -->
+            <div class="choice-card voice-card" id="card_voice_vid12">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #D97706, #F59E0B); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  M2
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #7C3AED, #A855F7); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M12
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">សុវណ្ណ (Sovann)</b>
-                  <span style="font-size:10px; color:var(--ink2);">តួប្រុសចាស់ទុំ / ស្តេច / King</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid12" data-id="vid12" data-fallback="មេទ័ព / មេបញ្ជាការ (Commander)" value="មេទ័ព / មេបញ្ជាការ (Commander)" oninput="onVoiceActorNameInput('vid12', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(124,58,237,0.15); color:#A78BFA; border:1px solid rgba(124,58,237,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Deep Bass</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid12.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">30 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid12.mp3', getVoiceName('vid12', 'មេទ័ព'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid12', getVoiceName('vid12', 'មេទ័ព'), '/voice-library-files/custom_voice_vid12.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('sovann', 'សុវណ្ណ', 0.8, 0.95)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('sovann', 'សុវណ្ណ')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Actor 3: Rathana -->
-          <div class="choice-card" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 3: vid14 (Female Gentle Heroine) -->
+            <div class="choice-card voice-card" id="card_voice_vid14">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #EC4899, #F43F5E); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  F1
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #EC4899, #F43F5E); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  F14
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">រតនា (Rathana)</b>
-                  <span style="font-size:10px; color:var(--ink2);">តួឯកស្រីស្រទន់ / Heroine</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid14" data-id="vid14" data-fallback="តួស្រីស្រទន់ (Gentle Heroine)" value="តួស្រីស្រទន់ (Gentle Heroine)" oninput="onVoiceActorNameInput('vid14', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(236,72,153,0.15); color:#F472B6; border:1px solid rgba(236,72,153,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ស្រី (Female)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Sweet</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid14.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">22 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid14.mp3', getVoiceName('vid14', 'តួស្រីស្រទន់'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid14', getVoiceName('vid14', 'តួស្រីស្រទន់'), '/voice-library-files/custom_voice_vid14.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #EC4899, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('rathana', 'រតនា', 1.25, 1.05)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('rathana', 'រតនា')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Actor 4: Chhornai -->
-          <div class="choice-card" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 4: vid15 (Elder Sage) -->
+            <div class="choice-card voice-card" id="card_voice_vid15">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #8B5CF6, #A855F7); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  F2
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #059669, #10B981); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M15
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">ចរណៃ (Chhornai)</b>
-                  <span style="font-size:10px; color:var(--ink2);">យុទ្ធនារីមុតមាំ / Warrior</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid15" data-id="vid15" data-fallback="ព្រឹទ្ធាចារ្យ / តាចាស់ (Elder Sage)" value="ព្រឹទ្ធាចារ្យ / តាចាស់ (Elder Sage)" oninput="onVoiceActorNameInput('vid15', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(16,185,129,0.15); color:#34D399; border:1px solid rgba(16,185,129,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Crisp</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid15.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">86 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid15.mp3', getVoiceName('vid15', 'ព្រឹទ្ធាចារ្យ'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid15', getVoiceName('vid15', 'ព្រឹទ្ធាចារ្យ'), '/voice-library-files/custom_voice_vid15.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('chhornai', 'ចរណៃ', 1.15, 1.1)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('chhornai', 'ចរណៃ')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Actor 5: Hermit Sage -->
-          <div class="choice-card" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 5: vid19 (Noble Youth) -->
+            <div class="choice-card voice-card" id="card_voice_vid19">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #059669, #10B981); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  S1
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #D97706, #F59E0B); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M19
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">តាឥសី (Hermit Sage)</b>
-                  <span style="font-size:10px; color:var(--ink2);">តាចាស់ / គ្រូក្បាច់គុន / Master</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid19" data-id="vid19" data-fallback="តួប្រុសស្វាហាប់ (Noble Youth)" value="តួប្រុសស្វាហាប់ (Noble Youth)" oninput="onVoiceActorNameInput('vid19', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(245,158,11,0.15); color:#FBBF24; border:1px solid rgba(245,158,11,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Elder</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid19.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">45 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid19.mp3', getVoiceName('vid19', 'តួប្រុសស្វាហាប់'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid19', getVoiceName('vid19', 'តួប្រុសស្វាហាប់'), '/voice-library-files/custom_voice_vid19.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('sage', 'តាឥសី', 0.7, 0.85)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('sage', 'តាឥសី')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Actor 6: Narrator -->
-          <div class="choice-card" style="padding:10px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+            <!-- Real Clip 6: vid20 (Core Character) -->
+            <div class="choice-card voice-card" id="card_voice_vid20">
               <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #475569, #64748B); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px;">
-                  N1
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #4F46E5, #6366F1); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M20
                 </div>
-                <div>
-                  <b style="font-size:12px; color:var(--ink); display:block;">អ្នកនិទានរឿង (Narrator)</b>
-                  <span style="font-size:10px; color:var(--ink2);">អធិប្បាយរឿងច្បាស់ៗ / Cinema</span>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_vid20" data-id="vid20" data-fallback="តួអង្គស្នូល (Core Character)" value="តួអង្គស្នូល (Core Character)" oninput="onVoiceActorNameInput('vid20', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </div>
+                <span style="background:rgba(99,102,241,0.15); color:#818CF8; border:1px solid rgba(99,102,241,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
               </div>
-              <span class="pill-status" style="font-size:9.5px; height:18px; padding:0 6px;">Balanced</span>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">custom_voice_vid20.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">39 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/custom_voice_vid20.mp3', getVoiceName('vid20', 'តួអង្គស្នូល'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('vid20', getVoiceName('vid20', 'តួអង្គស្នូល'), '/voice-library-files/custom_voice_vid20.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              <button class="pill-btn" onclick="auditionVoice('narrator', 'អ្នកនិទានរឿង', 1.0, 1.0)" style="flex:1; height:26px; font-size:10.5px;">
-                <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>ស្តាប់សាកល្បង</span>
-              </button>
-              <button class="pill-btn pill-primary" onclick="selectVoiceActor('narrator', 'អ្នកនិទានរឿង')" style="height:26px; font-size:10.5px; padding:0 8px;">
-                <span>រើស</span>
-              </button>
-            </div>
-          </div>
 
+            <!-- Real Clip 7: char20_female (Princess / Female Lead) -->
+            <div class="choice-card voice-card" id="card_voice_char20_female">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #DB2777, #BE185D); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  F20
+                </div>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_char20_female" data-id="char20_female" data-fallback="ម្ចាស់ក្សត្រី / តួឯកស្រី (Princess)" value="ម្ចាស់ក្សត្រី / តួឯកស្រី (Princess)" oninput="onVoiceActorNameInput('char20_female', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                </div>
+                <span style="background:rgba(236,72,153,0.15); color:#F472B6; border:1px solid rgba(236,72,153,0.3); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ស្រី (Female)</span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">vp_character_20_female.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">28 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/vp_character_20_female.mp3', getVoiceName('char20_female', 'ម្ចាស់ក្សត្រី'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('char20_female', getVoiceName('char20_female', 'ម្ចាស់ក្សត្រី'), '/voice-library-files/vp_character_20_female.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #EC4899, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Real Clip 8: char20_male (King Leader) -->
+            <div class="choice-card voice-card" id="card_voice_char20_male">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #1E40AF, #1E3A8A); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex-shrink:0;">
+                  M20
+                </div>
+                <div style="flex:1; min-width:0; position:relative;">
+                  <input type="text" class="voice-name-input" id="voice_name_char20_male" data-id="char20_male" data-fallback="ព្រះរាជា / មេទ័ពធំ (King Leader)" value="ព្រះរាជា / មេទ័ពធំ (King Leader)" oninput="onVoiceActorNameInput('char20_male', this.value)" placeholder="កែឈ្មោះតួអង្គ..." title="ចុចដើម្បីកែឈ្មោះតួអង្គ">
+                  <svg class="i" viewBox="0 0 24 24" style="position:absolute; right:7px; top:8px; width:12px; height:12px; color:var(--ink2); pointer-events:none;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                </div>
+                <span style="background:rgba(30,64,175,0.25); color:#93C5FD; border:1px solid rgba(59,130,246,0.4); font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; white-space:nowrap; flex-shrink:0;">ប្រុស (Male)</span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:var(--ink2);">
+                <span style="font-family:var(--mono);">vp_character_20_male.mp3</span>
+                <span class="pill-status" style="font-size:9px; height:18px; padding:0 6px;">241 KB</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="pill-btn" onclick="playRealVoiceAudio('/voice-library-files/vp_character_20_male.mp3', getVoiceName('char20_male', 'ព្រះរាជា'), this)" style="flex:1; height:28px; font-size:11px;">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>ស្តាប់ MP3</span>
+                </button>
+                <button class="pill-btn pill-primary" onclick="assignRealVoiceToActor('char20_male', getVoiceName('char20_male', 'ព្រះរាជា'), '/voice-library-files/vp_character_20_male.mp3')" style="height:28px; font-size:11px; padding:0 12px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
+                  <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  <span>រើសក្លូន</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -3843,16 +3735,6 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
         <button class="pill-btn" onclick="testKeyPoolHealth()">តេស្តសុខភាព Key Pool</button>
       </div>
 
-      <div style="background:linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(124, 58, 237, 0.12)); border:1px solid rgba(0, 113, 227, 0.35); border-radius:10px; padding:12px; margin-top:10px; display:flex; align-items:center; justify-content:space-between;">
-        <div>
-          <b style="font-size:12.5px; color:var(--ink);">GodMode Pool PRO (Orbital Solar Balance)</b>
-          <span style="font-size:11px; color:var(--ink2); display:block;">Dashboard ចែកចាយបន្ទុក Multi-Account តាម Port 127.0.0.1:20128</span>
-        </div>
-        <a href="http://127.0.0.1:20128" target="_blank" class="pill-btn pill-primary" style="text-decoration:none; font-size:11.5px; height:28px;">
-          <svg viewBox="0 0 24 24" class="i" style="width:12px;height:12px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span>បើក Dashboard 20128</span>
-        </a>
-      </div>
     </div>
     <div class="modal-footer">
       <button class="pill-btn" onclick="closeStudioModal('modalSettings')">បិទ</button>
@@ -3861,76 +3743,6 @@ button span, .tab-btn span, .pill-btn span, .action-btn span, .chip-btn span, .b
   </div>
 </div>
 
-<!-- ==========================================
-     GODMODE POOL PRO IN-APP EMBEDDED CONSTELLATION MODAL
-     ========================================== -->
-<div class="modal-backdrop" id="modalGodModePool">
-  <div class="modal-card" style="max-width:920px; width:96%; background:rgba(11, 15, 25, 0.96); border:1.5px solid rgba(0, 113, 227, 0.45); box-shadow:0 16px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 113, 227, 0.3);">
-    <div class="modal-header" style="background:linear-gradient(135deg, rgba(0, 113, 227, 0.15), rgba(124, 58, 237, 0.15)); border-bottom:1px solid rgba(0, 113, 227, 0.3); padding:12px 16px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:34px; height:34px; border-radius:50%; background:radial-gradient(circle, #F59E0B 0%, #D97706 70%); display:flex; align-items:center; justify-content:center; box-shadow:0 0 12px #F59E0B;">
-          <svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px;color:#fff;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </div>
-        <div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <b style="font-size:14.5px; color:#F9FAFB;">GodMode Pool PRO (Orbital Solar Balance)</b>
-            <span class="pill-status" style="background:rgba(16, 185, 129, 0.2); color:#10B981; border:1px solid rgba(16, 185, 129, 0.4); font-size:10px; height:20px;">
-              <span class="chip-dot dot-pool" style="width:6px; height:6px;"></span>
-              <span id="lblGodModeActiveStatus">0 Google Accounts Online</span>
-            </span>
-          </div>
-          <span style="font-size:11px; color:#94A3B8;">Local Multi-Account Quota Router នៅលើ Port 127.0.0.1:20128 (ស្ថិតក្នុង Tool ផ្ទាល់ ១០០%)</span>
-        </div>
-      </div>
-      <button class="modal-close" onclick="closeStudioModal('modalGodModePool')" style="color:#fff;">&times;</button>
-    </div>
-
-    <div class="modal-body" style="padding:14px; display:flex; flex-direction:column; gap:12px;">
-      
-      <!-- Toolbar Controls -->
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:rgba(17, 24, 39, 0.8); border:1px solid rgba(55, 65, 81, 0.8); padding:8px 12px; border-radius:10px;">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span style="font-size:11.5px; font-weight:700; color:#E2E8F0;">Strategy:</span>
-          <button class="pill-btn pill-primary godmode-strat-btn active" onclick="setGodModeStrategy('round-robin', this)" style="height:26px; font-size:11px;">Round-robin</button>
-          <button class="pill-btn godmode-strat-btn" onclick="setGodModeStrategy('least-used', this)" style="height:26px; font-size:11px;">Least-used</button>
-          <button class="pill-btn godmode-strat-btn" onclick="setGodModeStrategy('random', this)" style="height:26px; font-size:11px;">Random</button>
-        </div>
-
-        <div style="display:flex; align-items:center; gap:6px;">
-          <button class="pill-btn pill-primary" onclick="syncGodModeAccounts()" style="height:28px; font-size:11px; background:linear-gradient(135deg, #0071E3, #7C3AED);">
-            <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            <span>Sync Google AI Studio</span>
-          </button>
-          <button class="pill-btn" onclick="refreshGodModeFrame()" style="height:28px; font-size:11px;">
-            <svg class="i" viewBox="0 0 24 24" style="width:11px;height:11px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            <span>Reload</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Live Solar Constellation Canvas Frame (Embedded 100% In-App) -->
-      <div style="position:relative; width:100%; height:480px; border-radius:12px; overflow:hidden; border:1px solid rgba(0, 113, 227, 0.35); box-shadow:inset 0 0 20px rgba(0, 0, 0, 0.8);">
-        <iframe id="iframeGodModeConstellation" src="http://127.0.0.1:20128" style="width:100%; height:100%; border:none; background:#0B0F19;"></iframe>
-      </div>
-
-      <!-- Quick Metrics Strip -->
-      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:#94A3B8; padding:0 4px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span>Core: <b style="color:#F59E0B;">Active</b></span>
-          <span>Accounts: <b style="color:#10B981;" id="lblGodModeTotalAccounts">19 In Pool</b></span>
-          <span>Auto Failover: <b style="color:#60A5FA;">Transparent Retry (100%)</b></span>
-        </div>
-        <span style="font-family:var(--mono); color:#64748B;">Endpoint: 127.0.0.1:20128</span>
-      </div>
-
-    </div>
-
-    <div class="modal-footer" style="padding:10px 16px; border-top:1px solid rgba(55, 65, 81, 0.6); display:flex; justify-content:space-between; align-items:center;">
-      <span style="font-size:11px; color:#64748B;">GodMode Solar Constellation Live Engine &bull; Zero Remote Lag</span>
-      <button class="pill-btn" onclick="closeStudioModal('modalGodModePool')">បិទផ្ទាំង</button>
-    </div>
-  </div>
-</div>
 
 
 <!-- Simple Fallback Modals for Series, OCR, Find/Replace, Genre, Batch, LowSpec -->
@@ -4571,8 +4383,8 @@ function showToast(msg, dur = 3200) {
 function openStudioModal(id) {
   const m = document.getElementById(id);
   if (m) m.classList.add('show');
-  if (id === 'modalGodModePool' && typeof syncGodModeAccounts === 'function') {
-    syncGodModeAccounts();
+  if (id === 'modalVoiceClone' && typeof loadCustomVoiceNames === 'function') {
+    loadCustomVoiceNames();
   }
 }
 function closeStudioModal(id) {
@@ -5636,7 +5448,6 @@ function setEngine(engineId, el) {
   if (target) target.classList.add('active');
 
   const engineDetails = {
-    pool: { name: '9Router Quota Pool', desc: 'បកប្រែតាម Gmail Multi-Account Pool ដោយឥតគិតថ្លៃ', badge: 'Pool Ready' },
     gemini: { name: 'Google Gemini 2.0 Flash AI', desc: 'AI កម្រិតខ្ពស់សម្រាប់បកប្រែបែបភាពយន្តរស់រវើក', badge: 'Gemini AI' },
     google: { name: 'Google Free + Faster-Whisper', desc: 'ប្រើ Whisper ស្តាប់សំឡេងរឿង & Google Free បកប្រែដោយឥតគិតថ្លៃ', badge: 'Whisper + Free' },
     ollama: { name: 'Local Ollama Offline AI', desc: 'បកប្រែតាម Offline LLM ក្នុងម៉ាស៊ីនផ្ទាល់ (qwen2.5 / llama3)', badge: 'Ollama Local' }
@@ -7269,6 +7080,40 @@ function updateSubtitlePreview() {
 // ==========================================================================
 let realAudioPlayerInstance = null;
 
+const CUSTOM_VOICE_NAMES_STORAGE_KEY = 'cheatz_custom_voice_names';
+
+function getVoiceName(voiceId, fallback) {
+  try {
+    const map = JSON.parse(localStorage.getItem(CUSTOM_VOICE_NAMES_STORAGE_KEY) || '{}');
+    if (map[voiceId] && map[voiceId].trim()) {
+      return map[voiceId].trim();
+    }
+  } catch (e) {}
+  const inp = document.getElementById('voice_name_' + voiceId);
+  if (inp && inp.value.trim()) return inp.value.trim();
+  return fallback;
+}
+
+function onVoiceActorNameInput(voiceId, newName) {
+  try {
+    const map = JSON.parse(localStorage.getItem(CUSTOM_VOICE_NAMES_STORAGE_KEY) || '{}');
+    map[voiceId] = newName.trim();
+    localStorage.setItem(CUSTOM_VOICE_NAMES_STORAGE_KEY, JSON.stringify(map));
+  } catch (e) {}
+}
+
+function loadCustomVoiceNames() {
+  try {
+    const map = JSON.parse(localStorage.getItem(CUSTOM_VOICE_NAMES_STORAGE_KEY) || '{}');
+    document.querySelectorAll('.voice-name-input').forEach(inp => {
+      const vid = inp.getAttribute('data-id');
+      if (vid && map[vid]) {
+        inp.value = map[vid];
+      }
+    });
+  } catch (e) {}
+}
+
 function playRealVoiceAudio(url, name, btn) {
   if (window.soundEngine) window.soundEngine.playAction();
   showToast('កំពុងចាក់សំឡេងពិត: ' + name);
@@ -7295,13 +7140,19 @@ function playRealVoiceAudio(url, name, btn) {
   });
 }
 
-function assignRealVoiceToActor(voiceId, voiceName, audioUrl) {
+function assignRealVoiceToActor(voiceId, fallbackName, audioUrl) {
   if (window.soundEngine) window.soundEngine.playSuccess();
+  
+  const finalVoiceName = getVoiceName(voiceId, fallbackName);
   window.appState.selectedVoiceId = voiceId;
-  window.appState.selectedVoiceName = voiceName;
+  window.appState.selectedVoiceName = finalVoiceName;
   window.appState.selectedVoiceAudioUrl = audioUrl;
 
-  // Set as VoxCPM2 Reference Sample
+  document.querySelectorAll('.voice-card').forEach(c => c.classList.remove('active'));
+  const card = document.getElementById('card_voice_' + voiceId);
+  if (card) card.classList.add('active');
+
+  // Set as VoxCPM2 Reference Sample in backend
   const audioSamplePath = audioUrl.replace('/voice-library-files/', 'voice_split_tool/');
   fetch('/api/voxcpm-settings', {
     method: 'POST',
@@ -7309,7 +7160,7 @@ function assignRealVoiceToActor(voiceId, voiceName, audioUrl) {
     body: JSON.stringify({
       enabled: true,
       referenceAudio: audioSamplePath,
-      referenceTranscript: voiceName
+      referenceTranscript: finalVoiceName
     })
   }).catch(() => {});
 
@@ -7319,60 +7170,14 @@ function assignRealVoiceToActor(voiceId, voiceName, audioUrl) {
     const cueId = activeRow.dataset.cueId;
     const cue = (window.appState.cues || []).find(c => String(c.id) === String(cueId));
     if (cue) {
-      cue.voice = voiceName;
+      cue.speaker = finalVoiceName;
+      cue.voice = finalVoiceName;
       cue.voiceAudioUrl = audioUrl;
       renderSubtitleTable();
     }
   }
 
-  showToast('បានជ្រើសរើស ' + voiceName + ' ជា Reference Audio សម្រាប់ VoxCPM2 Clone');
-}
-
-async function setGodModeStrategy(strategy, btn) {
-  if (window.soundEngine) window.soundEngine.playClick();
-  document.querySelectorAll('.godmode-strat-btn').forEach(b => b.classList.remove('active', 'pill-primary'));
-  if (btn) btn.classList.add('active', 'pill-primary');
-
-  try {
-    await fetch('http://127.0.0.1:20128/api/router/strategy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ strategy })
-    });
-    showToast('បានប្តូរ GodMode Strategy: ' + strategy);
-  } catch (e) {
-    showToast('Strategy Active: ' + strategy);
-  }
-}
-
-async function syncGodModeAccounts() {
-  if (window.soundEngine) window.soundEngine.playProgress();
-  showToast('កំពុង Sync Accounts ពី Google AI Studio ចូល Constellation...');
-
-  try {
-    const res = await fetch('http://127.0.0.1:20128/api/accounts');
-    const data = await res.json();
-    const count = data.accounts ? data.accounts.length : 0;
-    
-    const lbl = document.getElementById('lblGodModeActiveStatus');
-    if (lbl) lbl.textContent = `${count} Google Accounts Online`;
-    const lblTotal = document.getElementById('lblGodModeTotalAccounts');
-    if (lblTotal) lblTotal.textContent = `${count} In Pool`;
-
-    refreshGodModeFrame();
-    if (window.soundEngine) window.soundEngine.playSuccess();
-    showToast(`Sync ជោគជ័យ! បានផ្ទុក ${count} Google Accounts ក្នុង Constellation`);
-  } catch (err) {
-    refreshGodModeFrame();
-    showToast('ភ្ជាប់ទៅកាន់ GodMode Pool: http://127.0.0.1:20128');
-  }
-}
-
-function refreshGodModeFrame() {
-  const iframe = document.getElementById('iframeGodModeConstellation');
-  if (iframe) {
-    iframe.src = 'http://127.0.0.1:20128?t=' + Date.now();
-  }
+  showToast('បានភ្ជាប់សំឡេងក្លូនពិត "' + finalVoiceName + '" សម្រាប់សាច់រឿង');
 }
 
 function setVfxStyle(style, btn) {
